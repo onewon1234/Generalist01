@@ -1,0 +1,22 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# never commit database dumps or recovery archives (spec 04 §1)
+db-export/
+*.dump
+*.sql.gz
+*recovery*.zip
+*.bundle
+
+# build / deps
+node_modules/
+dist/
+.astro/
+coverage/
+*.log
+.DS_Store
+__pycache__/
