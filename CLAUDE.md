@@ -1,148 +1,200 @@
-# Generalist Daily — Consolidated Project Instructions
+# Generalist Daily — Project Instructions
 
-Single source of truth for this project. It replaces the earlier email-first
-"Generalist Daily Newsletter" brief. When requirements change, edit this file in
-place; do not append contradictory rules.
+Single source of truth for how this project is built and run. It consolidates
+`docs/specs/01`–`04`; where they conflict, spec 04 (2026-10-26) wins. Edit this
+file in place when requirements change; do not append contradictory rules.
 
 ## 1. Product
 
-Generalist Daily is a **website-first, AI-curated daily knowledge publication**
-for curious generalists. Not an email newsletter, not a news portal, not an
-infinite feed, not an academic journal.
+A Korean-language, website-first daily editorial publication for intellectually
+curious adults, mainly in their 20s and 30s.
 
-Promise: *"Things worth knowing, things everyone should understand, and things
-you didn't know you'd find interesting — in one manageable daily edition."*
+Not a generic AI news summarizer, textbook explainer, RSS headline aggregator or
+manually curated sample collection. Its value is discovering consequential and
+surprising developments, researching them properly, explaining why they matter,
+and presenting them as an engaging daily edition.
 
-- One finite edition per day: 5–7 stories (normally 6), ~5–7 minutes total.
-- Finishing the edition should feel like enough for the day.
-- Past editions stay in an archive. No accounts, comments, social feeds or
-  personalization in the MVP.
-- Email is an optional future distribution channel only (none exists yet).
-- All reader-facing writing is natural, polished Korean.
+**Primary objective:** autonomously produce a high-quality, evidence-grounded
+Korean daily edition without the user discovering, selecting, researching or
+writing stories by hand. A manually written sample edition is never the
+deliverable.
 
-## 2. Editorial model
+- One finite edition per day, normally 5–7 stories; never pad with weak stories.
+- Total reading time initially about 10–15 minutes, set by story quality and
+  depth, not by length targets.
+- Homepage cards are short previews; article pages carry complete writing.
+- No accounts, comments or personalization. Email is an optional future channel.
 
-Editorial functions (tags, not fixed slots; a story may carry several; do not
-force all six daily):
+## 2. Editorial selection
 
-| key | label | meaning |
-|---|---|---|
-| `must_know` | MUST KNOW | consequential current affairs |
-| `in_the_know` | IN THE KNOW | contemporary trends and conversations |
-| `essentials` | THE ESSENTIALS | foundational general knowledge |
-| `good_to_know` | GOOD TO KNOW | interesting and useful knowledge |
-| `something_new` | SOMETHING NEW | unfamiliar subjects and discoveries |
-| `food_for_thought` | FOOD FOR THOUGHT | reasoning and reflection |
+Tendencies, not quotas: several meaningful recent developments, one or two
+exceptional discoveries or deep explanations, occasionally a reflective
+cultural, historical or philosophical piece.
 
-Starting balance for six stories: 2 timely, 1 foundational, 2 discovery,
-1 reflection. Quality beats quota: never pad with weak stories (minimum 5).
+Prioritize stories that are current, consequential, surprising, underexplained
+or perspective-changing.
 
-Subjects (flexible taxonomy, table `subjects`; new subjects may be added):
-world-politics-society, economics-finance-business, science-technology-ai,
-history-civilization-geography, philosophy-literature-arts-culture,
-psychology-behavior-everyday, plus mathematics, environment, medicine,
-architecture-design, law, language, anthropology, …
+- Event freshness is not publication date. 24–72 hours is a default signal, not
+  an absolute cut-off; a significant ongoing development can qualify. An older
+  event is timely only with a genuinely meaningful new development, and is never
+  presented as new.
+- Avoid: textbook definitions as standalone stories; repetitive AI/tech topics;
+  US- or institution-centric selections; duplicated event clusters; manufactured
+  curiosity; topics chosen to fill categories.
+- Breadth is tracked over 7 and 30 days (views `coverage_7d`, `coverage_30d`).
+- Every selected story keeps an explicit **why-now rationale**, **editorial
+  angle**, **reader payoff** and **evidence record**.
 
-Diversity: track subjects and subtopics over rolling 7 and 30 days (views
-`coverage_7d`, `coverage_30d`). Do not over-weight AI, finance or geopolitics
-because they produce many headlines. Not every subject needs to appear daily.
+Subjects use the flexible taxonomy in table `subjects` (new subjects may be
+added). The six editorial functions (`must_know`, `in_the_know`, `essentials`,
+`good_to_know`, `something_new`, `food_for_thought`) are descriptive tags, not
+slots.
 
-Suitability score (adjustable heuristics, in `pipeline/src/config.ts`):
-significance 25%, interest 25%, accessibility 20%, thinking potential 15%,
-novelty 15%. Accuracy and source reliability are **gates**, not weights.
+## 3. Research and evidence
 
-Each story ideally covers: (1) what it is / what happened, (2) why or how it
-works, (3) why it matters. Add an example, uncertainty, counterargument or
-question only where it helps. Avoid trivia, clickbait, sensationalism, forced
-humor, needless metaphors, unexplained jargon and academic tone. Do not avoid
-hard subjects; explain them.
+For promising candidates, automatically investigate accessible material:
+article text where permitted, original announcements, papers, reports and
+official documents.
 
-## 3. Non-negotiable safeguards (carried over from the original brief)
+- Use licensed APIs or allowed public access only. Respect copyright, robots
+  rules, paywalls, access restrictions and platform terms. When access is
+  restricted, look for an alternative legitimate source.
+- Never claim a headline, snippet or metadata record was fully read. Record the
+  access level actually achieved for every source.
+- Establish: what happened, when, what is new versus earlier coverage, why it
+  matters now, necessary background and mechanism, competing explanations and
+  uncertainty, and what the reader gains.
+- Separate primary evidence, secondary reporting, interpretation and speculation.
+- Record source URL, access time, event date, publication date, source update
+  date and evidence limitations separately.
+- Prefer independent corroboration; keep supporting sources internally.
+- Storage: metadata, URLs, short excerpts (≤1000 chars) and our own analysis.
+  Full text may be processed transiently but is not stored unless
+  `sources.allows_fulltext`. No article images.
+- References (the 36-source registry and its records) teach editorial patterns
+  and surface leads. They are not evidence and their prose is never copied.
+  Collect new reference material daily and track source health, availability,
+  language, region, subject and date.
 
-- Freshness for timely stories: normally ≤48h, up to 72h for major
-  developments (flag `major=true`). Evergreen stories have no date limit but
-  must never be presented as breaking news.
-- Store event date, publication date, source update date and retrieval time
-  separately.
-- Cluster articles on the same event; deduplicate against the last 30 days of
-  published stories unless there is a meaningful new development.
-- Prefer independent corroboration; record supporting sources internally.
-- Source-grounded writing only. Never fabricate sources, URLs, quotes or facts.
-  Never claim to have read inaccessible or paywalled content.
-- Respect copyright and paywalls: store metadata, URLs and short excerpts only
-  (≤1000 chars). No full-text storage unless `sources.allows_fulltext`.
-  No article images.
-- Every published link (source and concept links) must pass `link_checks`.
-- Every published story must have `fact_check_status = 'passed'`.
-- Log editorial decisions (`editorial_log`) and pipeline failures
-  (`pipeline_runs`).
+## 4. Writing
 
-## 4. Architecture
+Natural, engaging, precise Korean for an intelligent general reader, not a
+beginner.
+
+- Open with a concrete event, tension, discovery or question.
+- Cover the essential facts, then background and mechanism, then consequences,
+  implications or competing interpretations. The reader should come away
+  understanding something meaningful they did not before.
+- Restrained headlines. No clickbait, fabricated tension, generic AI prose,
+  padding or unsupported certainty.
+- Distinguish fact, interpretation and uncertainty in the text. Attribute claims.
+- Original wording and judgment; never imitate or closely paraphrase a reference
+  publication.
+- Every published link (sources and concept links) must be verified.
+
+## 5. Editorial workflow (separate model calls, not separate agents)
+
+| Role | Responsibility |
+|---|---|
+| Researcher | gathers and organizes evidence per candidate |
+| Editor | evaluates candidates, sets angles, selects the edition |
+| Writer | writes original Korean articles grounded in the evidence |
+| Fact checker | checks each claim against the evidence only, without the writer's reasoning or confidence |
+| Quality reviewer | clarity, depth, repetition, coherence, originality, diversity, reader value |
+
+Unsupported claims are corrected, qualified or rejected. Uncertainty and audit
+records are preserved. **AI verification is not human fact-checking**: an
+automated `passed` never equals human approval.
+
+Deterministic code handles collection, date logic, clustering, arithmetic,
+URL checks, storage, scheduling and idempotency. AI is used for judgment and
+writing only. Prefer an efficient, testable design over agent complexity.
+
+## 6. Architecture and run model
 
 ```
-GitHub Actions (cron, no local machine needed)
-  └─ pipeline/ (TypeScript, Node 22)
-       collect → filter(freshness) → cluster/dedupe → score/select
-       → write (Claude) → fact-check (Claude) → link-check → assemble draft
-  └─ publish (manual, approval required) → rebuild site
-Supabase (Postgres, free plan, project ref luogxbqimauqzoasgesj, ap-northeast-2)
-web/ (Astro static site, built from published data only)
+GitHub Actions (Asia/Seoul schedule, no local machine)
+  discover → read permitted sources → extract evidence → evaluate & select
+  → write → fact-check → quality review → private in_review edition
+Supabase Postgres (free plan, project ref luogxbqimauqzoasgesj, ap-northeast-2)
+web/ (static site built from published data only)
 ```
 
-- Deterministic code for collection, date filtering, clustering, scoring
-  arithmetic, URL checks, storage, scheduling and publishing.
-- AI only for: topic evaluation (scores), writing, fact-check review.
-  Default models are configurable via env (`CLAUDE_MODEL_FAST`,
-  `CLAUDE_MODEL_WRITER`). Use one batched scoring call per day, not one call
-  per article.
-- Production editorial roles (News Scout, Knowledge Scout, Research Analyst,
-  Writer, Fact Checker, Editor-in-Chief) are pipeline stages, not six agents.
-- During development use Claude Code subagents only when they clearly save
-  work; avoid duplicate research and conflicting edits.
+- Build a vertical slice first: one real current story end to end, then extend
+  to a full edition. Reusable modules with tests around the real path; no
+  mock-only implementations.
+- Retries are idempotent: one edition per date, no duplicate rows.
+- Log every stage to `pipeline_runs`, including source failures, model
+  failures, missing evidence, token usage and cost.
+- The pipeline only creates `in_review` drafts. **Public publishing is never
+  automatic**; it is a separate, human-approved step.
 
-### Collection sources
-- Korean news: NAVER API HUB News Search
-  (`https://naverapihub.apigw.ntruss.com/search/v1/news`, headers
-  `X-NCP-APIGW-API-KEY-ID` / `X-NCP-APIGW-API-KEY`). The legacy
-  openapi.naver.com host stopped accepting new apps on 2026-07-31.
-- International / specialist / educational: RSS feeds in `sources`.
-- Evergreen ideas: `story_clusters` rows with `freshness_type='evergreen'`
-  (Knowledge Scout backlog).
-
-## 5. Data and security
+## 7. Data and security
 
 - Migrations live in `supabase/migrations/`, each with a matching
-  `supabase/rollbacks/<same name>.down.sql`. Never drop or recreate existing
-  tables without approval.
-- The pipeline uses the service-role key **only** as a CI secret. It never
-  goes to the browser or into `web/`.
-- Public visitors (`anon`) may read only rows belonging to an edition with
-  `status='published'`, and only public columns. Drafts, research, summaries,
-  editorial logs, pipeline runs and link checks stay private.
-- The website is statically built with the publishable key, so it can only
-  ever see published content.
+  `supabase/rollbacks/<name>.down.sql`. Never drop or recreate existing tables
+  or alter existing data without approval.
+- Least privilege: the service-role key is used only where no narrower option
+  exists, only as a CI secret, never in the browser, `web/`, logs or commits.
+  Prefer a dedicated database role with grants limited to what the pipeline writes.
+- `anon` may only ever read published editions and public columns. Drafts,
+  research, evidence, logs and link checks stay private.
+- Never commit credentials, `.env` files, database dumps or recovery archives.
+  Never ask for secrets in chat; the user sets them as repository secrets.
 
-## 6. Workflow states
+## 8. Approval required (ask first)
 
-`issues.status`: draft → in_review → approved → published (or failed /
-withdrawn). The pipeline only creates drafts. Publishing is a separate,
-manually triggered step that refuses any edition with unchecked links or
-unpassed fact checks.
+- Paid resources or real paid API calls (Claude API, paid NAVER plans, hosting)
+- Production database schema changes, data changes or deletions
+- Security policy changes (RLS policies, grants, keys, public buckets)
+- Public deployment or publishing any edition
+- Writes to an external system the user has not already approved for that scope
+- Anything irreversible or security-sensitive
 
-## 7. Approval required (ask the user first)
+Request credentials only at the step that needs them, one at a time.
 
-- Creating paid resources or starting real API charges (Claude API, paid
-  Naver plans, paid hosting)
-- Destructive database changes (drop, delete, truncate) and data retention jobs
-- Security policy changes (RLS policies, grants, public buckets)
-- Public deployment of the website
-- Publishing any real edition
-- Any other irreversible or security-sensitive operation
+Ordinary coding, testing and commits on the Claude branch lineage do not need
+per-step confirmation.
 
-## 8. Commands
+## 9. Repository workflow
+
+- Repository: `onewon1234/Generalist`. Claude's lineage starts at branch
+  `claude/main`; feature work goes on `claude/<topic>` branches with Draft PRs
+  into `claude/main`.
+- Never modify, rebase, force-push, merge into or delete existing branches,
+  including Codex PRs #1 and #2. Codex code may be read for reference only.
+- Commit small, verified steps and push after each stage, so the remote copy is
+  always current.
+- Deletes go through `scripts/safe-rm.sh` or `${VAR:?}` expansions; never chain
+  a delete after `;`. The `.claude/hooks/guard_rm.py` hook enforces this.
+
+## 10. Validation and reporting
+
+Success is never declared because tests pass or a sample was written by hand.
+Validate in order:
+
+1. Source collection with real current data
+2. Permitted substantive source retrieval
+3. Automatic research and evidence extraction
+4. Autonomous candidate selection
+5. Real model-generated Korean drafts
+6. Automated claim checking and revision
+7. Private durable issue storage
+8. Full website article rendering
+9. Scheduled execution
+10. Three successful unattended scheduled runs, each checked for real research,
+    evidence verification, editorial quality, drafting and private storage
+
+Every report labels each part as **real**, **mocked**, **manual preparation**,
+**credential-dependent** or **not yet implemented**, and includes source URLs,
+timestamps, generated examples, test results and limitations. Editorial quality
+is evaluated alongside technical success.
+
+## 11. Commands
+
+Set as each part is rebuilt (see `docs/REBUILD.md`).
 
 ```
-cd pipeline && npm test            # unit tests (no network)
-cd pipeline && npm run daily -- --dry-run   # full pipeline with fixtures/mock AI
-cd web && npm run build            # static site (needs PUBLIC_SUPABASE_URL/KEY or DATA_FILE)
+python3 -I scripts/test/test_guard_rm.py   # delete-guard tests
+bash scripts/test/test_safe_rm.sh          # safe-rm tests
 ```
