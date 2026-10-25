@@ -8,10 +8,10 @@ Status labels: **real** (works against live systems), **mocked**, **manual**,
 - [x] Supabase checked read-only: 3 migrations, 16 tables, RLS on all, 0 policies,
       reference_sources 36, reference_items 360 (34 analysed), Edition No.1 in_review — 2026-10-26
 - [x] Local `claude/main` lineage with recovered files (not yet pushed)
-- [ ] GitHub access — **blocked**: no GitHub account linked to the claude.ai session;
-      repository is not readable anonymously (private). See options in the session report.
-- [ ] Inspect existing branches and Codex PRs #1, #2 (read-only)
-- [ ] Push `claude/main` as a new, independent branch (needs user OK for first write)
+- [ ] GitHub push to `onewon1234/Generalist01` — **blocked**: Claude GitHub App lacks access (403). Repo is empty; reads work.
+
+- [x] Generalist01 inspected: empty (0 branches, 0 commits) — 2026-10-26
+- [ ] Push local history to `main` (user approved; waiting on access)
 
 ## 1. Minimum runnable project + CI
 - [ ] `pipeline/` package (Node 22, TypeScript, node:test), types and config for the

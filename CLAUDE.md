@@ -158,11 +158,12 @@ per-step confirmation.
 
 ## 9. Repository workflow
 
-- Repository: `onewon1234/Generalist`. Claude's lineage starts at branch
-  `claude/main`; feature work goes on `claude/<topic>` branches with Draft PRs
-  into `claude/main`.
-- Never modify, rebase, force-push, merge into or delete existing branches,
-  including Codex PRs #1 and #2. Codex code may be read for reference only.
+- Claude's repository: `onewon1234/Generalist01`, default branch `main`.
+  Larger changes go on `claude/<topic>` branches with Draft PRs into `main`.
+- `onewon1234/Generalist` belongs to Codex (including PRs #1 and #2). It may be
+  read for reference only: never push, modify, merge or open PRs there, and never
+  merge Codex code wholesale into this repository.
+- Never force-push, rewrite published history or delete remote branches.
 - Commit small, verified steps and push after each stage, so the remote copy is
   always current.
 - Deletes go through `scripts/safe-rm.sh` or `${VAR:?}` expansions; never chain
