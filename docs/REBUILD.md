@@ -1,25 +1,26 @@
 # Rebuild checklist
 
 Status labels: **real** (works against live systems), **mocked**, **manual**,
-**credential-dependent**, **todo**. A box is ticked only for real, verified work.
+**credential-dependent**, **todo**. A box is ticked only for verified work;
+the label says how far it has been verified.
 
 ## 0. Access and baseline
 - [x] Recovery assets verified (zip on Mac and in chat, 23/23 checksums OK) — 2026-10-26
 - [x] Supabase checked read-only: 3 migrations, 16 tables, RLS on all, 0 policies,
       reference_sources 36, reference_items 360 (34 analysed), Edition No.1 in_review — 2026-10-26
-- [x] Local `claude/main` lineage with recovered files (not yet pushed)
-- [ ] GitHub push to `onewon1234/Generalist01` — **blocked**: Claude GitHub App lacks access (403). Repo is empty; reads work.
-
-- [x] Generalist01 inspected: empty (0 branches, 0 commits) — 2026-10-26
-- [ ] Push local history to `main` (user approved; waiting on access)
+- [x] `onewon1234/Generalist01` inspected: empty (0 branches, 0 commits) — 2026-10-26
+- [ ] Push local history to `main` — **blocked**: push returns 403, the Claude GitHub App
+      has no access to Generalist01. Reads work. Local commits are backed up as a git bundle
+      on the Mac (`~/development/generalist-daily-backup/`).
 
 ## 1. Minimum runnable project + CI
-- [ ] `pipeline/` package (Node 22, TypeScript, node:test), types and config for the
-      consolidated spec (no fixed quotas)
-- [ ] Restore tests around `select.ts`, adjusted to the new editorial rules
-- [ ] CI: typecheck, tests, guard tests; Postgres service container applying
-      `supabase/migrations/*` for integration tests
-- [ ] `supabase/rollbacks/` rewritten from the migration originals
+- [x] `pipeline/` package (Node 22, TypeScript 5.9, node:test via tsx) — local
+- [x] Modules recreated for recovered `select.ts`: types, config, text, freshness, cluster — local
+- [x] `select.ts` aligned with spec 04: shape as preference, freshness from newest
+      development, ongoing-story window — local, 33 tests
+- [x] `supabase/rollbacks/` rewritten; migrations + rollbacks round-trip on PGlite — local
+- [x] CI workflow (typecheck, tests, guard tests, secret/dump check) — actionlint OK and
+      steps run in a clean checkout; **not yet run on GitHub** (push blocked)
 
 ## 2. Vertical slice: one real current story
 - [ ] Live discovery (RSS first; NAVER API HUB when keys are provided)

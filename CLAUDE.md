@@ -196,6 +196,7 @@ is evaluated alongside technical success.
 Set as each part is rebuilt (see `docs/REBUILD.md`).
 
 ```
+cd pipeline && npm ci && npm run check   # typecheck + tests (incl. migrations on PGlite)
 python3 -I scripts/test/test_guard_rm.py   # delete-guard tests
 bash scripts/test/test_safe_rm.sh          # safe-rm tests
 ```
