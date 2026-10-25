@@ -1,0 +1,47 @@
+name: ci
+
+on:
+  push:
+    branches: [main, 'claude/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pipeline/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: delete-guard hook tests
+        run: python3 -I scripts/test/test_guard_rm.py
+      - name: safe-rm tests
+        run: bash scripts/test/test_safe_rm.sh
+      - name: no secrets or dumps committed
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)|\.pem$|\.key$|\.dump$|db-export/|recovery.*\.zip$'; then
+            echo "forbidden file committed"; exit 1; fi
+          if git grep -nE 'sb_secret_[A-Za-z0-9]|service_role["'"'"']?\s*[:=]\s*["'"'"']ey|sk-ant-[A-Za-z0-9]' -- . ':!.github/workflows/ci.yml'; then
+            echo "possible credential committed"; exit 1; fi
