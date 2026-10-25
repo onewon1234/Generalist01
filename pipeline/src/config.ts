@@ -29,12 +29,25 @@ export const FRESHNESS_BONUS: { maxHours: number; bonus: number }[] = [
   { maxHours: 24, bonus: 3 },
   { maxHours: 48, bonus: 0 },
   { maxHours: 72, bonus: -5 },
+  { maxHours: 120, bonus: -8 },
 ];
+
+/**
+ * Edition shape is a preference, not a quota (CLAUDE.md §2): a bucket below its
+ * preferred minimum gets a bonus, one at or above its preferred maximum a
+ * penalty. A clearly better story still wins.
+ */
+export const SHAPE = {
+  belowMinBonus: 6,
+  atMaxPenalty: 12,
+} as const;
 
 /** Freshness signal for timely stories (hours since the newest source). */
 export const FRESHNESS = {
   defaultMaxHours: 48,
   majorMaxHours: 72,
+  /** A significant ongoing development (isMajor && ongoing) may run longer. */
+  ongoingMaxHours: 120,
   /** An article whose event is this many days older than its publication date is background, not news. */
   backgroundEventLagDays: 7,
   /** Tolerated clock skew for publication dates in the future. */

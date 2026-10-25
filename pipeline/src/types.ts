@@ -55,6 +55,8 @@ export interface Scores {
   reliable: boolean;
   /** A major development (allows the extended freshness window). */
   isMajor: boolean;
+  /** A significant ongoing story whose latest development is genuinely new. */
+  ongoing?: boolean;
   /** Elementary/definitional topic (e.g. "what is compound interest"). */
   elementary: boolean;
   /** Evergreen piece with a concrete present-day hook. */

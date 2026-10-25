@@ -94,6 +94,46 @@ test('recent coverage of a subject lowers its priority', () => {
   assert.equal(chosen[0].key, 'b');
 });
 
+test('shape is a preference: clearly better discoveries can exceed the usual range', () => {
+  const weakTimely = CATS.map((cat, i) => cluster(`w${i}`, { category: cat, significance: 6, interest: 6, insight: 6, novelty: 6, accessibility: 6, timeliness: 6 }));
+  const strong = [0, 1, 2].map((i) => evergreen(`s${i}`, { category: CATS[i + 1], significance: 10, interest: 10, insight: 10, novelty: 10, accessibility: 9 }));
+  const { chosen, warnings } = selectEdition([...weakTimely, ...strong], NOW, [], EMPTY_COVERAGE);
+  assert.equal(chosen.filter((c) => c.bucket === 'discovery').length, 3, 'above the usual maximum of 2');
+  assert.equal(chosen.length, 6);
+  assert.deepEqual(warnings, []);
+});
+
+test('missing a usual bucket is a note, not a failure', () => {
+  const ev = CATS.map((cat, i) => evergreen(`n${i}`, { category: cat, significance: 9, interest: 9, insight: 9, novelty: 9 }));
+  const { warnings } = selectEdition(ev, NOW, [], EMPTY_COVERAGE);
+  assert.ok(warnings.some((w) => /"timely"/.test(w) && /quality decided/.test(w)));
+});
+
+test('an edition can form without timely stories when none qualify', () => {
+  const ev = CATS.map((cat, i) => evergreen(`e${i}`, { category: cat, significance: 9, interest: 9, insight: 9, novelty: 9 - (i % 2),
+    functions: i % 3 === 0 ? ['food_for_thought'] : ['something_new'] }));
+  const { chosen, warnings } = selectEdition(ev, NOW, [], EMPTY_COVERAGE);
+  assert.ok(chosen.length >= 5);
+  assert.ok(!warnings.some((w) => /underfilled/.test(w)));
+});
+
+test('freshness follows the newest development; the primary carries it', () => {
+  const old = article({ reliabilityTier: 1, publisher: 'Old Wire', publishedAt: hoursAgo(100) });
+  const fresh = article({ reliabilityTier: 2, publisher: 'Fresh Daily', publishedAt: hoursAgo(2) });
+  const other = article({ reliabilityTier: 2, publisher: 'Second Paper', publishedAt: hoursAgo(5) });
+  const c = cluster('nd', {}, { articles: [old, fresh, other] });
+  assert.equal(gated(c), null);
+  assert.notEqual(c.primary, old, 'stale article is not the primary');
+});
+
+test('significant ongoing developments get a longer window', () => {
+  const at = (h: number) => [article({ publishedAt: hoursAgo(h) }), article({ publishedAt: hoursAgo(h) })];
+  assert.match(gated(cluster('o1', { isMajor: true }, { articles: at(100) }))!, /freshness/);
+  assert.equal(gated(cluster('o2', { isMajor: true, ongoing: true }, { articles: at(100) })), null);
+  assert.match(gated(cluster('o3', { isMajor: false, ongoing: true }, { articles: at(100) }))!, /freshness/, 'ongoing alone is not enough');
+  assert.match(gated(cluster('o4', { isMajor: true, ongoing: true }, { articles: at(130) }))!, /freshness/);
+});
+
 test('card sizes: one featured large story only when significant', () => {
   const sizes = assignCardSizes([cluster('x', { significance: 9 }), cluster('y'), cluster('z'), cluster('w')]);
   assert.deepEqual([...sizes.values()].map((s) => s.size), ['large', 'medium', 'medium', 'small']);

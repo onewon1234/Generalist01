@@ -1,4 +1,4 @@
-import { DIVERSITY, EDITION, EVERGREEN, FRESHNESS_BONUS, WEIGHTS, broadOf } from './config.ts';
+import { DIVERSITY, EDITION, EVERGREEN, FRESHNESS_BONUS, SHAPE, WEIGHTS, broadOf } from './config.ts';
 import { checkFreshness } from './freshness.ts';
 import { checkRepeat, choosePrimary, independentPublishers, type PublishedRef } from './cluster.ts';
 import { hoursBetween } from './text.ts';
@@ -39,9 +39,18 @@ export function gate(c: Cluster, now: Date, recent: PublishedRef[]): string | nu
   if (s.elementary && !(s.contemporaryHook && s.significance >= EVERGREEN.elementaryMinSignificance))
     return 'elementary/definitional topic without a significant current development';
   if (c.freshnessType === 'timely') {
-    const fr = checkFreshness(c.primary, now, s.isMajor);
-    if (!fr.ok) return `freshness: ${fr.reason}`;
-    if (fr.background) return 'primary describes an old event (background only)';
+    // Event freshness comes from the newest genuine development, not from whichever article is primary.
+    const opts = { isMajor: s.isMajor, ongoing: s.ongoing };
+    const checked = c.articles.map((a) => ({ a, fr: checkFreshness(a, now, opts) }));
+    const current = checked.filter((x) => x.fr.ok && !x.fr.background).map((x) => x.a);
+    if (!current.length) {
+      if (checked.some((x) => x.fr.ok)) return 'reports an old event without a new development (background only)';
+      const newest = checked.sort((x, y) => (x.fr.ageHours ?? Infinity) - (y.fr.ageHours ?? Infinity))[0];
+      return `freshness: ${newest?.fr.reason ?? 'no dated source'}`;
+    }
+    // Primary must carry the new development itself.
+    c.primary = choosePrimary({ ...c, articles: current });
+    if (!c.primary) return 'no primary article';
     if (independentPublishers(c) < 2 && (c.primary.reliabilityTier ?? 2) !== 1) return 'needs a second independent source';
     const rep = checkRepeat(c, recent);
     if (rep.repeat) return `already covered on ${rep.match?.issueDate}`;
@@ -85,10 +94,11 @@ function adjusted(c: Cluster, cov: Coverage, chosen: Cluster[], now: Date): numb
 export interface Selection { chosen: (Cluster & { bucket: Bucket | 'fill' })[]; decisions: Decision[]; warnings: string[] }
 
 /**
- * Editor-in-Chief selection. Deterministic given scores and coverage:
- * fill each bucket's minimum, then top up timely news (the publication's centre of gravity),
- * then discovery, then best remaining — honouring the per-subject cap and the AI cap.
- * Never pads: below EDITION.min the edition is flagged underfilled.
+ * Editor-in-Chief selection. Deterministic given scores and coverage.
+ * Greedy by adjusted editorial value with a soft nudge toward the usual shape
+ * (several timely, one or two discoveries, occasionally a reflection). Hard
+ * limits are only the per-subject cap and the AI cap. Never pads: below
+ * EDITION.min the edition is flagged underfilled.
  */
 export function selectEdition(candidates: Cluster[], now: Date, recent: PublishedRef[], cov: Coverage): Selection {
   const decisions: Decision[] = [];
@@ -109,38 +119,36 @@ export function selectEdition(candidates: Cluster[], now: Date, recent: Publishe
     !chosen.includes(c as any) &&
     chosen.filter((x) => broadOf(x.scores!.category) === broadOf(c.scores!.category)).length < EDITION.maxPerBroadSubject &&
     !(c.scores!.aiPrimary && chosen.filter((x) => x.scores!.aiPrimary).length >= EDITION.maxAiPrimary);
-  const pick = (bucket: Bucket | 'fill') => {
-    const pool = bucket === 'fill' ? eligible : eligible.filter((c) => buckets(c).includes(bucket));
-    const ranked = pool.filter(allowed)
-      .map((c) => ({ c, v: adjusted(c, cov, chosen, now) }))
-      .filter((x) => x.v >= EDITION.minSuitability - 15)
-      .sort((a, b) => b.v - a.v || b.c.scores!.significance - a.c.scores!.significance);
-    const top = ranked[0];
-    if (!top) return false;
-    top.c.adjusted = top.v;
-    const assigned: Bucket | 'fill' = bucket === 'fill' ? (buckets(top.c)[0] ?? 'fill') : bucket;
-    chosen.push(Object.assign(top.c, { bucket: assigned }));
-    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${assigned}: suitability ${top.c.suitability}, adjusted ${top.v}; why now: ${top.c.scores!.whyNow || 'n/a'}`, clusterKey: top.c.key });
-    return true;
+
+  /** Best bucket for a story given the current edition, with its shape bonus/penalty. */
+  const shape = (c: Cluster): { bucket: Bucket | 'fill'; bonus: number } => {
+    const options = buckets(c).map((b) => {
+      const pref = EDITION.mix.find((m) => m.bucket === b)!;
+      const have = inBucket(b);
+      const bonus = have < pref.min ? SHAPE.belowMinBonus : have >= pref.max ? -SHAPE.atMaxPenalty : 0;
+      return { bucket: b, bonus };
+    });
+    return options.sort((a, b) => b.bonus - a.bonus)[0] ?? { bucket: 'fill', bonus: 0 };
   };
 
-  // 1. minimums
-  for (const { bucket, min } of EDITION.mix) {
-    for (let i = 0; i < min; i++) if (!pick(bucket)) { warnings.push(`only ${inBucket(bucket)} "${bucket}" stories qualified (starting point is ${min})`); break; }
-  }
-  // 2. top up: each open slot goes to the best story in any bucket still under its maximum
-  //    (minimums already guarantee the timely core; quality decides the rest)
-  const openBucket = (c: Cluster) => buckets(c).find((b) => inBucket(b) < (EDITION.mix.find((m) => m.bucket === b)?.max ?? 0));
+  // Greedy by editorial value. The preferred shape nudges, never forces: a clearly
+  // better story beats a weaker one that would merely "fill" a bucket.
   while (chosen.length < EDITION.target) {
-    const best = eligible.filter((c) => allowed(c) && openBucket(c))
-      .map((c) => ({ c, v: adjusted(c, cov, chosen, now) }))
+    const ranked = eligible.filter(allowed)
+      .map((c) => ({ c, v: adjusted(c, cov, chosen, now), s: shape(c) }))
       .filter((x) => x.v >= EDITION.minSuitability - 15)
-      .sort((a, b) => b.v - a.v || b.c.scores!.significance - a.c.scores!.significance)[0];
-    if (!best || !pick(openBucket(best.c)!)) break;
+      .sort((a, b) => (b.v + b.s.bonus) - (a.v + a.s.bonus) || b.c.scores!.significance - a.c.scores!.significance);
+    const top = ranked[0];
+    if (!top) break;
+    top.c.adjusted = top.v;
+    chosen.push(Object.assign(top.c, { bucket: top.s.bucket }));
+    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${top.s.bucket}: suitability ${top.c.suitability}, adjusted ${top.v}, shape ${top.s.bonus >= 0 ? '+' : ''}${top.s.bonus}; why now: ${top.c.scores!.whyNow || 'n/a'}`, clusterKey: top.c.key });
   }
-  // 3. best remaining, if still short
-  while (chosen.length < EDITION.target && pick('fill')) { /* fill */ }
 
+  for (const { bucket, min, max } of EDITION.mix) {
+    const have = inBucket(bucket);
+    if (have < min) warnings.push(`note: ${have} "${bucket}" stories (usual range ${min}–${max}); quality decided`);
+  }
   if (chosen.length < EDITION.min) warnings.push(`underfilled: only ${chosen.length} stories passed the gates (minimum ${EDITION.min}); do not approve without review`);
   for (const c of eligible) if (!chosen.includes(c as any)) decisions.push({ stage: 'editor_in_chief', decision: 'rejected', reason: `not selected (adjusted ${adjusted(c, cov, chosen, now)})`, clusterKey: c.key });
   return { chosen, decisions, warnings };
