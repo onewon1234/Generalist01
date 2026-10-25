@@ -1,0 +1,39 @@
+name: check-sources
+
+# Read-only: fetches every registry source live and reports health.
+# Writes nothing anywhere except the workflow summary and a report artifact.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 20 * * *'   # 05:07 Asia/Seoul
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pipeline/package-lock.json
+      - run: npm ci
+      - name: Check sources
+        env:
+          # Optional: NAVER is reported as "credentials not configured" until these secrets exist.
+          NAVER_API_KEY_ID: ${{ secrets.NAVER_API_KEY_ID }}
+          NAVER_API_KEY: ${{ secrets.NAVER_API_KEY }}
+        run: npm run check-sources -- --out source-report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-report
+          path: pipeline/source-report.json
+          retention-days: 14
