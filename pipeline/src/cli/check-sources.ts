@@ -30,7 +30,7 @@ if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMM
 if (process.env.GITHUB_ACTIONS) {
   // Annotations are readable through the checks API even where log/artifact hosts are not.
   const esc = (s: string) => s.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
-  const lines = res.health.map((h) => `${h.key} ${h.ok ? 'OK' : 'FAIL'} http=${h.status} ${h.format ?? '-'} items=${h.items} dated=${h.dated} newest_h=${h.newestAgeHours ?? '-'}${h.error ? ` err=${h.error}` : ''}`);
+  const lines = res.health.map((h) => `${h.key} ${h.ok ? 'OK' : 'FAIL'} http=${h.status} ${h.format ?? '-'} items=${h.items} dated=${h.dated} newest_h=${h.newestAgeHours ?? '-'}${h.error ? ` err=${h.error}` : ''}${h.undatedHint ? ` undated:${h.undatedHint}` : ''}`);
   console.log(`::notice title=source-check ${res.health.filter((h) => h.ok).length}/${res.health.length} OK::${esc(lines.join('\n'))}`);
   const newest = [...res.articles].filter((a) => a.publishedAt).sort((a, b) => b.publishedAt!.localeCompare(a.publishedAt!)).slice(0, 12);
   console.log(`::notice title=source-check newest items::${esc(newest.map((a) => `${a.publishedAt} [${a.sourceKey}] ${a.title} <${a.url}>`).join('\n'))}`);

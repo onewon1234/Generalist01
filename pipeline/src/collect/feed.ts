@@ -10,6 +10,8 @@ export interface FeedResult {
   articles: Article[];
   /** Items skipped and why (no link, unparseable date, …). */
   skipped: { reason: string; title?: string }[];
+  /** For diagnosing undated items: the first undated item's field names and any raw date-like value. */
+  undatedHint?: { fields: string[]; raw: string | null };
 }
 
 const parser = new XMLParser({
@@ -75,7 +77,9 @@ export function parseFeed(xml: string, src: Pick<SourceConfig, 'key' | 'name' | 
     const link = out.format === 'atom' ? atomLink(it.link) : text(it.link) || (typeof it.guid === 'object' && it.guid['@isPermaLink'] !== 'false' ? text(it.guid) : '');
     if (!title) { out.skipped.push({ reason: 'no title' }); continue; }
     if (!/^https?:\/\//.test(link)) { out.skipped.push({ reason: 'no link', title }); continue; }
-    const published = parseDate(text(it.pubDate ?? it.published ?? it['dc:date'] ?? it.updated));
+    const rawDate = text(it.pubDate ?? it.published ?? it['dc:date'] ?? it.updated);
+    const published = parseDate(rawDate);
+    if (!published && !out.undatedHint) out.undatedHint = { fields: Object.keys(it), raw: rawDate || null };
     const updated = out.format === 'atom' ? parseDate(text(it.updated)) : null;
     const summary = htmlToText(text(it.description ?? it.summary ?? it['content:encoded'] ?? it.content));
     out.articles.push({

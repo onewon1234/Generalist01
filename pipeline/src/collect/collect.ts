@@ -17,6 +17,8 @@ export interface SourceHealth {
   dated: number;
   newestAgeHours: number | null;
   error?: string;
+  /** Present when some items had no parseable date: field names and raw value of the first one. */
+  undatedHint?: string;
 }
 
 export interface Collection {
@@ -60,7 +62,8 @@ export async function collect(sources: SourceConfig[], fetcher: Fetcher, now = n
     try {
       const feed = parseFeed(r.body, src, collectedAt);
       const ok = feed.format !== 'unknown' && feed.articles.length > 0;
-      return { arts: feed.articles, h: health(src, feed.articles, now, { ok, status: r.status, ms: r.ms, format: feed.format, error: ok ? undefined : feed.format === 'unknown' ? 'not an RSS/Atom feed' : 'feed has no usable items' }) };
+      const undatedHint = feed.undatedHint ? `fields=${feed.undatedHint.fields.join(',')} raw=${JSON.stringify(feed.undatedHint.raw)}` : undefined;
+      return { arts: feed.articles, h: health(src, feed.articles, now, { ok, status: r.status, ms: r.ms, format: feed.format, undatedHint, error: ok ? undefined : feed.format === 'unknown' ? 'not an RSS/Atom feed' : 'feed has no usable items' }) };
     } catch (e) {
       return { arts: [], h: health(src, [], now, { ok: false, status: r.status, ms: r.ms, error: `parse error: ${(e as Error).message}` }) };
     }

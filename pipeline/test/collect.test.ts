@@ -68,6 +68,7 @@ test('RSS 2.0: CDATA titles, entities, dates; items without links are skipped', 
   assert.equal(a.retrievedAt, NOW);
   assert.equal(b.publishedAt, '2026-10-25T23:00:00.000Z');
   assert.equal(c.publishedAt, null, 'undated items are kept but carry no date');
+  assert.deepEqual(f.undatedHint, { fields: ['title', 'link'], raw: null });
   assert.deepEqual(f.skipped, [{ reason: 'no link', title: 'No link here' }]);
 });
 
