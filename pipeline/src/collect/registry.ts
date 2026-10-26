@@ -13,6 +13,8 @@ export interface SourceConfig {
   subject: string;
   reliabilityTier: 1 | 2 | 3;
   active: boolean;
+  /** Last live verification by check-sources, e.g. "2026-10-26 run 40317228309". */
+  verified?: string;
   credentials?: string[];
   origin?: string;
   notes?: string;

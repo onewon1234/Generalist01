@@ -122,12 +122,14 @@ test('collect isolates failing sources and de-duplicates by URL', async () => {
     { key: 'b', name: 'B', kind: 'rss', url: 'https://b.example/feed', language: 'en', region: 'US', subject: 'science-technology-ai', reliabilityTier: 2, active: true },
     { key: 'c', name: 'C', kind: 'rss', url: 'https://c.example/down', language: 'en', region: 'US', subject: 'science-technology-ai', reliabilityTier: 2, active: true },
     { key: 'd', name: 'D', kind: 'rss', url: 'https://d.example/page', language: 'en', region: 'US', subject: 'science-technology-ai', reliabilityTier: 2, active: true },
+    { key: 'e', name: 'E', kind: 'rss', url: 'https://e.example/undated', language: 'ko', region: 'KR', subject: 'world-politics-society', reliabilityTier: 1, active: true },
   ];
   const ok = (body: string): FetchResult => ({ ok: true, status: 200, finalUrl: '', contentType: 'application/xml', body, ms: 5 });
   const fetcher: Fetcher = async (url) => {
     if (url.includes('a.example')) return ok(RSS2);
     if (url.includes('b.example')) return ok(RSS2.replace('https://ex.org/b', 'https://ex.org/b2'));
     if (url.includes('c.example')) return { ok: false, status: 503, finalUrl: url, contentType: '', body: '', ms: 5 };
+    if (url.includes('e.example')) return ok('<rss version="2.0"><channel><title>E</title><item><title>No date</title><link>https://e.example/1</link></item></channel></rss>');
     return ok('<html>not a feed</html>');
   };
   const res = await collect(sources, fetcher, new Date(NOW));
@@ -139,13 +141,19 @@ test('collect isolates failing sources and de-duplicates by URL', async () => {
   assert.equal(h.c.ok, false);
   assert.equal(h.c.error, 'HTTP 503');
   assert.equal(h.d.error, 'not an RSS/Atom feed');
+  assert.equal(h.e.ok, false);
+  assert.equal(h.e.error, 'feed items carry no dates');
+  assert.match(h.e.undatedHint!, /fields=title,link raw=null/);
   // a and b share two URLs (one differing only by utm_ param normalisation); b adds one new URL
-  assert.equal(res.articles.length, 4);
+  assert.equal(res.articles.length, 5);
 });
 
 test('the committed registry is valid', () => {
   const reg = loadRegistry();
   assert.ok(reg.length >= 12);
   assert.ok(reg.some((s) => s.kind === 'naver'));
-  assert.ok(reg.every((s) => s.active === false), 'nothing is active until check-sources verifies it');
+  const active = reg.filter((s) => s.active);
+  assert.ok(active.every((s) => s.kind === 'rss' && s.verified), 'only live-verified feeds are active');
+  assert.equal(reg.find((s) => s.key === 'hani')?.active, false, 'undated feed stays inactive');
+  assert.equal(reg.find((s) => s.key === 'naver-news')?.active, false, 'credential-dependent source stays inactive');
 });

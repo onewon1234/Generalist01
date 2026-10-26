@@ -61,9 +61,11 @@ export async function collect(sources: SourceConfig[], fetcher: Fetcher, now = n
     if (!r.ok) return { arts: [], h: health(src, [], now, { ok: false, status: r.status, ms: r.ms, error: r.error ?? `HTTP ${r.status}` }) };
     try {
       const feed = parseFeed(r.body, src, collectedAt);
-      const ok = feed.format !== 'unknown' && feed.articles.length > 0;
+      // A feed without any item dates cannot support freshness decisions, so it does not count as working.
+      const dated = feed.articles.some((a) => a.publishedAt);
+      const ok = feed.format !== 'unknown' && feed.articles.length > 0 && dated;
       const undatedHint = feed.undatedHint ? `fields=${feed.undatedHint.fields.join(',')} raw=${JSON.stringify(feed.undatedHint.raw)}` : undefined;
-      return { arts: feed.articles, h: health(src, feed.articles, now, { ok, status: r.status, ms: r.ms, format: feed.format, undatedHint, error: ok ? undefined : feed.format === 'unknown' ? 'not an RSS/Atom feed' : 'feed has no usable items' }) };
+      return { arts: feed.articles, h: health(src, feed.articles, now, { ok, status: r.status, ms: r.ms, format: feed.format, undatedHint, error: ok ? undefined : feed.format === 'unknown' ? 'not an RSS/Atom feed' : !feed.articles.length ? 'feed has no usable items' : 'feed items carry no dates' }) };
     } catch (e) {
       return { arts: [], h: health(src, [], now, { ok: false, status: r.status, ms: r.ms, error: `parse error: ${(e as Error).message}` }) };
     }

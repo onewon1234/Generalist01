@@ -9,9 +9,7 @@ the label says how far it has been verified.
 - [x] Supabase checked read-only: 3 migrations, 16 tables, RLS on all, 0 policies,
       reference_sources 36, reference_items 360 (34 analysed), Edition No.1 in_review — 2026-10-26
 - [x] `onewon1234/Generalist01` inspected: empty (0 branches, 0 commits) — 2026-10-26
-- [ ] Push local history to `main` — **blocked**: push returns 403, the Claude GitHub App
-      has no access to Generalist01. Reads work. Local commits are backed up as a git bundle
-      on the Mac (`~/development/generalist-daily-backup/`).
+- [x] Local history pushed unchanged to `main` (9 commits, `edcf4e0`…`124277b`) — 2026-10-26
 
 ## 1. Minimum runnable project + CI
 - [x] `pipeline/` package (Node 22, TypeScript 5.9, node:test via tsx) — local
@@ -19,11 +17,14 @@ the label says how far it has been verified.
 - [x] `select.ts` aligned with spec 04: shape as preference, freshness from newest
       development, ongoing-story window — local, 33 tests
 - [x] `supabase/rollbacks/` rewritten; migrations + rollbacks round-trip on PGlite — local
-- [x] CI workflow (typecheck, tests, guard tests, secret/dump check) — actionlint OK and
-      steps run in a clean checkout; **not yet run on GitHub** (push blocked)
+- [x] CI workflow (typecheck, tests, guard tests, secret/dump check) — **real**: green on
+      GitHub Actions (runs 40316787591, 40317070818)
 
 ## 2. Vertical slice: one real current story
-- [ ] Live discovery (RSS first; NAVER API HUB when keys are provided)
+- [x] Live RSS discovery — **real**: check-sources on Actions fetched 18/19 sources live
+      (run 40317078713); 17 dated feeds activated. `hani` has no item dates (inactive).
+- [ ] NAVER API HUB — credential-dependent (secrets not set)
+- [ ] Daily collection run that stores candidates (todo; check-sources only reports)
 - [ ] Permitted source reading with recorded access level (robots, paywall, terms)
 - [ ] Evidence extraction: claims, dates, primary vs secondary, limitations
 - [ ] Candidate evaluation and why-now / angle / payoff
