@@ -65,13 +65,46 @@ export function features(text: string): string[] {
  * of people, places and organisations. Stopwords are excluded, so sentence
  * starters like "How" or "Why" do not count.
  */
-export function properNouns(title: string): Set<string> {
+function capitalised(text: string): Set<string> {
   const out = new Set<string>();
-  for (const m of title.normalize('NFKC').matchAll(/\p{Lu}[\p{L}\p{N}]*(?:['’]s)?/gu)) {
+  for (const m of text.normalize('NFKC').matchAll(/\p{Lu}[\p{L}\p{N}]*(?:['’]s)?/gu)) {
     const w = m[0].replace(/['’]s$/, '').toLowerCase();
     if (w.length >= 3 && !STOP.has(w)) out.add(stem(w));
   }
   return out;
+}
+
+/**
+ * Title Case headline ("Two Thousand Years Ago, a New Ice Age Began"): most
+ * content words capitalised, so capitals say nothing about names.
+ */
+export function isTitleCase(title: string): boolean {
+  const words = (title.normalize('NFKC').match(/\p{L}[\p{L}'’]*/gu) ?? []).filter((w) => w.length >= 3 && !STOP.has(w.toLowerCase()));
+  if (words.length < 3) return false;
+  return words.filter((w) => /^\p{Lu}/u.test(w)).length / words.length >= 0.75;
+}
+
+/** Words capitalised inside sentences (not after a sentence boundary): names in sentence-case text. */
+function midSentenceNames(text: string): Set<string> {
+  const out = new Set<string>();
+  for (const sentence of text.normalize('NFKC').split(/(?<=[.!?:;"“”])\s+/)) {
+    const words = sentence.trim().split(/\s+/).slice(1).join(' ');
+    for (const w of capitalised(words)) out.add(w);
+  }
+  return out;
+}
+
+/**
+ * Likely names in an English headline. In a Title Case headline, capitals are
+ * style, not names: only words that are also capitalised mid-sentence in the
+ * article's own description count (none when there is no description).
+ */
+export function properNouns(title: string, context?: string | null): Set<string> {
+  const fromTitle = capitalised(title);
+  if (!isTitleCase(title)) return fromTitle;
+  if (!context) return new Set();
+  const names = midSentenceNames(context);
+  return new Set([...fromTitle].filter((w) => names.has(w)));
 }
 
 /** Consecutive content-word pairs of a Latin-script headline, e.g. "israel election". */
@@ -134,7 +167,7 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
   const idf = idfOf(featLists);
   const docs: Doc[] = featLists.map((fs, i) => {
     const latin = !/\p{Script=Hangul}/u.test(sorted[i].title);
-    return { feats: new Set(fs), mass: fs.reduce((s, f) => s + (idf.get(f) ?? 1), 0), latin, proper: latin ? properNouns(sorted[i].title) : new Set<string>(), phrases: latin ? phrases(sorted[i].title) : new Set<string>() };
+    return { feats: new Set(fs), mass: fs.reduce((s, f) => s + (idf.get(f) ?? 1), 0), latin, proper: latin ? properNouns(sorted[i].title, sorted[i].excerpt) : new Set<string>(), phrases: latin ? phrases(sorted[i].title) : new Set<string>() };
   });
   const groups: { lang: string; members: Doc[]; c: Cluster }[] = [];
   sorted.forEach((a, i) => {

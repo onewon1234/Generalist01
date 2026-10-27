@@ -6,7 +6,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { anchorWords, groupArticles, properNouns } from '../src/ingest/group.ts';
+import { anchorWords, groupArticles, isTitleCase, properNouns } from '../src/ingest/group.ts';
 import type { Article, Cluster } from '../src/types.ts';
 import { article, hoursAgo } from './helpers.ts';
 
@@ -168,4 +168,33 @@ test('known limitation: English stories with varied headlines may still split', 
   ].map((x, i) => mk(x, 'en', `l${i}`));
   const cs = groupArticles(a);
   assert.equal(cs.length, 1);
+});
+
+/**
+ * Real false merges from private preview run r6 (2026-10-27 23:31 KST), after
+ * slow publishers with Title Case headlines joined the registry: capitals in
+ * those headlines were taken as shared names.
+ */
+test('Title Case headlines do not merge on capitalised common words (run r6)', () => {
+  const pairs: [string, string, string, string][] = [
+    ['Two Thousand Years Ago, a New Ice Age Began—but Human-Caused Climate Change Recently Reversed It', 'Smithsonian Magazine', 'Ice Age Europeans Were More Connected Than We Thought', 'Nautilus'],
+    ["See the Sweeping Dune Walls and 125-Foot Bas-Relief Sculpture at the National Mall's Newest Memorial", 'Smithsonian Magazine', 'Take a Look at the Country’s Newest National Park', 'Nautilus'],
+    ['The War on Art Is Repeating Itself', 'Hyperallergic', 'Prehistoric cave paintings to Star Wars and Marvel: Inside the colossal catalogue of iconic art', "It's Nice That"],
+  ];
+  for (const [t1, p1, t2, p2] of pairs) {
+    const cs = groupArticles([article({ title: t1, publisher: p1, excerpt: null }), article({ title: t2, publisher: p2, excerpt: null })]);
+    assert.equal(cs.length, 2, `${t1} / ${t2}`);
+  }
+  assert.equal(isTitleCase('Two Thousand Years Ago, a New Ice Age Began'), true);
+  assert.equal(isTitleCase('Netherlands pulls out of Eurovision again over Israel participation'), false);
+  const names = properNouns('Ice Age Europeans Were More Connected Than We Thought', 'Genomes show that people during the last Ice Age traded widely.');
+  assert.ok(names.has('ice') && names.has('age') && !names.has('connect'), [...names].join());
+});
+
+test('known limitation: sentence-case headlines sharing country names can still merge (run r6)', { todo: 'North Korean howitzer guns spotted close to border with South Korea + How K-dramas use Africa as a backdrop to boost South Korea’s image merged on "south" + "korea"; the editor stage must split such clusters' }, () => {
+  const cs = groupArticles([
+    article({ title: 'North Korean howitzer guns spotted close to border with South Korea', publisher: 'Al Jazeera' }),
+    article({ title: 'How K-dramas use Africa as a backdrop to boost South Korea’s image', publisher: 'The Conversation' }),
+  ]);
+  assert.equal(cs.length, 2);
 });
