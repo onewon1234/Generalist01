@@ -26,6 +26,13 @@ if (process.env.GITHUB_ACTIONS) {
   const esc = (s: string) => s.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
   console.log(`::notice title=ingest summary::${esc([head, `noise: ${JSON.stringify(res.noiseByReason)}`, ...failed].join('\n'))}`);
   console.log(`::notice title=ingest top candidates::${esc(top.join('\n'))}`);
+  // Cluster audit: members of the largest clusters, for checking splits and false merges.
+  const byKey = new Map(res.clusters.map((c) => [c.key, c]));
+  const audit = res.candidates.filter((x) => x.articles >= 2).slice(0, 30).map((x) => {
+    const c = byKey.get(x.key)!;
+    return [`## ${x.key} ${x.publishers}p/${x.articles}a ${x.language}`, ...c.articles.slice(0, 10).map((a) => `- [${a.sourceKey}] ${a.title}`)].join('\n');
+  });
+  console.log(`::notice title=ingest cluster audit::${esc(audit.join('\n'))}`);
 }
 if (out) writeFileSync(out, JSON.stringify(res, null, 2));
 process.exit(okSources > 0 ? 0 : 1);

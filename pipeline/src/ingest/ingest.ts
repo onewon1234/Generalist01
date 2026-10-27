@@ -8,7 +8,7 @@ import type { Fetcher } from '../collect/http.ts';
 import type { SourceConfig } from '../collect/registry.ts';
 import { FRESHNESS } from '../config.ts';
 import { checkFreshness } from '../freshness.ts';
-import type { Article } from '../types.ts';
+import type { Article, Cluster } from '../types.ts';
 import { groupArticles, summarize, type CandidateSummary } from './group.ts';
 import { isLiveBlog, noiseReason } from './noise.ts';
 
@@ -18,6 +18,8 @@ export interface IngestResult {
   counts: { collected: number; noise: number; undated: number; stale: number; future: number; fresh: number; clusters: number; multiSource: number; liveBlogs: number };
   noiseByReason: Record<string, number>;
   candidates: CandidateSummary[];
+  /** Full clusters (articles in memory only; never persisted by ingest). */
+  clusters: Cluster[];
 }
 
 /** Ranking for the editor's attention, not an editorial verdict: corroboration first, then size, then recency. */
@@ -51,7 +53,7 @@ export async function ingest(sources: SourceConfig[], fetcher: Fetcher, now = ne
   counts.clusters = clusters.length;
   const candidates = rankCandidates(clusters.map(summarize));
   counts.multiSource = candidates.filter((c) => c.publishers >= 2).length;
-  return { collectedAt: col.collectedAt, health: col.health, counts, noiseByReason, candidates };
+  return { collectedAt: col.collectedAt, health: col.health, counts, noiseByReason, candidates, clusters };
 }
 
 export const INGEST_WINDOW_HOURS = FRESHNESS.ongoingMaxHours;
