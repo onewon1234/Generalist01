@@ -65,11 +65,16 @@ export interface PreviewOptions {
   minGapMs?: number;
 }
 
-/** Candidate pool for research: strongest clusters first, capped per language and per subject. */
+/**
+ * Candidate pool for research: strongest clusters first (ranking already takes
+ * turns between sources), capped per broad subject so research covers several
+ * domains. There is no per-language share: a language cap made Korean wire
+ * items fill every place English stories could not take (audit 2026-10-27 r5).
+ */
 export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (a: Article) => string): Cluster[] {
   const byKey = new Map(res.clusters.map((c) => [c.key, c]));
-  const perLang = new Map<string, number>(), perSubject = new Map<string, number>();
-  const langCap = Math.ceil(poolSize * 0.6), subjectCap = Math.ceil(poolSize * 0.35);
+  const perSubject = new Map<string, number>();
+  const subjectCap = Math.ceil(poolSize * 0.35);
   const out: Cluster[] = [];
   for (const cand of res.candidates) {
     if (out.length >= poolSize) break;
@@ -82,8 +87,7 @@ export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (
     const cls = classify(c.articles.map((a) => a.title), sourceSubject(c.articles[0]));
     if (cls.sports) continue;
     const broad = broadOf(cls.subject);
-    if ((perLang.get(cand.language) ?? 0) >= langCap || (perSubject.get(broad) ?? 0) >= subjectCap) continue;
-    perLang.set(cand.language, (perLang.get(cand.language) ?? 0) + 1);
+    if ((perSubject.get(broad) ?? 0) >= subjectCap) continue;
     perSubject.set(broad, (perSubject.get(broad) ?? 0) + 1);
     out.push(c);
   }
