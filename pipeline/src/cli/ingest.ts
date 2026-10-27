@@ -32,7 +32,13 @@ if (process.env.GITHUB_ACTIONS) {
     const c = byKey.get(x.key)!;
     return [`## ${x.key} ${x.publishers}p/${x.articles}a ${x.language}`, ...c.articles.slice(0, 10).map((a) => `- [${a.sourceKey}] ${a.title}`)].join('\n');
   });
-  console.log(`::notice title=ingest cluster audit::${esc(audit.join('\n'))}`);
+  // Annotation messages are cut at ~4 KB, so send the audit in chunks (max 8 notices).
+  const chunks: string[] = [];
+  for (const block of audit) {
+    if (!chunks.length || chunks.at(-1)!.length + block.length > 3800) chunks.push(block);
+    else chunks[chunks.length - 1] += '\n' + block;
+  }
+  chunks.slice(0, 8).forEach((ch, i) => console.log(`::notice title=ingest cluster audit ${i + 1}::${esc(ch)}`));
 }
 if (out) writeFileSync(out, JSON.stringify(res, null, 2));
 process.exit(okSources > 0 ? 0 : 1);
