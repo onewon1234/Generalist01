@@ -6,7 +6,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { anchorWords, groupArticles } from '../src/ingest/group.ts';
+import { anchorWords, groupArticles, properNouns } from '../src/ingest/group.ts';
 import type { Article, Cluster } from '../src/types.ts';
 import { article, hoursAgo } from './helpers.ts';
 
@@ -85,6 +85,12 @@ const KO_FALSE_MERGES = [
   '온통대전 캐시백 차등 지원 요구…"추가 혜택은 구비로 해야"',
 ];
 const EN_FALSE_MERGES = [
+  // preview run 2026-10-27 21:27 KST: linked by "India" + "court", which put drug-price evidence under a privacy-law story
+  'Media groups challenge India’s privacy law at top court',
+  'India slashes cost of cancer drugs after court rules mark-ups are ‘extortion’',
+  // same run: linked by "risk" + "call", which put a BYD/military-base article under a Sudan famine story
+  'US, EU and 30 countries warn of famine risk in Sudan, call for aid',
+  'US bans vehicles from China’s BYD at Japan military base, calling them ‘unacceptable’ risk',
   // c0ed045b148d: linked only by "see" / "everything"
   '‘A cultural moment’: smash hit doc You Can See Everything continues to dazzle America',
   'In the biotech world, you can’t see everything',
@@ -122,6 +128,11 @@ test('anchor words: 4+ syllable names, particles stripped, generic names exclude
   assert.deepEqual([...anchorWords('[ 속보 ] 구룡마을 화재로 77가구 107명 피해')], ['구룡마을']);
   assert.deepEqual([...anchorWords('구룡마을의 불길')], ['구룡마을']);
   assert.deepEqual([...anchorWords('국민의힘, 국정감사 보이콧')], []);
+});
+
+test('proper nouns: names count, sentence starters and stopwords do not', () => {
+  assert.deepEqual([...properNouns('Why Jordan has struck Syria: What we know')], ['jordan', 'syria']);
+  assert.deepEqual([...properNouns("What does Israel's election mean for Gaza?")], ['israel', 'gaza']);
 });
 
 test('regression: the Guryong village fire is one cluster (was split into three)', () => {

@@ -53,7 +53,8 @@ export function extractEvidence(paragraphs: string[]): Evidence[] {
     return true;
   };
   // Lede: the first substantive sentence(s).
-  const firstIdx = paragraphs.findIndex((p) => p.length >= 30);
+  // Skip bylines and labels ("Jane Doe | Daily Correspondent"): a lede ends a sentence or is long.
+  const firstIdx = paragraphs.findIndex((p) => p.length >= 80 || (p.length >= 30 && /[.!?。]|다\.?$/.test(p)));
   if (firstIdx >= 0) {
     const s = splitSentences(paragraphs[firstIdx]);
     add('lede', s.slice(0, s[0] && s[0].length < 90 ? 2 : 1).join(' '), firstIdx);

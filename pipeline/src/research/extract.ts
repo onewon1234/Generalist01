@@ -24,9 +24,12 @@ export interface PageExtract {
 
 const CONTAINERS = [
   '[itemprop=articleBody]', '#dic_area', '#articleBodyContents', '#article-view-content-div', '#articleBody',
-  '.article_body', '.article-body', '.news_body', '#newsct_article', '.story-body', '.article__body',
+  '.article_body', '.article-body', '.news_body', '#newsct_article', '.story-body', '.article__body', '.story-news',
   '[data-component=text-block]', 'article', 'main',
 ];
+/** Removed before measuring: navigation, captions, and summary boxes (e.g. Yonhap's AI "세 줄 요약"). */
+const JUNK = 'script, style, figure, figcaption, aside, nav, footer, form, button, header, .ad, .advert, [aria-hidden=true], ' +
+  '.story-summary, .tlp-content, .writer-zone01, .related, .newsletter, .share, .tags';
 
 const BOILERPLATE = [
   /무단\s*전재|재배포\s*금지|저작권자|ⓒ|©|copyright/i,
@@ -68,20 +71,32 @@ function clean(s: string): string {
   return htmlToText(s).replace(/\s+/g, ' ').trim().replace(DATELINE, '').trim();
 }
 
-function paragraphsOf(root: HTMLElement): string[] {
-  for (const sel of CONTAINERS) {
-    const el = root.querySelector(sel);
-    if (!el) continue;
-    for (const junk of el.querySelectorAll('script, style, figure, figcaption, aside, nav, footer, form, button, .ad, .advert, [aria-hidden=true]')) junk.remove();
-    let paras = el.querySelectorAll('p').map((p) => clean(p.innerHTML));
-    // Many Korean sites separate paragraphs with <br> inside one container.
-    if (paras.filter((p) => p.length >= 40).length < 2) {
-      paras = el.innerHTML.split(/<br\s*\/?>\s*(?:<br\s*\/?>)?|<\/p>|<\/div>/i).map(clean);
-    }
-    const kept = paras.filter((p) => p.length >= 30 && !BOILERPLATE.some((re) => re.test(p)));
-    if (kept.join('').length >= 120) return dedupe(kept);
+function paragraphsIn(el: HTMLElement): string[] {
+  for (const junk of el.querySelectorAll(JUNK)) junk.remove();
+  let paras = el.querySelectorAll('p').map((p) => clean(p.innerHTML));
+  // Many Korean sites separate paragraphs with <br> inside one container.
+  if (paras.filter((p) => p.length >= 40).length < 2) {
+    paras = el.innerHTML.split(/<br\s*\/?>\s*(?:<br\s*\/?>)?|<\/p>|<\/div>/i).map(clean);
   }
-  return [];
+  return dedupe(paras.filter((p) => p.length >= 30 && !BOILERPLATE.some((re) => re.test(p))));
+}
+
+/**
+ * Article paragraphs: every candidate container is measured and the one with
+ * the most article-like text wins (the first match is often a summary box or
+ * teaser, e.g. a second <article> element).
+ */
+function paragraphsOf(root: HTMLElement): string[] {
+  let best: string[] = [];
+  let bestLen = 0;
+  for (const sel of CONTAINERS) {
+    for (const el of root.querySelectorAll(sel)) {
+      const ps = paragraphsIn(parse(el.outerHTML) as unknown as HTMLElement);
+      const len = ps.join('').length;
+      if (len > bestLen) { best = ps; bestLen = len; }
+    }
+  }
+  return bestLen >= 120 ? best : [];
 }
 
 function dedupe(ps: string[]): string[] {

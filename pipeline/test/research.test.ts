@@ -73,6 +73,25 @@ test('extract: Korean <br> layout, metadata, boilerplate removed', () => {
   assert.deepEqual(p.restrictions, []);
 });
 
+test('extract: the richest container wins over a summary box in an earlier <article>', () => {
+  // Layout modelled on a Korean wire site: an AI summary box in its own <article> before the body.
+  const html = `<html><body><div class="tlp-content"><article class="story-summary"><p>요약 첫 줄은 짧은 요약문이다</p><p>요약 둘째 줄도 짧은 요약문이다</p></article></div>
+  <article id="articleWrap"><div class="story-news article"><div class="writer-zone01"><strong>홍길동 기자</strong></div>
+  <p>본문 첫 문단은 사건의 핵심을 길게 설명하는 문장으로 시작한다. 정부는 27일 새 대책을 발표했다고 밝혔다.</p>
+  <p>둘째 문단은 배경과 수치를 담는다. 관련 예산은 1조 2천억 원 규모로 지난해보다 15% 늘었다고 당국이 설명했다.</p>
+  <p>셋째 문단은 반응을 전한다. 전문가들은 "효과를 판단하기에는 이르다"고 말했다.</p></div></article></body></html>`;
+  const p = extractPage(html);
+  assert.equal(p.paragraphs.length, 3);
+  assert.match(p.paragraphs[0], /^본문 첫 문단/);
+  assert.ok(!p.paragraphs.some((x) => /요약/.test(x)));
+});
+
+test('evidence: a byline line is not taken as the lede', () => {
+  const ev = extractEvidence(['Jane Doe | Daily Correspondent', 'The first known human case of the virus was reported by French authorities this month, officials said.']);
+  assert.equal(ev[0].kind, 'lede');
+  assert.match(ev[0].text, /^The first known human case/);
+});
+
 test('extract: paywall and publisher opt-outs are detected', () => {
   const pw = extractPage(`<html><head><script type="application/ld+json">{"@type":"NewsArticle","isAccessibleForFree":"False","datePublished":"2026-10-27T01:00:00Z"}</script></head><body><article><p>${'Teaser text. '.repeat(10)}</p></article></body></html>`);
   assert.equal(pw.paywalled, true);

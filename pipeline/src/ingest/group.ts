@@ -60,6 +60,28 @@ export function features(text: string): string[] {
   return out;
 }
 
+/**
+ * Capitalised words of a Latin-script headline (stemmed, lower-cased): names
+ * of people, places and organisations. Stopwords are excluded, so sentence
+ * starters like "How" or "Why" do not count.
+ */
+export function properNouns(title: string): Set<string> {
+  const out = new Set<string>();
+  for (const m of title.normalize('NFKC').matchAll(/\p{Lu}[\p{L}\p{N}]*(?:['’]s)?/gu)) {
+    const w = m[0].replace(/['’]s$/, '').toLowerCase();
+    if (w.length >= 3 && !STOP.has(w)) out.add(stem(w));
+  }
+  return out;
+}
+
+/** Consecutive content-word pairs of a Latin-script headline, e.g. "israel election". */
+export function phrases(title: string): Set<string> {
+  const toks = features(title).filter((f) => !f.startsWith('#'));
+  const out = new Set<string>();
+  for (let i = 0; i < toks.length - 1; i++) out.add(`${toks[i]} ${toks[i + 1]}`);
+  return out;
+}
+
 function text(a: Article): string {
   return a.title;
 }
@@ -74,7 +96,7 @@ export function idfOf(docs: string[][]): Map<string, number> {
   return idf;
 }
 
-interface Doc { feats: Set<string>; mass: number }
+interface Doc { feats: Set<string>; mass: number; latin: boolean; proper: Set<string>; phrases: Set<string> }
 
 /**
  * IDF-weighted overlap: total weight of shared features divided by the weight
@@ -95,6 +117,9 @@ export function overlapDetail(a: Doc, b: Doc, idf: Map<string, number>): { score
 
 /** A single shared feature ("대전", one English word) never links two stories. */
 export const MIN_SHARED_FEATURES = 2;
+/** English headlines sharing only one proper noun (and no two-word phrase) must be this similar to join.
+ *  Measured 2026-10-27: same-event pairs 0.29–0.34, India privacy/drug-price false merge 0.22. */
+export const LATIN_ONE_NAME_THRESHOLD = 0.3;
 
 export function clusterKey(seedUrl: string): string {
   return createHash('sha256').update(seedUrl).digest('hex').slice(0, 12);
@@ -107,7 +132,10 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
   const sorted = [...articles].sort((x, y) => (sourceTime(y) ?? '').localeCompare(sourceTime(x) ?? ''));
   const featLists = sorted.map((a) => [...new Set(features(text(a)))]);
   const idf = idfOf(featLists);
-  const docs: Doc[] = featLists.map((fs) => ({ feats: new Set(fs), mass: fs.reduce((s, f) => s + (idf.get(f) ?? 1), 0) }));
+  const docs: Doc[] = featLists.map((fs, i) => {
+    const latin = !/\p{Script=Hangul}/u.test(sorted[i].title);
+    return { feats: new Set(fs), mass: fs.reduce((s, f) => s + (idf.get(f) ?? 1), 0), latin, proper: latin ? properNouns(sorted[i].title) : new Set<string>(), phrases: latin ? phrases(sorted[i].title) : new Set<string>() };
+  });
   const groups: { lang: string; members: Doc[]; c: Cluster }[] = [];
   sorted.forEach((a, i) => {
     const d = docs[i];
@@ -120,6 +148,12 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
       const det = sample.map((m) => overlapDetail(d, m, idf));
       if (Math.max(...det.map((x) => x.shared)) < MIN_SHARED_FEATURES) continue;
       const s = det.reduce((t, x) => t + x.score, 0) / det.length;
+      if (d.latin) {
+        // English: common words ("court", "risk", "call") link unrelated stories; require shared names.
+        const props = Math.max(...sample.map((m) => [...d.proper].filter((w) => m.proper.has(w)).length));
+        const phrase = sample.some((m) => [...d.phrases].some((p) => m.phrases.has(p)));
+        if (props < 1 || (props < 2 && !phrase && s < LATIN_ONE_NAME_THRESHOLD)) continue;
+      }
       if (s > bestScore) { bestScore = s; best = g; }
     }
     if (best && bestScore >= threshold) {
