@@ -16,14 +16,22 @@ export function safeUrl(u: string): string | null {
   } catch { return null; }
 }
 
-/** Escape, then render **bold** and citation markers [n] as footnote links. */
+/**
+ * Escape, then render **bold** and citation markers [n] as footnote links.
+ * Within a paragraph, a citation repeated by the next marker is shown only
+ * once (at the later position), so notes do not interrupt every sentence.
+ */
 export function inline(text: string, sources: Source[] = []): string {
   const known = new Set(sources.map((s) => s.n));
   let h = esc(text);
   h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  h = h.replace(/((?:\[\d+\])+)/g, (group) => {
+  const groups = [...h.matchAll(/(?:\[\d+\])+/g)].map((m) => m[0]);
+  let i = 0;
+  h = h.replace(/(?:\[\d+\])+/g, (group) => {
     const ns = [...group.matchAll(/\[(\d+)\]/g)].map((m) => Number(m[1]));
     if (!ns.every((n) => known.has(n))) throw new Error(`citation ${group} has no matching source`);
+    const next = groups[++i];
+    if (next === group) return '';
     return `<sup class="cite">${ns.map((n) => `<a href="#note-${n}" aria-label="출처 ${n}">${n}</a>`).join('')}</sup>`;
   });
   return h;

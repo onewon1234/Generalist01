@@ -89,6 +89,7 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-
   background: var(--tint); border-radius: 6px; padding: 1.25rem 1.4rem; margin: 2rem 0;
   font-family: var(--sans); font-size: .9375rem; line-height: 1.7;
 }
+.article-body .explainer h2, .article-body .timeline h2 { margin: 0 0 .75rem; font-size: 1rem; }
 .explainer dl { margin: 0; }
 .explainer dt { font-weight: 600; margin-top: .75rem; }
 .explainer dt:first-child { margin-top: 0; }

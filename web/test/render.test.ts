@@ -29,6 +29,9 @@ test('inline: escapes HTML, renders bold and citation groups as footnote links',
   assert.match(h, /<strong>굵게<\/strong>/);
   assert.match(h, /<sup class="cite"><a href="#note-1" aria-label="출처 1">1<\/a><a href="#note-2" aria-label="출처 2">2<\/a><\/sup>/);
   assert.throws(() => inline('없는 출처.[3]', [{ n: 1 } as any]), /no matching source/);
+  const once = inline('첫 문장.[1] 둘째 문장.[1] 셋째.[2]', [{ n: 1 } as any, { n: 2 } as any]);
+  assert.equal((once.match(/href="#note-1"/g) ?? []).length, 1, 'a repeated citation is shown once per run');
+  assert.ok(once.indexOf('note-1') > once.indexOf('둘째'), 'kept at the later position');
 });
 
 test('safeUrl: only http(s)', () => {
