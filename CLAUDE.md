@@ -1,22 +1,27 @@
 # Generalist Daily — Project Instructions
 
 Single source of truth for how this project is built and run. It consolidates
-`docs/specs/01`–`04`; where they conflict, spec 04 (2026-10-26) wins. Edit this
+`docs/specs/01`–`05`; where they conflict, the newest spec wins (05,
+2026-10-27: editorial identity and reading experience). Edit this
 file in place when requirements change; do not append contradictory rules.
 
 ## 1. Product
 
-A Korean-language, website-first daily editorial publication for intellectually
-curious adults, mainly in their 20s and 30s. It is a **global generalist**
-publication, not a Korean news digest: published in Korean, it curates
-interesting and valuable developments from the whole world across current
-affairs, economics, science, technology, history, culture, society and human
-behaviour. Everyone gets the same broad edition (no personalization).
+A curiosity-driven, reference-informed Korean editorial publication,
+website-first, for intellectually curious adults mainly in their 20s and 30s.
+It helps readers understand the world, discover unfamiliar knowledge and meet
+perspectives worth thinking about. It is a **global generalist** publication,
+not a Korean news digest, and closer to a thoughtfully curated intellectual
+magazine with daily freshness than to a news briefing. News is one important
+source of stories, not the defining format; freshness is valued but never the
+overriding criterion. Everyone gets the same broad edition (no personalization).
+
+A successful edition leaves the reader feeling: I understand something about
+the world I did not before; I learned something genuinely interesting; I met a
+new perspective or question; and it was enjoyable, not a pile of news reports.
 
 Not a generic AI news summarizer, textbook explainer, RSS headline aggregator or
-manually curated sample collection. Its value is discovering consequential and
-surprising developments, researching them properly, explaining why they matter,
-and presenting them as an engaging daily edition.
+manually curated sample collection.
 
 **Primary objective:** autonomously produce a high-quality, evidence-grounded
 Korean daily edition without the user discovering, selecting, researching or
@@ -31,21 +36,42 @@ deliverable.
 
 ## 2. Editorial selection
 
-Tendencies, not quotas: several meaningful recent developments, one or two
-exceptional discoveries or deep explanations, occasionally a reflective
-cultural, historical or philosophical piece.
+Select 5–7 main stories by their combined intellectual, explanatory, cultural
+and narrative value. There is no news/feature mix, no minimum number of news
+reports and no per-subject or per-country quota. Excellent non-news stories
+compete equally, including for the featured homepage place. Short news updates
+belong in "짧게 보는 세상", so the main edition need not carry every update.
 
-Prioritize stories that are current, consequential, surprising, underexplained
-or perspective-changing. Rank by importance, depth of available information,
-how much the story widens the reader's understanding, and reliability of the
-evidence; article counts, buzz and recency alone never decide. Keep the full
-breadth (news plus science, history, culture and social discoveries) without
-per-subject quotas.
+Discovery domains (a healthy mix over time, not daily categories): context-rich
+current global events; science and research; history and overlooked historical
+connections; culture, art, books, film, design and media; psychology, behaviour
+and cognitive science; philosophy and contemporary questions; economics,
+technology and social change; language, anthropology and unfamiliar societies;
+unexpected connections across disciplines.
 
-- Event freshness is not publication date. 24–72 hours is a default signal, not
-  an absolute cut-off; a significant ongoing development can qualify. An older
-  event is timely only with a genuinely meaningful new development, and is never
-  presented as new.
+Evaluate every candidate for reader payoff (`Scores` in `pipeline/src/types.ts`):
+
+1. **Curiosity** – something surprising, unfamiliar or compelling.
+2. **Understanding** – explains a meaningful mechanism, context or connection.
+3. **Narrative potential** – can be told as a coherent story, not a fact list.
+4. **Intellectual payoff** – what readers will know, reconsider or remember.
+5. **Relevance** – why it is worth reading today, even if not breaking news.
+6. **Evidence quality** – the central claims can be supported (below 5 rejected).
+7. **Portfolio diversity** – adds something distinct to the edition (applied by
+   selection as soft penalties, never as a quota).
+
+Avoid topics that are merely current, easy to summarize or widely repeated. For
+current affairs, prefer stories that reveal deeper historical, cultural,
+institutional or social forces. Evergreen topics need an unusually strong idea,
+discovery, narrative or perspective. Article counts, buzz and recency alone
+never decide, and a high-frequency news wire must not dominate the ranking
+(ranking takes turns between sources; see `rankCandidates`).
+
+- Event freshness is not publication date. For current stories 24–72 hours is
+  a default signal, not an absolute cut-off; a significant ongoing development
+  can qualify. An older event is timely only with a genuinely meaningful new
+  development, and is never presented as new. Slow intellectual publishers
+  (registry `evergreen: true`) are kept 30 days and judged as evergreen pieces.
 - Avoid: textbook definitions as standalone stories; repetitive AI/tech topics;
   US- or institution-centric selections; duplicated event clusters; manufactured
   curiosity; topics chosen to fill categories.
@@ -60,17 +86,15 @@ per-subject quotas.
   figures, decisions, outcomes or a meaningful change of perspective, and the
   story must state what is new versus the earlier coverage. A new headline,
   outlet or the passage of time alone is not a development.
-- **Global first.** Select mainly global issues and informative pieces across
-  fields. Korean domestic stories are usually 0–1 of six main stories as an
-  editorial tendency; more on days that warrant it. No country or subject quota
-  is enforced in code.
-- Distinguish **foreign events reported by Korean media** from **Korean domestic
-  events**. For a foreign event, prefer the original or international sources
-  (agencies, institutions, papers, local outlets) over a Korean outlet's relay.
-- NAVER search complements Korean coverage; it is not the centre of the edition.
-- Actively evaluate non-breaking knowledge pieces (history, culture, scientific
-  discovery, psychology, human behaviour); slower publishers must not lose to
-  wire services merely because they publish less often.
+- **Global first.** Korean domestic stories are usually 0–1 of the main
+  stories as an editorial tendency; more on days that warrant it. Nothing is
+  enforced in code.
+- Distinguish the **event's geography** from the **reporting source**. A foreign
+  event reported by a Korean outlet is a foreign story: never suppress it for
+  that reason, and look for the original or international sources before
+  writing. NAVER complements Korean coverage; it is not the centre of the edition.
+- One outlet is one publisher across feed sections, aggregators and APIs
+  (`outletName` in `pipeline/src/cluster.ts`).
 - Every selected story keeps an explicit **why-now rationale**, **editorial
   angle**, **reader payoff** and **evidence record**.
 
@@ -100,38 +124,69 @@ official documents.
 - Storage: metadata, URLs, short excerpts (≤1000 chars) and our own analysis.
   Full text may be processed transiently but is not stored unless
   `sources.allows_fulltext`. No article images.
-- References (the 36-source registry and its records) teach editorial patterns
-  and surface leads. They are not evidence and their prose is never copied.
-  Collect new reference material daily and track source health, availability,
-  language, region, subject and date.
+- **Reference intelligence.** The source registry (`sources/registry.json`)
+  reaches beyond news media and government announcements: explanatory,
+  science, culture, history, design and technology publications, plus
+  discovery-only video channels (`referenceOnly`: they surface topics and
+  angles, never evidence). References teach angles, topic patterns and
+  intellectual connections from the actual variety of good work, not prose to
+  copy, and not generic AI topic lists.
+- A candidate reference is activated only after `npm run verify-sources`
+  confirms a working dated feed and a readable sample article (robots.txt,
+  noai/TDM opt-outs and paywalls respected); listing a publication is not a
+  claim that it is accessible or licensed. Never bypass paywalls or access
+  restrictions. Track source health, availability, language, region, subject
+  and date.
 
 ## 4. Writing
 
 Natural, engaging, precise Korean for an intelligent general reader, not a
-beginner.
+beginner. A main article reads like an accessible explanatory feature, not a
+conventional news report or a stitched summary.
 
-- Storytelling, not a news summary or wire-style report. A reader with no
-  background should understand the whole situation from one piece. Each main
-  story answers, as a narrative rather than fixed subheadings or a template:
-  what happened; what the situation was before and how it got here; why it
-  happened (causes, interests); why it matters (changes, knock-on effects);
-  which perspectives and interpretations exist and what to watch next.
-- Open with a concrete event, tension, discovery or question. Plain, natural
-  sentences; explain technical terms briefly in passing. Longer than a summary
-  is fine when it adds understanding; cut ornament and repetition.
-- Keep these apart in the text: confirmed fact, causal analysis (whose),
-  expert opinion, stakeholder claim and uncertain forecast. Never invent
-  causation or add the model's own opinion; every interpretation is attributed
-  to a named source.
-- Background facts need sources too (an institution page or a read article),
-  not the model's memory.
-- The reader should come away understanding the key facts, the main
-  perspectives and how events connect.
-- Restrained headlines. No clickbait, fabricated tension, generic AI prose,
-  padding or unsupported certainty.
+- A reader with no background should understand the whole situation from one
+  piece: the key facts, the main perspectives and how events connect.
+- For current affairs, investigate and convey: historical and cultural
+  background; the people, institutions and interests involved; the events that
+  led here; the causal mechanisms behind key developments; what changed and
+  why; competing interpretations with attribution; consequences and broader
+  implications.
+- Build a coherent narrative in which each section answers a question raised by
+  the previous one. Prefer concrete scenes, examples and chronological or
+  causal progression over lists of disconnected facts.
+- For science, culture, history and philosophy, choose the structure that fits
+  the subject: discovery, mystery, conflict, experiment, transformation,
+  comparison or intellectual journey. Never force one template on every piece.
+- Open with a concrete event, scene, tension, discovery or question. Plain,
+  natural sentences; explain technical terms briefly in passing.
+- Keep apart: established fact, causal analysis (whose), expert opinion,
+  stakeholder claim, unresolved question and uncertain forecast. Every
+  interpretation is attributed to a named source; never add the model's own
+  opinion.
+- Never fabricate scenes, dialogue, causal links or emotional details for the
+  sake of storytelling. Background facts need sources too (an institution page
+  or a read article), not the model's memory.
+- Longer is not deeper: cut ornament, padding and repetition.
+- Restrained, accurate headlines. No clickbait, fabricated tension, generic AI
+  prose or unsupported certainty.
 - Original wording and judgment; never imitate or closely paraphrase a reference
   publication.
 - Every published link (sources and concept links) must be verified.
+
+### Homepage and article pages
+
+- The homepage preview poses the compelling question or discovery of the
+  story, not a headline summary; the article page delivers the depth the
+  preview promises.
+- Article layout: comfortable reading width, responsive mobile-first
+  typography, accessible contrast; clear headline and concise standfirst;
+  short coherent paragraphs with natural whitespace; meaningful section
+  headings; selective bold; a compact timeline or explainer only when it
+  materially aids comprehension; source references gathered as unobtrusive
+  numbered notes rather than interrupting every sentence.
+- Visuals only when they genuinely improve understanding and usage rights
+  permit (no article images from sources). No dense blocks, nested cards,
+  decorative clutter or formulaic AI layouts.
 
 ### 짧게 보는 세상 (world in brief)
 
@@ -166,7 +221,16 @@ unless it actually runs on a schedule without the user.
 | Editor | evaluates candidates, sets angles, selects the edition |
 | Writer | writes original Korean articles grounded in the evidence |
 | Fact checker | checks each claim against the evidence only, without the writer's reasoning or confidence |
-| Quality reviewer | clarity, depth, repetition, coherence, originality, diversity, reader value |
+| Quality reviewer | editorial quality beyond facts (checklist below) |
+
+The quality reviewer checks that each piece is a coherent story rather than a
+stitched summary; the reader gets context before complex details; causal claims
+are adequately supported; each section adds new understanding; the headline
+reflects the article; there is a memorable insight or intellectual payoff; the
+prose is accessible without being simplistic; and the edition has genuine
+variety beyond daily news. Pieces that fail are revised. Longer writing is not
+deeper writing. The checklist and workflow for subscription-based sessions are
+in `.claude/skills/generalist-edition/SKILL.md`.
 
 Unsupported claims are corrected, qualified or rejected. Uncertainty and audit
 records are preserved. **AI verification is not human fact-checking**: an
