@@ -73,7 +73,9 @@ export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (
     const c = byKey.get(cand.key);
     if (!c) continue;
     const tier1 = c.articles.some((a) => a.reliabilityTier === 1);
-    if (cand.publishers < 2 && !tier1) continue;
+    // Single-source stories are researched when the source is tier 1 or a slow,
+    // non-news publisher (standalone features and essays are worth investigating).
+    if (cand.publishers < 2 && !tier1 && c.freshnessType !== 'evergreen') continue;
     const cls = classify(c.articles.map((a) => a.title), sourceSubject(c.articles[0]));
     if (cls.sports) continue;
     const broad = broadOf(cls.subject);

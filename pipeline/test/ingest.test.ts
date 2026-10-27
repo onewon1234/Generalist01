@@ -137,3 +137,28 @@ test('ingest end to end with a fake network: only active sources, noise and stal
   assert.match(r.candidates[0].title, /구룡마을/);
   assert.deepEqual(r.noiseByReason, { notice: 1 });
 });
+
+test('candidates: within a corroboration band sources take turns, so a prolific feed cannot fill it by recency', () => {
+  const c = (key: string, src: string, h: number, publishers = 1) => ({ key, title: key, language: 'en', articles: 1, publishers, sources: [src], newest: hoursAgo(h), urls: [] });
+  const r = rankCandidates([c('y1', 'yonhap', 1), c('y2', 'yonhap', 2), c('y3', 'yonhap', 3), c('g1', 'guardian-culture', 30), c('a1', 'aeon', 200), c('m', 'bbc-world', 40, 2)]);
+  assert.deepEqual(r.map((x) => x.key), ['m', 'y1', 'g1', 'a1', 'y2', 'y3']);
+});
+
+test('ingest: evergreen sources are kept for 30 days and judged as evergreen; news sources keep the news window', async () => {
+  const rss = (items: string) => `<rss version="2.0"><channel><title>T</title>${items}</channel></rss>`;
+  const item = (title: string, link: string, h: number) => `<item><title>${title}</title><link>${link}</link><pubDate>${new Date(Date.parse(hoursAgo(h))).toUTCString()}</pubDate></item>`;
+  const base = { kind: 'rss' as const, language: 'en', region: 'GLOBAL', subject: 'history-civilization-geography', reliabilityTier: 2 as const, active: true, verified: 'test' };
+  const sources: SourceConfig[] = [
+    { ...base, key: 'essays', name: 'Essays', url: 'https://essays.example/rss', evergreen: true },
+    { ...base, key: 'wire', name: 'Wire', url: 'https://wire.example/rss' },
+  ];
+  const fetcher: Fetcher = async (url) => ({
+    ok: true, status: 200, finalUrl: url, contentType: 'application/xml', ms: 1,
+    body: url.includes('essays')
+      ? rss(item('Why medieval maps put east at the top', 'https://essays.example/maps', 24 * 10) + item('A forgotten alphabet of the steppe', 'https://essays.example/old', 24 * 45))
+      : rss(item('Ten-day-old wire report on tariffs', 'https://wire.example/old', 24 * 10)),
+  });
+  const r = await ingest(sources, fetcher, NOW, {});
+  assert.deepEqual(r.clusters.map((c) => [c.title, c.freshnessType]), [['Why medieval maps put east at the top', 'evergreen']]);
+  assert.equal(r.counts.stale, 2);
+});

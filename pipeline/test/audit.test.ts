@@ -1,12 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { koreanScope, outletOf } from '../src/preview/audit.ts';
+import { koreanScope } from '../src/preview/audit.ts';
+import { outletName } from '../src/cluster.ts';
 
-test('outletOf: feed names and NAVER hosts map to one outlet', () => {
-  assert.equal(outletOf({ publisher: 'yna.co.kr' }), '연합뉴스');
-  assert.equal(outletOf({ publisher: '연합뉴스' }), '연합뉴스');
-  assert.equal(outletOf({ publisher: 'The Guardian – World' }), 'The Guardian');
-  assert.equal(outletOf({ publisher: 'BBC News – Business' }), 'BBC');
+test('outletName: feed names and NAVER hosts map to one outlet', () => {
+  assert.equal(outletName('yna.co.kr'), '연합뉴스');
+  assert.equal(outletName('연합뉴스'), '연합뉴스');
+  assert.equal(outletName('The Guardian – World'), 'The Guardian');
+  assert.equal(outletName('BBC News – Business'), 'BBC News');
 });
 
 test('koreanScope: Korean-reported foreign events vs domestic events', () => {

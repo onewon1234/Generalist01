@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { registerOutletHosts } from '../cluster.ts';
 
 export interface SourceConfig {
   key: string;
@@ -13,6 +14,14 @@ export interface SourceConfig {
   subject: string;
   reliabilityTier: 1 | 2 | 3;
   active: boolean;
+  /**
+   * Slow, non-breaking publisher (essays, features, explainers, research
+   * magazines). Its items are kept for FRESHNESS.evergreenMaxDays and judged as
+   * evergreen pieces instead of being cut by the news window.
+   */
+  evergreen?: boolean;
+  /** Discovery/reference only (e.g. video channels): may surface topics, never counts as evidence. */
+  referenceOnly?: boolean;
   /** Last live verification by check-sources, e.g. "2026-10-26 run 40317228309". */
   verified?: string;
   credentials?: string[];
@@ -33,5 +42,6 @@ export function loadRegistry(path = REGISTRY_PATH): SourceConfig[] {
     if (!/^https:\/\//.test(s.url)) throw new Error(`${s.key}: url must be https`);
     if (![1, 2, 3].includes(s.reliabilityTier)) throw new Error(`${s.key}: reliabilityTier must be 1–3`);
   }
+  registerOutletHosts(raw.sources);
   return raw.sources;
 }

@@ -52,6 +52,8 @@ export const FRESHNESS = {
   backgroundEventLagDays: 7,
   /** Tolerated clock skew for publication dates in the future. */
   futureSkewHours: 1,
+  /** Items from evergreen sources (registry `evergreen: true`) are kept this long. */
+  evergreenMaxDays: 30,
 } as const;
 
 export const EDITION = {

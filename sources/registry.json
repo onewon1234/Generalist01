@@ -102,7 +102,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "db:sources#9",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "mit-tr",
@@ -131,7 +132,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "db:sources#11",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "aeon",
@@ -145,7 +147,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "db:sources#12",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "smithsonian",
@@ -159,7 +162,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "db:sources#13",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "guardian-culture",
@@ -216,7 +220,8 @@
       "active": true,
       "origin": "proposed",
       "notes": "Technology outside the US and Europe; also in the reference registry.",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "nature-news",
@@ -245,7 +250,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "proposed",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "nautilus",
@@ -259,7 +265,8 @@
       "reliabilityTier": 2,
       "active": true,
       "origin": "proposed",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     },
     {
       "key": "owid",
@@ -273,7 +280,8 @@
       "reliabilityTier": 1,
       "active": true,
       "origin": "proposed",
-      "verified": "2026-10-26 run 40317228309"
+      "verified": "2026-10-26 run 40317228309",
+      "evergreen": true
     }
   ]
 }

@@ -3,7 +3,7 @@
  * each stage from collection to selection, so over-representation can be
  * traced to the stage that causes it. Deterministic, read-only.
  */
-import { publisherKey } from '../cluster.ts';
+import { outletName, publisherKey } from '../cluster.ts';
 import type { SourceConfig } from '../collect/registry.ts';
 import { broadOf } from '../config.ts';
 import type { IngestResult } from '../ingest/ingest.ts';
@@ -14,27 +14,13 @@ export type Tally = Record<string, number>;
 export interface StageAudit { stage: string; total: number; bySource: Tally; byLanguage: Tally; bySubject?: Tally; note?: string }
 export interface SourceAudit {
   stages: StageAudit[];
-  /** Clusters where one outlet is counted as two publishers (feed name vs. host name). */
+  /** Clusters where one outlet appears under several names (feed section, host name); counted once. */
   duplicatePublisherClusters: { title: string; publishers: string[] }[];
   /** Korean-language stories by event location (keyword estimate). */
   koreanStoriesByScope: Tally;
 }
 
 const inc = (t: Tally, k: string, n = 1) => { t[k] = (t[k] ?? 0) + n; };
-
-/** Outlet identity across feed names and NAVER host names (e.g. "연합뉴스" = "yna.co.kr"). */
-export const OUTLET_ALIASES: Record<string, string> = {
-  'yna.co.kr': '연합뉴스', 'yonhapnewstv.co.kr': '연합뉴스TV', 'hani.co.kr': '한겨레', 'bbc.co.uk': 'BBC', 'bbc.com': 'BBC',
-  'theguardian.com': 'The Guardian',
-};
-
-export function outletOf(a: Pick<Article, 'publisher'>): string {
-  const p = a.publisher;
-  if (OUTLET_ALIASES[p]) return OUTLET_ALIASES[p];
-  if (/^the guardian/i.test(p)) return 'The Guardian';
-  if (/^bbc/i.test(p)) return 'BBC';
-  return p;
-}
 
 /**
  * Event location of a Korean-language story, estimated from its title:
@@ -87,7 +73,7 @@ export function sourceAudit(res: IngestResult, p: Preview, registry: SourceConfi
   const tried: StageAudit = { stage: '6. 원문 요청', total: recs.length, bySource: {}, byLanguage: {} };
   const read: StageAudit = { stage: '7. 원문 확인(read)', total: 0, bySource: {}, byLanguage: {} };
   for (const r of recs) {
-    const k = r.sourceKey === 'naver-news' ? `naver:${outletOf(r)}` : (r.sourceKey ?? r.publisher);
+    const k = r.sourceKey === 'naver-news' ? `naver:${outletName(r.publisher)}` : (r.sourceKey ?? r.publisher);
     const lang = src.get(r.sourceKey ?? '')?.language ?? '?';
     inc(tried.bySource, k); inc(tried.byLanguage, lang);
     if (r.status === 'read') { inc(read.bySource, k); inc(read.byLanguage, lang); read.total++; }
@@ -101,8 +87,8 @@ export function sourceAudit(res: IngestResult, p: Preview, registry: SourceConfi
   stages.push(selected);
 
   const duplicatePublisherClusters = res.clusters.flatMap((c) => {
-    const keys = c.articles.map((a) => publisherKey(a.publisher));
-    const outlets = c.articles.map((a) => publisherKey(outletOf(a)));
+    const keys = c.articles.map((a) => a.publisher.toLowerCase());
+    const outlets = c.articles.map((a) => publisherKey(a.publisher));
     return new Set(keys).size > new Set(outlets).size ? [{ title: c.title, publishers: [...new Set(c.articles.map((a) => a.publisher))] }] : [];
   });
 
@@ -124,7 +110,7 @@ export function renderAudit(a: SourceAudit): string {
     if (s.note) out.push(`- 기준: ${s.note}`);
     out.push('');
   }
-  out.push(`## 같은 매체가 두 매체로 세어진 묶음 — ${a.duplicatePublisherClusters.length}`);
+  out.push(`## 여러 이름으로 들어와 한 매체로 합쳐 센 묶음 — ${a.duplicatePublisherClusters.length}`);
   for (const d of a.duplicatePublisherClusters.slice(0, 15)) out.push(`- ${d.title} (${d.publishers.join(' / ')})`);
   out.push('', `## 한국어 조사 후보의 사건 위치(제목 키워드 추정): ${fmt(a.koreanStoriesByScope, Object.values(a.koreanStoriesByScope).reduce((x, y) => x + y, 0))}`);
   return out.join('\n');

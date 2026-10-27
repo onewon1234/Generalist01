@@ -98,3 +98,12 @@ test('classify: arts words that look like sports words', () => {
   assert.equal(classify(["'도암 펠로우' 음악 영재들, 獨 라이프치히 국립음대 초청 연주", '아트센터도암이 선발하고 지원하는 예술 영재들이 무대에 오른다.', '송 예술감독은 성사 배경을 설명했다.'], 'culture').sports, false);
   assert.equal(classify(['프로야구 LG 선발 투수 호투', '감독은 승리 후 소감을 밝혔다.'], 'culture').sports, true);
 });
+
+test('pool: a single-source piece from an evergreen (non-news) publisher is researched even if tier 2', () => {
+  const essay = { key: 'essay', title: 'Why medieval maps put east at the top', freshnessType: 'evergreen' as const,
+    articles: [article({ publisher: 'Nautilus', reliabilityTier: 2, sourceKey: 'nautilus' })] };
+  const wire = { key: 'wire', title: 'Single tier-2 wire item', freshnessType: 'timely' as const, articles: [article({ publisher: 'Wire', reliabilityTier: 2 })] };
+  const res = { collectedAt: NOW.toISOString(), health: [], counts: {} as any, noiseByReason: {}, clusters: [essay, wire],
+    candidates: [summarize(essay), summarize(wire)] } as IngestResult;
+  assert.deepEqual(choosePool(res, 10, () => 'history-civilization-geography').map((c) => c.key), ['essay']);
+});
