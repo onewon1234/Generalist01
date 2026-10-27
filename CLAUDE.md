@@ -32,7 +32,11 @@ exceptional discoveries or deep explanations, occasionally a reflective
 cultural, historical or philosophical piece.
 
 Prioritize stories that are current, consequential, surprising, underexplained
-or perspective-changing.
+or perspective-changing. Rank by importance, depth of available information,
+how much the story widens the reader's understanding, and reliability of the
+evidence; article counts, buzz and recency alone never decide. Keep the full
+breadth (news plus science, history, culture and social discoveries) without
+per-subject quotas.
 
 - Event freshness is not publication date. 24–72 hours is a default signal, not
   an absolute cut-off; a significant ongoing development can qualify. An older
@@ -42,6 +46,16 @@ or perspective-changing.
   US- or institution-centric selections; duplicated event clusters; manufactured
   curiosity; topics chosen to fill categories.
 - Breadth is tracked over 7 and 30 days (views `coverage_7d`, `coverage_30d`).
+- **One story per event.** Coverage of the same event by several outlets is
+  merged into one story: shared facts are stated once, and each source adds only
+  its new facts, context or perspective. Where sources disagree, state the
+  difference and who says what; never silently pick one. Wrongly merged
+  different events are a defect (kept out by regression tests).
+- **Follow-ups.** Candidates are compared with previously published stories at
+  event level. An event already covered is selected again only for new facts,
+  figures, decisions, outcomes or a meaningful change of perspective, and the
+  story must state what is new versus the earlier coverage. A new headline,
+  outlet or the passage of time alone is not a development.
 - Every selected story keeps an explicit **why-now rationale**, **editorial
   angle**, **reader payoff** and **evidence record**.
 
@@ -93,6 +107,12 @@ beginner.
 - Every published link (sources and concept links) must be verified.
 
 ## 5. Editorial workflow (separate model calls, not separate agents)
+
+Current operating mode (2026-10-27): **no paid AI API and no database writes**
+until separately approved. Rule-based stages run unattended at no cost; the AI
+roles below run through the user's existing subscriptions (semi-automatic) and
+are labelled as such. Never present a skill or plugin as unattended automation
+unless it actually runs on a schedule without the user.
 
 | Role | Responsibility |
 |---|---|
