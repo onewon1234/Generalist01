@@ -38,7 +38,7 @@ function fixture() {
   const res: IngestResult = {
     collectedAt: NOW.toISOString(), health: [], noiseByReason: {},
     counts: { collected: 6, noise: 0, undated: 0, stale: 0, future: 0, fresh: 6, clusters: 3, multiSource: 2, liveBlogs: 0 },
-    clusters: [fire, sport, lone], candidates: [fire, sport, lone].map(summarize),
+    clusters: [fire, sport, lone], candidates: [fire, sport, lone].map(summarize), leads: [],
   };
   const fetcher: Fetcher = async (url) => {
     const u = new URL(url);
@@ -104,6 +104,6 @@ test('pool: a single-source piece from an evergreen (non-news) publisher is rese
     articles: [article({ publisher: 'Nautilus', reliabilityTier: 2, sourceKey: 'nautilus' })] };
   const wire = { key: 'wire', title: 'Single tier-2 wire item', freshnessType: 'timely' as const, articles: [article({ publisher: 'Wire', reliabilityTier: 2 })] };
   const res = { collectedAt: NOW.toISOString(), health: [], counts: {} as any, noiseByReason: {}, clusters: [essay, wire],
-    candidates: [summarize(essay), summarize(wire)] } as IngestResult;
+    candidates: [summarize(essay), summarize(wire)], leads: [] } as IngestResult;
   assert.deepEqual(choosePool(res, 10, () => 'history-civilization-geography').map((c) => c.key), ['essay']);
 });

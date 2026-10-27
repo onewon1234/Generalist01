@@ -51,6 +51,8 @@ export interface Preview {
   /** '짧게 보는 세상' candidates (sentences are written in the writer stage). */
   briefs: BriefCandidate[];
   briefsExcluded: { title: string; reason: string }[];
+  /** Discovery leads from reference-only sources (not researched, not evidence). */
+  leads: { title: string; url: string; source: string; publishedAt: string | null }[];
   warnings: string[];
 }
 
@@ -206,6 +208,8 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     stories,
     briefs,
     briefsExcluded: excluded,
+    leads: (res.leads ?? []).sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '')).slice(0, 40)
+      .map((a) => ({ title: a.title, url: a.url, source: a.publisher, publishedAt: a.publishedAt ?? null })),
     warnings: sel.warnings,
   };
 }

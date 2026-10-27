@@ -151,14 +151,17 @@ test('ingest: evergreen sources are kept for 30 days and judged as evergreen; ne
   const sources: SourceConfig[] = [
     { ...base, key: 'essays', name: 'Essays', url: 'https://essays.example/rss', evergreen: true },
     { ...base, key: 'wire', name: 'Wire', url: 'https://wire.example/rss' },
+    { ...base, key: 'video', name: 'Video channel', url: 'https://video.example/rss', evergreen: true, referenceOnly: true },
   ];
   const fetcher: Fetcher = async (url) => ({
     ok: true, status: 200, finalUrl: url, contentType: 'application/xml', ms: 1,
-    body: url.includes('essays')
+    body: url.includes('video') ? rss(item('Why medieval maps put east at the top (video)', 'https://video.example/v1', 5))
+      : url.includes('essays')
       ? rss(item('Why medieval maps put east at the top', 'https://essays.example/maps', 24 * 10) + item('A forgotten alphabet of the steppe', 'https://essays.example/old', 24 * 45))
       : rss(item('Ten-day-old wire report on tariffs', 'https://wire.example/old', 24 * 10)),
   });
   const r = await ingest(sources, fetcher, NOW, {});
   assert.deepEqual(r.clusters.map((c) => [c.title, c.freshnessType]), [['Why medieval maps put east at the top', 'evergreen']]);
   assert.equal(r.counts.stale, 2);
+  assert.deepEqual(r.leads.map((a) => a.url), ['https://video.example/v1'], 'reference-only items are leads, never clustered as evidence');
 });

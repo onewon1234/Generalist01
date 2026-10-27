@@ -21,6 +21,11 @@ export interface IngestResult {
   candidates: CandidateSummary[];
   /** Full clusters (articles in memory only; never persisted by ingest). */
   clusters: Cluster[];
+  /**
+   * Discovery leads from reference-only sources (video channels, paywalled
+   * magazines): topics and angles for the editor, never clustered as evidence.
+   */
+  leads: Article[];
 }
 
 /**
@@ -61,6 +66,8 @@ export async function ingest(sources: SourceConfig[], fetcher: Fetcher, now = ne
   const active = sources.filter((s) => s.active);
   const evergreenKeys = new Set(active.filter((s) => s.evergreen).map((s) => s.key));
   const isEvergreen = (a: Article) => evergreenKeys.has(a.sourceKey ?? '');
+  const referenceKeys = new Set(active.filter((s) => s.referenceOnly).map((s) => s.key));
+  const leads: Article[] = [];
   const col = await collect(active, fetcher, now, env);
   const counts = { collected: col.articles.length, noise: 0, undated: 0, stale: 0, future: 0, fresh: 0, clusters: 0, multiSource: 0, liveBlogs: 0 };
   const noiseByReason: Record<string, number> = {};
@@ -76,6 +83,7 @@ export async function ingest(sources: SourceConfig[], fetcher: Fetcher, now = ne
       else counts.stale++;
       continue;
     }
+    if (referenceKeys.has(a.sourceKey ?? '')) { leads.push(a); continue; }
     if (isLiveBlog(a)) counts.liveBlogs++;
     fresh.push(a);
   }
@@ -86,7 +94,7 @@ export async function ingest(sources: SourceConfig[], fetcher: Fetcher, now = ne
   counts.clusters = clusters.length;
   const candidates = rankCandidates(clusters.map(summarize));
   counts.multiSource = candidates.filter((c) => c.publishers >= 2).length;
-  return { collectedAt: col.collectedAt, health: col.health, counts, noiseByReason, candidates, clusters };
+  return { collectedAt: col.collectedAt, health: col.health, counts, noiseByReason, candidates, clusters, leads };
 }
 
 export const INGEST_WINDOW_HOURS = FRESHNESS.ongoingMaxHours;
