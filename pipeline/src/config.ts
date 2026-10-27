@@ -4,43 +4,36 @@
  * expresses preferences that selection may override when quality demands it.
  */
 
-/** Weights of the 0–10 scores in suitability (sum = 1). */
+/** Weights of the 0–10 reader-payoff scores in suitability (sum = 1). */
 export const WEIGHTS = {
-  significance: 0.25,
-  timeliness: 0.20,
-  interest: 0.20,
-  insight: 0.15,
-  novelty: 0.10,
-  accessibility: 0.10,
+  curiosity: 0.18,
+  understanding: 0.20,
+  narrative: 0.14,
+  payoff: 0.20,
+  relevance: 0.16,
+  evidence: 0.12,
 } as const;
 
 /** Extra bar for evergreen pieces so they enrich rather than dominate. */
 export const EVERGREEN = {
   minSuitability: 70,
-  /** Without a contemporary hook, novelty must be at least this. */
-  noveltyWithoutHook: 8,
-  /** Elementary topics need a current development and at least this significance. */
-  elementaryMinSignificance: 8,
+  /** Without a contemporary hook, curiosity and payoff must both reach this (an unusually strong idea). */
+  strongIdeaWithoutHook: 8,
+  /** Elementary topics need a current development and at least this relevance. */
+  elementaryMinRelevance: 8,
 } as const;
-
-/** Small tie-breaking bonus by age of the newest source (hours). */
-export const FRESHNESS_BONUS: { maxHours: number; bonus: number }[] = [
-  { maxHours: 12, bonus: 5 },
-  { maxHours: 24, bonus: 3 },
-  { maxHours: 48, bonus: 0 },
-  { maxHours: 72, bonus: -5 },
-  { maxHours: 120, bonus: -8 },
-];
 
 /**
- * Edition shape is a preference, not a quota (CLAUDE.md §2): a bucket below its
- * preferred minimum gets a bonus, one at or above its preferred maximum a
- * penalty. A clearly better story still wins.
+ * Small bonus by age of the newest source (hours) for current stories.
+ * Freshness is valued but never decisive: the range is a few points.
  */
-export const SHAPE = {
-  belowMinBonus: 6,
-  atMaxPenalty: 12,
-} as const;
+export const FRESHNESS_BONUS: { maxHours: number; bonus: number }[] = [
+  { maxHours: 12, bonus: 3 },
+  { maxHours: 24, bonus: 2 },
+  { maxHours: 48, bonus: 0 },
+  { maxHours: 72, bonus: -3 },
+  { maxHours: 120, bonus: -5 },
+];
 
 /** Freshness signal for timely stories (hours since the newest source). */
 export const FRESHNESS = {
@@ -56,20 +49,20 @@ export const FRESHNESS = {
   evergreenMaxDays: 30,
 } as const;
 
+/**
+ * Edition size and gates. There is no news/feature mix or per-subject quota:
+ * stories compete on reader payoff, and variety comes from the soft penalties
+ * in DIVERSITY. The only hard cap is AI-centred stories (repetition guard).
+ */
 export const EDITION = {
   min: 5,
   target: 6,
   max: 7,
   /** Candidates below this suitability are never selected. */
   minSuitability: 55,
-  maxPerBroadSubject: 2,
+  /** Central claims must be supportable: evidence score below this is rejected. */
+  minEvidence: 5,
   maxAiPrimary: 1,
-  /** Preferred shape (tendencies): several timely, one or two discoveries, occasionally a reflection. */
-  mix: [
-    { bucket: 'timely', min: 3, max: 4 },
-    { bucket: 'discovery', min: 1, max: 2 },
-    { bucket: 'reflection', min: 0, max: 1 },
-  ] as { bucket: 'timely' | 'discovery' | 'reflection'; min: number; max: number }[],
 } as const;
 
 /** Penalties (suitability points) that keep breadth over 7 and 30 days. */
@@ -78,6 +71,8 @@ export const DIVERSITY = {
   per30dStory: 0.5,
   sameSubtopic7d: 8,
   sameSubjectInEdition: 6,
+  /** Per story already chosen of the same form (current story vs evergreen piece): keeps a portfolio, not a quota. */
+  sameFormInEdition: 2,
 } as const;
 
 /** Narrow subject → broad subject (mirrors subjects.parent_slug). */

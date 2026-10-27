@@ -15,7 +15,7 @@ const STATUS: Record<string, string> = {
   'blocked-robots': '⛔ robots.txt 차단(미요청)', 'robots-unreachable': '⛔ robots.txt 확인 불가(미요청)', 'http-error': '❌ HTTP 오류',
   'network-error': '❌ 접속 실패', 'not-html': '❌ 문서 형식 아님',
 };
-const BUCKET: Record<string, string> = { timely: '시의성', discovery: '발견', reflection: '성찰', fill: '보충' };
+const FORM: Record<string, string> = { timely: '현재 이야기', evergreen: '비속보 읽을거리' };
 
 function sourceLine(r: RetrievalRecord, i: number): string {
   const when = r.pagePublishedAt ?? r.feedPublishedAt;
@@ -25,7 +25,7 @@ function sourceLine(r: RetrievalRecord, i: number): string {
 function story(s: PreviewStory, n: number): string {
   const out: string[] = [];
   out.push(`### ${n}. ${s.title}`);
-  out.push(`분야: ${SUBJECT_KO[broadOf(s.subject)] ?? s.subject}${s.bucket ? ` · 구분: ${BUCKET[s.bucket] ?? s.bucket}` : ''}${s.cardSize ? ` · 카드: ${s.cardSize}` : ''}`);
+  out.push(`분야: ${SUBJECT_KO[broadOf(s.subject)] ?? s.subject}${s.form ? ` · 형식: ${FORM[s.form] ?? s.form}` : ''}${s.cardSize ? ` · 카드: ${s.cardSize}` : ''}`);
   out.push('', '**선정 근거**', ...s.reasoning.map((r) => `- ${r}`));
   const idx = new Map(s.records.map((r, i) => [r, i + 1]));
   const ev = s.records.filter((r) => r.status === 'read').flatMap((r) => r.evidence.map((e) => ({ e, i: idx.get(r)! })));

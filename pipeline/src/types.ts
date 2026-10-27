@@ -43,14 +43,23 @@ export interface Article {
   excerpt?: string | null;
 }
 
-/** Editor's evaluation of a candidate (produced by the scoring model call, 0–10 scales). */
+/**
+ * Editor's evaluation of a candidate by reader payoff (0–10 scales; produced
+ * by the editor stage). Portfolio diversity is applied by selection, not scored.
+ */
 export interface Scores {
-  significance: number;
-  timeliness: number;
-  interest: number;
-  insight: number;
-  novelty: number;
-  accessibility: number;
+  /** Something surprising, unfamiliar or compelling. */
+  curiosity: number;
+  /** Explains a meaningful mechanism, context or connection. */
+  understanding: number;
+  /** Can be told as a coherent story rather than a list of facts. */
+  narrative: number;
+  /** What readers will know, reconsider or remember afterwards. */
+  payoff: number;
+  /** Why it is worth reading today, even if not breaking news (importance included). */
+  relevance: number;
+  /** How well the central claims can be supported by evidence actually read. */
+  evidence: number;
   /** Gate: sources judged sufficient and trustworthy. */
   reliable: boolean;
   /** A major development (allows the extended freshness window). */
@@ -65,6 +74,8 @@ export interface Scores {
   aiPrimary: boolean;
   whyNow: string;
   angle: string;
+  /** One line: what the reader gains. */
+  readerPayoff?: string;
   /** Subject slug from table `subjects`. */
   category: string;
   subtopic?: string | null;

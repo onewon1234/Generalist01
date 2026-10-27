@@ -1,32 +1,15 @@
-import { DIVERSITY, EDITION, EVERGREEN, FRESHNESS_BONUS, SHAPE, WEIGHTS, broadOf } from './config.ts';
+import { DIVERSITY, EDITION, EVERGREEN, FRESHNESS_BONUS, WEIGHTS, broadOf } from './config.ts';
 import { checkFreshness } from './freshness.ts';
 import { checkRepeat, choosePrimary, independentPublishers, type PublishedRef } from './cluster.ts';
 import { hoursBetween } from './text.ts';
-import type { CardSize, Cluster, Decision, Scores } from './types.ts';
+import type { CardSize, Cluster, Decision, FreshnessType, Scores } from './types.ts';
 
-export type Bucket = 'timely' | 'discovery' | 'reflection';
-
-/** Weighted 0–100 score (playbook weights; see config.WEIGHTS). */
+/** Weighted 0–100 reader-payoff score (see config.WEIGHTS). */
 export function suitability(s: Scores): number {
-  const v = s.significance * WEIGHTS.significance + s.timeliness * WEIGHTS.timeliness +
-    s.interest * WEIGHTS.interest + s.insight * WEIGHTS.insight +
-    s.novelty * WEIGHTS.novelty + s.accessibility * WEIGHTS.accessibility;
+  const v = s.curiosity * WEIGHTS.curiosity + s.understanding * WEIGHTS.understanding +
+    s.narrative * WEIGHTS.narrative + s.payoff * WEIGHTS.payoff +
+    s.relevance * WEIGHTS.relevance + s.evidence * WEIGHTS.evidence;
   return Math.round(v * 10 * 100) / 100;
-}
-
-/**
- * Editorial buckets for the default shape (3–4 timely, 1–2 discovery, 0–1 reflective).
- * Timely = a current development (news, tech, business, science, culture, society).
- * Discovery = recent research or genuinely surprising knowledge.
- * Reflection = history/philosophy/ideas pieces that clear the evergreen bar.
- */
-export function buckets(c: Cluster): Bucket[] {
-  const f = c.scores?.functions ?? [];
-  const out: Bucket[] = [];
-  if (c.freshnessType === 'timely' && (f.includes('must_know') || f.includes('in_the_know'))) out.push('timely');
-  if (f.includes('something_new') || f.includes('good_to_know')) out.push('discovery');
-  if (f.includes('food_for_thought') || (c.freshnessType === 'evergreen' && f.includes('essentials'))) out.push('reflection');
-  return out;
 }
 
 /** Mandatory gates. Returns a rejection reason, or null when the cluster may be considered. */
@@ -34,9 +17,10 @@ export function gate(c: Cluster, now: Date, recent: PublishedRef[]): string | nu
   const s = c.scores;
   if (!s) return 'not scored';
   if (!s.reliable) return 'sources judged insufficient or unreliable';
+  if (s.evidence < EDITION.minEvidence) return `central claims not supportable (evidence ${s.evidence})`;
   choosePrimary(c);
   if (!c.primary) return 'no primary article';
-  if (s.elementary && !(s.contemporaryHook && s.significance >= EVERGREEN.elementaryMinSignificance))
+  if (s.elementary && !(s.contemporaryHook && s.relevance >= EVERGREEN.elementaryMinRelevance))
     return 'elementary/definitional topic without a significant current development';
   if (c.freshnessType === 'timely') {
     // Event freshness comes from the newest genuine development, not from whichever article is primary.
@@ -59,7 +43,7 @@ export function gate(c: Cluster, now: Date, recent: PublishedRef[]): string | nu
     const rep = checkRepeat(c, recent);
     if (rep.repeat || rep.match) return `evergreen topic already covered on ${rep.match?.issueDate}`;
     if ((c.suitability ?? 0) < EVERGREEN.minSuitability) return `evergreen suitability ${c.suitability} below ${EVERGREEN.minSuitability}`;
-    if (!s.contemporaryHook && s.novelty < EVERGREEN.noveltyWithoutHook) return 'evergreen without a contemporary hook or exceptional novelty';
+    if (!s.contemporaryHook && Math.min(s.curiosity, s.payoff) < EVERGREEN.strongIdeaWithoutHook) return 'evergreen without a contemporary hook or an unusually strong idea';
   }
   if ((c.suitability ?? 0) < EDITION.minSuitability) return `suitability ${c.suitability} below ${EDITION.minSuitability}`;
   return null;
@@ -88,17 +72,18 @@ function adjusted(c: Cluster, cov: Coverage, chosen: Cluster[], now: Date): numb
   v -= (cov.subject30d.get(broad) ?? 0) * DIVERSITY.per30dStory;
   if (s.subtopic && (cov.subtopic7d.get(s.subtopic.toLowerCase()) ?? 0) > 0) v -= DIVERSITY.sameSubtopic7d;
   v -= chosen.filter((x) => broadOf(x.scores!.category) === broad).length * DIVERSITY.sameSubjectInEdition;
+  v -= chosen.filter((x) => x.freshnessType === c.freshnessType).length * DIVERSITY.sameFormInEdition;
   return Math.round(v * 100) / 100;
 }
 
-export interface Selection { chosen: (Cluster & { bucket: Bucket | 'fill' })[]; decisions: Decision[]; warnings: string[] }
+export interface Selection { chosen: (Cluster & { form: FreshnessType })[]; decisions: Decision[]; warnings: string[] }
 
 /**
  * Editor-in-Chief selection. Deterministic given scores and coverage.
- * Greedy by adjusted editorial value with a soft nudge toward the usual shape
- * (several timely, one or two discoveries, occasionally a reflection). Hard
- * limits are only the per-subject cap and the AI cap. Never pads: below
- * EDITION.min the edition is flagged underfilled.
+ * Greedy by adjusted reader-payoff value: current stories and evergreen pieces
+ * compete equally; variety comes from soft penalties (subject, form, recent
+ * coverage), never from a mix quota. The only hard cap is the AI cap. Never
+ * pads: below EDITION.min the edition is flagged underfilled.
  */
 export function selectEdition(candidates: Cluster[], now: Date, recent: PublishedRef[], cov: Coverage): Selection {
   const decisions: Decision[] = [];
@@ -114,51 +99,35 @@ export function selectEdition(candidates: Cluster[], now: Date, recent: Publishe
   }
 
   const chosen: Selection['chosen'] = [];
-  const inBucket = (b: Bucket) => chosen.filter((x) => x.bucket === b).length;
   const allowed = (c: Cluster) =>
     !chosen.includes(c as any) &&
-    chosen.filter((x) => broadOf(x.scores!.category) === broadOf(c.scores!.category)).length < EDITION.maxPerBroadSubject &&
     !(c.scores!.aiPrimary && chosen.filter((x) => x.scores!.aiPrimary).length >= EDITION.maxAiPrimary);
 
-  /** Best bucket for a story given the current edition, with its shape bonus/penalty. */
-  const shape = (c: Cluster): { bucket: Bucket | 'fill'; bonus: number } => {
-    const options = buckets(c).map((b) => {
-      const pref = EDITION.mix.find((m) => m.bucket === b)!;
-      const have = inBucket(b);
-      const bonus = have < pref.min ? SHAPE.belowMinBonus : have >= pref.max ? -SHAPE.atMaxPenalty : 0;
-      return { bucket: b, bonus };
-    });
-    return options.sort((a, b) => b.bonus - a.bonus)[0] ?? { bucket: 'fill', bonus: 0 };
-  };
-
-  // Greedy by editorial value. The preferred shape nudges, never forces: a clearly
-  // better story beats a weaker one that would merely "fill" a bucket.
   while (chosen.length < EDITION.target) {
     const ranked = eligible.filter(allowed)
-      .map((c) => ({ c, v: adjusted(c, cov, chosen, now), s: shape(c) }))
+      .map((c) => ({ c, v: adjusted(c, cov, chosen, now) }))
       .filter((x) => x.v >= EDITION.minSuitability - 15)
-      .sort((a, b) => (b.v + b.s.bonus) - (a.v + a.s.bonus) || b.c.scores!.significance - a.c.scores!.significance);
+      .sort((a, b) => b.v - a.v || b.c.scores!.payoff - a.c.scores!.payoff);
     const top = ranked[0];
     if (!top) break;
     top.c.adjusted = top.v;
-    chosen.push(Object.assign(top.c, { bucket: top.s.bucket }));
-    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${top.s.bucket}: suitability ${top.c.suitability}, adjusted ${top.v}, shape ${top.s.bonus >= 0 ? '+' : ''}${top.s.bonus}; why now: ${top.c.scores!.whyNow || 'n/a'}`, clusterKey: top.c.key });
+    chosen.push(Object.assign(top.c, { form: top.c.freshnessType }));
+    const s = top.c.scores!;
+    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${top.c.freshnessType}: suitability ${top.c.suitability}, adjusted ${top.v}; payoff: ${s.readerPayoff || 'n/a'}; why now: ${s.whyNow || 'n/a'}`, clusterKey: top.c.key });
   }
 
-  for (const { bucket, min, max } of EDITION.mix) {
-    const have = inBucket(bucket);
-    if (have < min) warnings.push(`note: ${have} "${bucket}" stories (usual range ${min}–${max}); quality decided`);
-  }
+  const forms = new Set(chosen.map((c) => c.form));
+  if (chosen.length >= 3 && forms.size === 1) warnings.push(`variety: all ${chosen.length} stories are ${[...forms][0]} pieces; check the edition is more than a news digest (not enforced)`);
   if (chosen.length < EDITION.min) warnings.push(`underfilled: only ${chosen.length} stories passed the gates (minimum ${EDITION.min}); do not approve without review`);
   for (const c of eligible) if (!chosen.includes(c as any)) decisions.push({ stage: 'editor_in_chief', decision: 'rejected', reason: `not selected (adjusted ${adjusted(c, cov, chosen, now)})`, clusterKey: c.key });
   return { chosen, decisions, warnings };
 }
 
-/** Visual hierarchy: one large story only when editorially justified (high significance), then medium, then small. */
+/** Visual hierarchy: one large story only when editorially justified (high reader payoff), then medium, then small. */
 export function assignCardSizes(chosen: Cluster[]): Map<string, { size: CardSize; featured: boolean }> {
   const out = new Map<string, { size: CardSize; featured: boolean }>();
-  const ranked = [...chosen].sort((a, b) => (b.scores!.significance - a.scores!.significance) || ((b.adjusted ?? 0) - (a.adjusted ?? 0)));
-  const featured = ranked[0] && ranked[0].scores!.significance >= 7 ? ranked[0] : undefined;
+  const ranked = [...chosen].sort((a, b) => (b.scores!.payoff - a.scores!.payoff) || ((b.adjusted ?? 0) - (a.adjusted ?? 0)));
+  const featured = ranked[0] && ranked[0].scores!.payoff >= 7 ? ranked[0] : undefined;
   let medium = 0;
   for (const c of ranked) {
     if (c === featured) out.set(c.key, { size: 'large', featured: true });

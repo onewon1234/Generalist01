@@ -15,9 +15,9 @@ import type { IngestResult } from '../ingest/ingest.ts';
 import { corroborate, type Corroboration } from '../research/corroborate.ts';
 import { RobotsCache } from '../research/robots.ts';
 import { politeFetcher, retrieveArticle, type RetrievalRecord } from '../research/retrieve.ts';
-import { assignCardSizes, selectEdition, suitability, type Bucket } from '../select.ts';
+import { assignCardSizes, selectEdition, suitability } from '../select.ts';
 import { hoursBetween } from '../text.ts';
-import type { Article, Cluster, Scores } from '../types.ts';
+import type { Article, Cluster, FreshnessType, Scores } from '../types.ts';
 import { chooseBriefs, type BriefCandidate } from './briefs.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
 
@@ -36,7 +36,8 @@ export interface PreviewStory {
   suitability: number;
   reasoning: string[];
   selected: boolean;
-  bucket?: Bucket | 'fill';
+  /** Current story or evergreen piece. */
+  form?: FreshnessType;
   cardSize?: string;
   rejectReason?: string;
 }
@@ -103,18 +104,26 @@ export function pickArticles(c: Cluster, n: number): Article[] {
 
 const clamp = (x: number) => Math.max(0, Math.min(10, Math.round(x * 10) / 10));
 
-/** Heuristic stand-in for the editor model's scores. Transparent and deterministic. */
+/**
+ * Heuristic stand-in for the editor's reader-payoff scores. Transparent and
+ * deterministic, and weak by design: curiosity, narrative and payoff need
+ * editorial judgement, so they stay near neutral here.
+ */
 export function heuristicScores(c: Cluster, subject: string, sports: boolean, cor: Corroboration, ageH: number | null): Scores {
   const pubs = independentPublishers(c);
   const read = cor.readPublishers.length;
-  const evidence = cor.corroboratedFigures.length;
-  const discovery = broadOf(subject) === 'science-technology-ai' || broadOf(subject) === 'history-civilization-geography';
-  const significance = clamp(4 + Math.min(4, Math.log2(pubs) * 1.4) + (c.articles.some((a) => a.reliabilityTier === 1) ? 0.5 : 0) + (evidence ? 0.5 : 0) - (sports ? 3 : 0));
-  const timeliness = clamp(ageH == null ? 3 : ageH <= 6 ? 9 : ageH <= 12 ? 8 : ageH <= 24 ? 7 : ageH <= 48 ? 5 : 3);
-  const insight = clamp(4 + Math.min(2, read) + Math.min(2, evidence) * 0.5);
+  const figures = cor.corroboratedFigures.length;
+  const knowledge = c.freshnessType === 'evergreen' || ['science-technology-ai', 'history-civilization-geography', 'psychology-behavior-everyday', 'philosophy-literature-arts-culture'].includes(broadOf(subject));
+  const current = ageH != null && ageH <= 48 ? 1 : 0;
+  const relevance = clamp(4 + Math.min(3, Math.log2(pubs) * 1.2) + current + (c.articles.some((a) => a.reliabilityTier === 1) ? 0.5 : 0) - (sports ? 3 : 0));
   const title = c.title;
   return {
-    significance, timeliness, interest: clamp(6 + (discovery ? 1 : 0)), insight, novelty: clamp(5 + (discovery ? 2 : 0)), accessibility: 7,
+    curiosity: clamp(5 + (knowledge ? 1.5 : 0)),
+    understanding: clamp(4 + Math.min(2, read) + Math.min(2, figures) * 0.5),
+    narrative: 5,
+    payoff: clamp(5 + (knowledge ? 1 : 0) + (read >= 2 ? 1 : 0)),
+    relevance,
+    evidence: clamp(2 + read * 2.5 + (cor.level === 'corroborated' ? 1 : 0)),
     reliable: read >= 1,
     isMajor: pubs >= 8,
     ongoing: pubs >= 8,
@@ -125,7 +134,7 @@ export function heuristicScores(c: Cluster, subject: string, sports: boolean, co
     angle: '',
     category: subject,
     subtopic: null,
-    functions: discovery ? ['something_new', 'in_the_know'] : pubs >= 5 ? ['must_know'] : ['in_the_know'],
+    functions: knowledge ? ['something_new', 'in_the_know'] : pubs >= 5 ? ['must_know'] : ['in_the_know'],
     rationale: 'heuristic (no AI)',
   };
 }
@@ -145,7 +154,7 @@ export function reasoningFor(s: Omit<PreviewStory, 'reasoning'>): string[] {
   ];
   if (s.corroboration.corroboratedFigures.length) lines.push(`교차 확인된 수치: ${s.corroboration.corroboratedFigures.slice(0, 4).map((f) => `${f.figure}(${f.publishers.join('·')})`).join(', ')}`);
   lines.push(`분야: ${SUBJECT_KO[broadOf(s.subject)] ?? s.subject} (키워드 분류)`);
-  lines.push(`휴리스틱 적합도 ${s.suitability} (중요도 ${s.scores.significance}, 시의성 ${s.scores.timeliness}, 근거 ${s.scores.insight}) — AI 편집 판단 아님`);
+  lines.push(`휴리스틱 적합도 ${s.suitability} (호기심 ${s.scores.curiosity}, 이해 ${s.scores.understanding}, 오늘 읽을 이유 ${s.scores.relevance}, 근거 ${s.scores.evidence}) — AI 편집 판단 아님`);
   return lines;
 }
 
@@ -182,7 +191,7 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     const chosen = sel.chosen.find((c) => c.key === st.key);
     const c = clusters.find((x) => x.key === st.key)!;
     st.selected = !!chosen;
-    st.bucket = chosen?.bucket;
+    st.form = chosen?.form ?? c.freshnessType;
     st.cardSize = sizes.get(st.key)?.size;
     st.rejectReason = chosen ? undefined : c.rejectReason ?? 'not selected (lower adjusted score)';
     st.reasoning = reasoningFor(st);

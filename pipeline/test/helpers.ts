@@ -25,7 +25,7 @@ export function article(p: Partial<Article> = {}): Article {
 
 export function scores(p: Partial<Scores> = {}): Scores {
   return {
-    significance: 7, timeliness: 7, interest: 7, insight: 7, novelty: 7, accessibility: 7,
+    curiosity: 7, understanding: 7, narrative: 7, payoff: 7, relevance: 7, evidence: 7,
     reliable: true, isMajor: false, elementary: false, contemporaryHook: false, aiPrimary: false,
     whyNow: 'new data published this week', angle: 'what changed', category: 'world-politics-society',
     subtopic: null, functions: ['must_know'],
@@ -46,7 +46,7 @@ export function cluster(key: string, s: Partial<Scores> = {}, p: Partial<Cluster
 }
 
 export function evergreen(key: string, s: Partial<Scores> = {}, p: Partial<Cluster> = {}): Cluster {
-  return cluster(key, { timeliness: 3, functions: ['something_new'], contemporaryHook: true, ...s },
+  return cluster(key, { functions: ['something_new'], contemporaryHook: true, ...s },
     { freshnessType: 'evergreen', articles: [article({ publishedAt: hoursAgo(24 * 200) })], ...p });
 }
 

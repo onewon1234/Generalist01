@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { WEIGHTS } from '../src/config.ts';
-import { assignCardSizes, buckets, coverageFrom, gate, newestAgeHours, selectEdition, suitability } from '../src/select.ts';
+import { assignCardSizes, coverageFrom, gate, newestAgeHours, selectEdition, suitability } from '../src/select.ts';
 import { EMPTY_COVERAGE, NOW, article, cluster, evergreen, hoursAgo, scores } from './helpers.ts';
 
 const CATS = ['world-politics-society', 'economics-finance-business', 'science-technology-ai',
@@ -11,14 +11,7 @@ test('weights sum to 1 and suitability is on a 0–100 scale', () => {
   const sum = Object.values(WEIGHTS).reduce((a, b) => a + b, 0);
   assert.ok(Math.abs(sum - 1) < 1e-9);
   assert.equal(suitability(scores()), 70);
-  assert.equal(suitability(scores({ significance: 10, timeliness: 10, interest: 10, insight: 10, novelty: 10, accessibility: 10 })), 100);
-});
-
-test('buckets follow freshness and editorial functions', () => {
-  assert.deepEqual(buckets(cluster('t', { functions: ['must_know'] })), ['timely']);
-  assert.deepEqual(buckets(evergreen('d', { functions: ['something_new'] })), ['discovery']);
-  assert.deepEqual(buckets(evergreen('r', { functions: ['food_for_thought'] })), ['reflection']);
-  assert.deepEqual(buckets(cluster('x', { functions: ['in_the_know', 'good_to_know'] })), ['timely', 'discovery']);
+  assert.equal(suitability(scores({ curiosity: 10, understanding: 10, narrative: 10, payoff: 10, relevance: 10, evidence: 10 })), 100);
 });
 
 function gated(c: ReturnType<typeof cluster>) {
@@ -33,43 +26,56 @@ test('gates: reliability, freshness, background, corroboration', () => {
   assert.match(gated(cluster('d', {}, { articles: [article({ eventDate: '2026-08-01' }), article({ eventDate: '2026-08-01' })] }))!, /old event/);
   assert.match(gated(cluster('e', {}, { articles: [article()] }))!, /second independent source/);
   assert.equal(gated(cluster('f', {}, { articles: [article({ reliabilityTier: 1 })] })), null, 'tier-1 single source allowed');
+  assert.match(gated(cluster('ev', { evidence: 4 }))!, /central claims not supportable/);
 });
 
-test('gates: elementary topics need a significant current development', () => {
+test('gates: elementary topics need a relevant current development', () => {
   assert.match(gated(cluster('g', { elementary: true }))!, /elementary/);
-  assert.equal(gated(cluster('h', { elementary: true, contemporaryHook: true, significance: 9 })), null);
+  assert.equal(gated(cluster('h', { elementary: true, contemporaryHook: true, relevance: 9 })), null);
 });
 
 test('gates: evergreen bar', () => {
-  assert.match(gated(evergreen('i', { significance: 5, interest: 5, insight: 5, novelty: 5, accessibility: 5 }))!, /evergreen suitability/);
-  assert.match(gated(evergreen('j', { contemporaryHook: false, novelty: 7, significance: 9, interest: 9, insight: 9 }))!, /hook/);
-  assert.equal(gated(evergreen('k', { contemporaryHook: false, novelty: 9, significance: 9, interest: 9, insight: 9 })), null);
+  assert.match(gated(evergreen('i', { curiosity: 5, understanding: 5, narrative: 5, payoff: 5, relevance: 5 }))!, /evergreen suitability/);
+  assert.match(gated(evergreen('j', { contemporaryHook: false, curiosity: 9, payoff: 7, understanding: 9, narrative: 9 }))!, /unusually strong idea/);
+  assert.equal(gated(evergreen('k', { contemporaryHook: false, curiosity: 9, payoff: 9, understanding: 9, narrative: 9 })), null);
 });
 
+/** Six current stories and four evergreen pieces of comparable reader value. */
 function pool() {
-  const timely = CATS.slice(0, 5).map((cat, i) => cluster(`t${i}`, { category: cat, significance: 9 - i * 0.5 }));
-  const discovery = [0, 1, 2].map((i) => evergreen(`d${i}`, { category: CATS[(i + 2) % 6], significance: 8, interest: 9, insight: 8, novelty: 9 - i }));
-  const reflection = [evergreen('r0', { category: 'philosophy-literature-arts-culture', functions: ['food_for_thought'], significance: 8, interest: 8, insight: 9, novelty: 8 })];
-  return [...timely, ...discovery, ...reflection];
+  const current = CATS.map((cat, i) => cluster(`t${i}`, { category: cat, payoff: 8 - i * 0.2, relevance: 8 }));
+  const pieces = [0, 1, 2, 3].map((i) => evergreen(`e${i}`, { category: CATS[(i + 2) % 6], curiosity: 9, payoff: 8.5 - i * 0.3, understanding: 8, narrative: 8 }));
+  return [...current, ...pieces];
 }
 
-test('selection yields the preferred shape from a healthy pool', () => {
+test('no news-first mix: current stories and evergreen pieces compete equally, and the edition is varied', () => {
   const { chosen, warnings } = selectEdition(pool(), NOW, [], EMPTY_COVERAGE);
-  const count = (b: string) => chosen.filter((c) => c.bucket === b).length;
+  const forms = chosen.map((c) => c.form);
   assert.equal(chosen.length, 6);
-  assert.ok(count('timely') >= 3 && count('timely') <= 4, `timely ${count('timely')}`);
-  assert.ok(count('discovery') >= 1 && count('discovery') <= 2);
-  assert.ok(count('reflection') <= 1);
+  assert.ok(forms.includes('timely') && forms.includes('evergreen'), forms.join());
   assert.deepEqual(warnings, []);
 });
 
-test('at most one AI-primary story and at most two per broad subject', () => {
-  const ai = [0, 1, 2].map((i) => cluster(`ai${i}`, { category: 'science-technology-ai', aiPrimary: true, significance: 10 }));
+test('strong evergreen pieces may outnumber current stories (no quota either way)', () => {
+  const weakCurrent = CATS.map((cat, i) => cluster(`w${i}`, { category: cat, curiosity: 6, understanding: 6, narrative: 6, payoff: 6, relevance: 7 }));
+  const strong = [0, 1, 2, 3, 4].map((i) => evergreen(`s${i}`, { category: CATS[i], curiosity: 10, understanding: 9, narrative: 9, payoff: 10, relevance: 7 }));
+  const { chosen } = selectEdition([...weakCurrent, ...strong], NOW, [], EMPTY_COVERAGE);
+  assert.ok(chosen.filter((c) => c.form === 'evergreen').length >= 4);
+});
+
+test('one AI-primary story at most; subjects repeat only when clearly better (soft penalty, no cap)', () => {
+  const ai = [0, 1, 2].map((i) => cluster(`ai${i}`, { category: 'science-technology-ai', aiPrimary: true, payoff: 10, curiosity: 10 }));
   const { chosen } = selectEdition([...ai, ...pool()], NOW, [], EMPTY_COVERAGE);
   assert.equal(chosen.filter((c) => c.scores!.aiPrimary).length, 1);
-  const perSubject = new Map<string, number>();
-  for (const c of chosen) perSubject.set(c.scores!.category, (perSubject.get(c.scores!.category) ?? 0) + 1);
-  for (const [, v] of perSubject) assert.ok(v <= 2);
+  const politics = [0, 1, 2].map((i) => cluster(`p${i}`, { category: CATS[0], curiosity: 10, understanding: 10, narrative: 10, payoff: 10, relevance: 10, evidence: 10 }));
+  const r = selectEdition([...politics, ...pool()], NOW, [], EMPTY_COVERAGE);
+  assert.equal(r.chosen.filter((c) => c.scores!.category === CATS[0]).length >= 3, true, 'three exceptional stories of one subject can all be chosen');
+});
+
+test('an all-news edition gets a variety note, never a forced swap', () => {
+  const news = CATS.map((cat) => cluster(`n${cat}`, { category: cat }));
+  const { chosen, warnings } = selectEdition(news, NOW, [], EMPTY_COVERAGE);
+  assert.equal(chosen.length, 6);
+  assert.ok(warnings.some((w) => /variety/.test(w)));
 });
 
 test('never pads: a thin pool is flagged as underfilled', () => {
@@ -94,24 +100,8 @@ test('recent coverage of a subject lowers its priority', () => {
   assert.equal(chosen[0].key, 'b');
 });
 
-test('shape is a preference: clearly better discoveries can exceed the usual range', () => {
-  const weakTimely = CATS.map((cat, i) => cluster(`w${i}`, { category: cat, significance: 6, interest: 6, insight: 6, novelty: 6, accessibility: 6, timeliness: 6 }));
-  const strong = [0, 1, 2].map((i) => evergreen(`s${i}`, { category: CATS[i + 1], significance: 10, interest: 10, insight: 10, novelty: 10, accessibility: 9 }));
-  const { chosen, warnings } = selectEdition([...weakTimely, ...strong], NOW, [], EMPTY_COVERAGE);
-  assert.equal(chosen.filter((c) => c.bucket === 'discovery').length, 3, 'above the usual maximum of 2');
-  assert.equal(chosen.length, 6);
-  assert.deepEqual(warnings, []);
-});
-
-test('missing a usual bucket is a note, not a failure', () => {
-  const ev = CATS.map((cat, i) => evergreen(`n${i}`, { category: cat, significance: 9, interest: 9, insight: 9, novelty: 9 }));
-  const { warnings } = selectEdition(ev, NOW, [], EMPTY_COVERAGE);
-  assert.ok(warnings.some((w) => /"timely"/.test(w) && /quality decided/.test(w)));
-});
-
-test('an edition can form without timely stories when none qualify', () => {
-  const ev = CATS.map((cat, i) => evergreen(`e${i}`, { category: cat, significance: 9, interest: 9, insight: 9, novelty: 9 - (i % 2),
-    functions: i % 3 === 0 ? ['food_for_thought'] : ['something_new'] }));
+test('an edition can form without current stories when none qualify', () => {
+  const ev = CATS.map((cat, i) => evergreen(`e${i}`, { category: cat, curiosity: 9, payoff: 9, understanding: 9, narrative: 9 - (i % 2) }));
   const { chosen, warnings } = selectEdition(ev, NOW, [], EMPTY_COVERAGE);
   assert.ok(chosen.length >= 5);
   assert.ok(!warnings.some((w) => /underfilled/.test(w)));
@@ -134,9 +124,9 @@ test('significant ongoing developments get a longer window', () => {
   assert.match(gated(cluster('o4', { isMajor: true, ongoing: true }, { articles: at(130) }))!, /freshness/);
 });
 
-test('card sizes: one featured large story only when significant', () => {
-  const sizes = assignCardSizes([cluster('x', { significance: 9 }), cluster('y'), cluster('z'), cluster('w')]);
+test('card sizes: one featured large story only when the payoff is high', () => {
+  const sizes = assignCardSizes([cluster('x', { payoff: 9 }), cluster('y', { payoff: 6 }), cluster('z', { payoff: 6 }), cluster('w', { payoff: 6 })]);
   assert.deepEqual([...sizes.values()].map((s) => s.size), ['large', 'medium', 'medium', 'small']);
-  const flat = assignCardSizes([cluster('p', { significance: 6 }), cluster('q', { significance: 5 })]);
+  const flat = assignCardSizes([cluster('p', { payoff: 6 }), cluster('q', { payoff: 5 })]);
   assert.ok([...flat.values()].every((s) => !s.featured));
 });
