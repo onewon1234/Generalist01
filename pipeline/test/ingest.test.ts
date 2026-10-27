@@ -23,7 +23,7 @@ test('noise filter: notices, obituaries, media-only, promo; real news passes', (
 test('features: Korean bigrams without tags, English stemmed words without stopwords', () => {
   assert.deepEqual(features('[속보] 구룡마을 화재'), ['구룡', '룡마', '마을', '화재']);
   assert.deepEqual(features('Leaders congratulate Lula on the election win (LEAD)'), ['leader', 'congratulate', 'lula', 'election', 'win']);
-  assert.deepEqual(features('77가구 107명 2026'), ['#77', '가구', '#107', '명', '#2026']);
+  assert.deepEqual(features('77가구 107명 27일 2026'), ['가구', '#107', '#2026'], 'short numbers and single syllables dropped');
 });
 
 /**

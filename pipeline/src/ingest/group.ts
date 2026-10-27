@@ -24,7 +24,10 @@ export const GROUP_THRESHOLD = 0.24;
 const STOP = new Set(('the a an and or but of to in on at for from by with as is are was were be been being it its this that these those ' +
   'has have had will would can could may might should not no new says said say after before over under into about up down out ' +
   'more most than then there their they them he she his her we you your our who what when where why how which all just one two ' +
-  'live updates update latest news report reports today week year years day').split(' '));
+  'live updates update latest news report reports today week year years day ' +
+  'see seen seeing everything something anything nothing thing things way ways make makes made get gets got ' +
+  'still back first last next big small good bad best people time times know knew why look looks just even ' +
+  'also much many very really here now could would should every other another again against between while').split(' '));
 
 function stem(w: string): string {
   if (w.length > 5 && w.endsWith('ing')) return w.slice(0, -3);
@@ -44,12 +47,12 @@ export function features(text: string): string[] {
     if (!w) continue;
     if (/\p{Script=Hangul}/u.test(w)) {
       for (const run of w.match(/\p{Script=Hangul}+|\p{N}+/gu) ?? []) {
-        if (/^\p{N}+$/u.test(run)) { if (run.length >= 2) out.push(`#${run}`); continue; }
-        if (run.length === 1) out.push(run);
+        // Short numbers are mostly dates and counts ("27일", "3분기"); single syllables are particles/units.
+        if (/^\p{N}+$/u.test(run)) { if (run.length >= 3) out.push(`#${run}`); continue; }
         for (let i = 0; i < run.length - 1; i++) out.push(run.slice(i, i + 2));
       }
     } else if (/^\p{N}+$/u.test(w)) {
-      if (w.length >= 2) out.push(`#${w}`);
+      if (w.length >= 3) out.push(`#${w}`);
     } else if (w.length >= 3 && !STOP.has(w)) {
       out.push(stem(w));
     }
@@ -79,12 +82,19 @@ interface Doc { feats: Set<string>; mass: number }
  * which sinks cosine; overlap keeps the shared event name decisive.
  */
 export function weightedOverlap(a: Doc, b: Doc, idf: Map<string, number>): number {
-  const [small, big] = a.feats.size <= b.feats.size ? [a, b] : [b, a];
-  let shared = 0;
-  for (const f of small.feats) if (big.feats.has(f)) shared += idf.get(f) ?? 1;
-  const m = Math.min(a.mass, b.mass);
-  return m ? shared / m : 0;
+  return overlapDetail(a, b, idf).score;
 }
+
+export function overlapDetail(a: Doc, b: Doc, idf: Map<string, number>): { score: number; shared: number } {
+  const [small, big] = a.feats.size <= b.feats.size ? [a, b] : [b, a];
+  let mass = 0, shared = 0;
+  for (const f of small.feats) if (big.feats.has(f)) { mass += idf.get(f) ?? 1; shared++; }
+  const m = Math.min(a.mass, b.mass);
+  return { score: m ? mass / m : 0, shared };
+}
+
+/** A single shared feature ("대전", one English word) never links two stories. */
+export const MIN_SHARED_FEATURES = 2;
 
 export function clusterKey(seedUrl: string): string {
   return createHash('sha256').update(seedUrl).digest('hex').slice(0, 12);
@@ -107,7 +117,9 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
       if (g.lang !== a.language) continue;
       // Average linkage: the article must resemble the cluster as a whole, not just one member.
       const sample = g.members.slice(-LINKAGE_SAMPLE);
-      const s = sample.reduce((t, m) => t + weightedOverlap(d, m, idf), 0) / sample.length;
+      const det = sample.map((m) => overlapDetail(d, m, idf));
+      if (Math.max(...det.map((x) => x.shared)) < MIN_SHARED_FEATURES) continue;
+      const s = det.reduce((t, x) => t + x.score, 0) / det.length;
       if (s > bestScore) { bestScore = s; best = g; }
     }
     if (best && bestScore >= threshold) {
@@ -117,7 +129,67 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
       groups.push({ lang: a.language, members: [d], c: { key: clusterKey(a.url), title: a.title, articles: [a], freshnessType: 'timely' } });
     }
   });
-  return groups.map((g) => g.c);
+  return mergeByAnchor(groups.map((g) => g.c));
+}
+
+/** Common multi-syllable names that dominate many unrelated stories; never used as a merge anchor. */
+const GENERIC_ANCHORS = new Set(['국민의힘', '더불어민주당', '민주당', '대통령실', '국정감사', '국회의원', '기획재정부', '서울시장',
+  '서울시의회', '교육청', '경찰청', '검찰청', '대법원장', '헌법재판소', '정부서울청사', '지방자치단체', '프로농구', '프로야구', '프로축구']);
+const PARTICLE = /(에서|으로|에게|까지|부터|처럼|보다|이라|이다|은|는|이|가|을|를|의|에|로|와|과|도|만)$/;
+
+/** Hangul words of 4+ syllables (particles stripped), the usual shape of a specific place/event/organisation name. */
+export function anchorWords(title: string): Set<string> {
+  const out = new Set<string>();
+  const clean = title.normalize('NFKC').replace(/\[[^\]]{0,12}\]|\([^)]{0,12}\)/g, ' ');
+  for (const m of clean.matchAll(/\p{Script=Hangul}{4,}/gu)) {
+    let w = m[0];
+    if (w.length >= 5) w = w.replace(PARTICLE, '');
+    if (w.length >= 4 && !GENERIC_ANCHORS.has(w)) out.add(w);
+  }
+  return out;
+}
+
+/** The anchor present in at least `share` of a cluster's headlines, if any (most frequent wins). */
+export function dominantAnchor(c: Cluster, share = 0.6): string | null {
+  const counts = new Map<string, number>();
+  for (const a of c.articles) for (const w of anchorWords(a.title)) counts.set(w, (counts.get(w) ?? 0) + 1);
+  const best = [...counts].sort((x, y) => y[1] - x[1] || y[0].length - x[0].length)[0];
+  return best && best[1] >= Math.max(1, share * c.articles.length) ? best[0] : null;
+}
+
+/** Max gap between two clusters' newest items for an anchor merge (hours). */
+const ANCHOR_MERGE_HOURS = 24;
+
+/**
+ * Second pass for Korean: clusters that are dominated by the same specific
+ * name (e.g. several angles on the "구룡마을" fire) are merged. Then a lone
+ * headline that names the anchor of an established cluster (3+ articles,
+ * within 24 hours) joins it, e.g. the mayor visiting the fire site.
+ */
+export function mergeByAnchor(clusters: Cluster[]): Cluster[] {
+  const newest = (c: Cluster) => c.articles.map(sourceTime).filter((t): t is string => !!t).sort().at(-1) ?? null;
+  const close = (a: Cluster, b: Cluster) => {
+    const x = newest(a), y = newest(b);
+    return !!(x && y && Math.abs(Date.parse(x) - Date.parse(y)) <= ANCHOR_MERGE_HOURS * 3_600_000);
+  };
+  const out: Cluster[] = [];
+  const byAnchor = new Map<string, Cluster>();
+  const singles: Cluster[] = [];
+  for (const c of clusters) {
+    const ko = c.articles[0]?.language === 'ko';
+    if (ko && c.articles.length === 1) { singles.push(c); continue; }
+    const anchor = ko ? dominantAnchor(c) : null;
+    const target = anchor ? byAnchor.get(anchor) : undefined;
+    if (target && close(target, c)) { target.articles.push(...c.articles); continue; }
+    out.push(c);
+    if (anchor && !byAnchor.has(anchor)) byAnchor.set(anchor, c);
+  }
+  for (const c of singles) {
+    const target = [...anchorWords(c.title)].map((w) => byAnchor.get(w)).find((t) => t && t.articles.length >= 3 && close(t, c));
+    if (target) target.articles.push(...c.articles);
+    else out.push(c);
+  }
+  return out;
 }
 
 export interface CandidateSummary {
