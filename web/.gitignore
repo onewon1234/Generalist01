@@ -1,0 +1,4 @@
+node_modules/
+# Editions are unpublished drafts: keep them out of this public repository.
+editions/
+out/
