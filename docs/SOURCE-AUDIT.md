@@ -61,7 +61,7 @@ Yonhap).
    inflating its rank. The audit flags such clusters; none in this run because
    NAVER was absent.
 
-## Minimal changes proposed (not yet applied)
+## Minimal changes proposed (applied 2026-10-27, see below)
 
 No collection volume is cut and no new collection system is added.
 
@@ -80,3 +80,29 @@ No collection volume is cut and no new collection system is added.
 5. Editor stage (subscription session, no code): for a foreign event found via
    a Korean outlet, look for the original/international sources with the
    `read` CLI before writing; label each story domestic or foreign.
+
+## After the fixes (private runs r5–r7, 2026-10-27 23:25–23:40 KST)
+
+Applied: canonical outlet identity, 30-day window for evergreen sources,
+turn-taking ranking, evergreen pool entry, no per-language pool share, and 8
+new verified non-news sources (plus discovery-only leads).
+
+| stage | Korean share before (r4) | after (r7) |
+|---|---:|---:|
+| collected | 20% | 12% |
+| top 60 candidates | 38% | 3% |
+| research pool | 39% | 3% |
+| read | 33% | 0% |
+
+Research pool by subject (r7): world/politics 33%, culture 28%, science 18%,
+economics 13%, psychology 5%, history 5%.
+
+Remaining issues:
+- Heuristic scores cannot clear the evergreen bar (70), so the *automatic*
+  selection is still all current stories; the editor stage has to score
+  reader payoff for evergreen pieces to compete.
+- Korean domestic coverage now rarely reaches the pool; this matches the
+  global-first tendency but means domestic news mostly reaches readers through
+  briefs chosen by the editor.
+- Some sentence-case English false merges remain (e.g. North/South Korea
+  items); a known-limitation test records one.

@@ -35,6 +35,11 @@ the label says how far it has been verified.
       by Claude in-session standing in for the unapproved AI stages
 - [x] '짧게 보는 세상' candidates and sentence checks (`briefs.ts`, `validateBrief`) — **real
       candidates, manual sentences**: 10 briefs for the 2026-10-28 sample all pass the checks
+- [x] Source balancing (canonical outlets, evergreen window, turn-taking ranking, no
+      language share) and 8 verified non-news references — **real**: runs r5–r7
+- [x] Reader-payoff selection without a news-first mix — **real code, heuristic scores**
+- [x] Static site renderer (homepage + article pages, desktop/mobile screenshots) —
+      **real**; edition content of the 2026-10-28 test edition is **manual**
 - [ ] AI editor / writer / fact checker / quality reviewer — **needs approval** (docs/APPROVALS.md B)
 - [ ] Private draft storage — **needs approval** (docs/APPROVALS.md A)
 
