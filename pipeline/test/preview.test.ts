@@ -54,6 +54,7 @@ test('classify: subject by keywords, sports flagged', () => {
   assert.equal(classify(['3분기 성장률 1.0%로 반등, 수출 증가'], 'world-politics-society').subject, 'economics-finance-business');
   assert.equal(classify(['프로농구 KCC 6연패, 리그 최하위'], 'world-politics-society').sports, true);
   assert.equal(classify(['무관한 제목'], 'psychology-behavior-everyday').subject, 'psychology-behavior-everyday', 'fallback to source subject');
+  assert.equal(classify(['공소청-중수청 권한다툼 수면위로…리니언시 접수권 어디에', '수사·기소 분리 원칙'], 'psychology-behavior-everyday').subject, 'world-politics-society');
 });
 
 test('pool excludes sports and single-publisher stories; picks distinct publishers', () => {

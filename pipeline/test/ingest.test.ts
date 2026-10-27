@@ -16,6 +16,12 @@ test('noise filter: notices, obituaries, media-only, promo; real news passes', (
   assert.equal(noiseReason({ title: 'In pictures: autumn in Seoul' }), 'media-only');
   assert.equal(noiseReason({ title: '3분기 성장률 1.0%로 반등…반도체·정부 지출 확대 영향' }), null);
   assert.equal(noiseReason({ title: '[단독] 정부, 전작권 전환 시점 합의' }), null, 'scoop tag is not noise');
+  // digests seen in the preview run of 2026-10-27
+  assert.equal(noiseReason({ title: 'The Download: Anthropic’s IPO, smarter power grids, and exercise pills' }), 'digest');
+  assert.equal(noiseReason({ title: 'Business Daily' }), 'digest');
+  assert.equal(noiseReason({ title: 'Palestine weekly: West Bank under siege as Israelis go to the polls' }), 'digest');
+  assert.equal(noiseReason({ title: '[데일리안 오늘뉴스 종합] 구룡마을 화재, 77가구 107명 피해' }), 'digest');
+  assert.equal(noiseReason({ title: 'Why Jordan has struck Syria: What we know' }), null);
   assert.equal(noiseReason({ title: 'Serbia wakes up to new reality after Vučić ousted' }), null);
   assert.equal(isLiveBlog({ title: 'Brazil runoff live updates', url: 'https://x.example/world/live/2026/oct/25/a' }), true);
 });
