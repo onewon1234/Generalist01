@@ -9,7 +9,7 @@ import { collect } from '../src/collect/collect.ts';
 import { parseDate, parseFeed } from '../src/collect/feed.ts';
 import { clip, htmlToText } from '../src/collect/html.ts';
 import type { FetchResult, Fetcher } from '../src/collect/http.ts';
-import { hostOf, naverUrl, parseNaver, searchNaver } from '../src/collect/naver.ts';
+import { describeNaverError, hostOf, naverHeaders, naverUrl, parseNaver, searchNaver } from '../src/collect/naver.ts';
 import { loadRegistry, type SourceConfig } from '../src/collect/registry.ts';
 
 const SRC = { key: 'x', name: 'Example Times', language: 'en', reliabilityTier: 1 as const };
@@ -112,8 +112,38 @@ test('NAVER: request URL, response parsing, missing credentials', async () => {
 
   let called = false;
   const r = await searchNaver(async () => { called = true; throw new Error('should not fetch'); }, 'q', new Date(NOW), {});
-  assert.match(r.error!, /credentials not configured/);
+  assert.match(r.error!, /credentials not configured \(NAVER_CLIENT_ID \/ NAVER_CLIENT_SECRET\)/);
   assert.equal(called, false);
+  // old variable names are not read
+  assert.equal(naverHeaders({ NAVER_API_KEY_ID: 'a', NAVER_API_KEY: 'b' }), null);
+});
+
+test('NAVER API HUB headers: Client ID → KEY-ID, Client Secret → KEY', async () => {
+  const env = { NAVER_CLIENT_ID: ' id-123 ', NAVER_CLIENT_SECRET: 'secret-xyz' };
+  assert.deepEqual(naverHeaders(env), { 'X-NCP-APIGW-API-KEY-ID': 'id-123', 'X-NCP-APIGW-API-KEY': 'secret-xyz' });
+  let seen: Record<string, string> | undefined;
+  const fetcher: Fetcher = async (url, init) => {
+    seen = init?.headers;
+    assert.ok(url.startsWith('https://naverapihub.apigw.ntruss.com/search/v1/news?'));
+    return { ok: true, status: 200, finalUrl: url, contentType: 'application/json', body: JSON.stringify({ items: [{ title: 't', link: 'https://n.example/1', pubDate: 'Mon, 26 Oct 2026 09:00:00 +0900' }] }), ms: 1 };
+  };
+  const r = await searchNaver(fetcher, '경제', new Date(NOW), env);
+  assert.equal(r.error, undefined);
+  assert.equal(r.articles.length, 1);
+  assert.equal(seen?.['X-NCP-APIGW-API-KEY-ID'], 'id-123');
+  assert.equal(seen?.['X-Naver-Client-Id'], undefined, 'legacy header not sent');
+});
+
+test('NAVER errors are explained without leaking credentials', async () => {
+  const env = { NAVER_CLIENT_ID: 'id-123', NAVER_CLIENT_SECRET: 'secret-xyz' };
+  const deny: Fetcher = async (url) => ({ ok: false, status: 401, finalUrl: url, contentType: 'application/json',
+    body: JSON.stringify({ error: { errorCode: '200', message: 'Authentication Failed' } }), ms: 1 });
+  const r = await searchNaver(deny, 'q', new Date(NOW), env);
+  assert.match(r.error!, /^HTTP 401 \(200 Authentication Failed\) — authentication rejected/);
+  assert.match(r.error!, /NAVER API HUB/);
+  assert.ok(!r.error!.includes('secret-xyz') && !r.error!.includes('id-123'));
+  assert.equal(describeNaverError(429, 'not json'), 'HTTP 429 — rate limited');
+  assert.equal(describeNaverError(0, '', 'ETIMEDOUT'), 'network error: ETIMEDOUT');
 });
 
 test('collect isolates failing sources and de-duplicates by URL', async () => {

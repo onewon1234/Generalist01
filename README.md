@@ -51,7 +51,7 @@ workflow, so GitHub emails you.
 
 1. GitHub repository (private is fine) and push this folder.
 2. Repository secrets: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (server only),
-   `SUPABASE_PUBLISHABLE_KEY`, `ANTHROPIC_API_KEY`, `NAVER_API_KEY_ID`, `NAVER_API_KEY`;
+   `SUPABASE_PUBLISHABLE_KEY`, `ANTHROPIC_API_KEY`, `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` (issued in NAVER API HUB);
    for deployment `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 3. Create the `production` environment with yourself as required reviewer.
 4. Run `check-sources`, then activate the feeds that pass.

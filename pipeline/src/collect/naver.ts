@@ -1,6 +1,6 @@
 /**
- * NAVER API HUB News Search. Credential-dependent: needs NAVER_API_KEY_ID and
- * NAVER_API_KEY (repository secrets). Returns metadata only: title, links,
+ * NAVER API HUB News Search. Credential-dependent: needs NAVER_CLIENT_ID and
+ * NAVER_CLIENT_SECRET (repository secrets). Returns metadata only: title, links,
  * a short description and the publication date.
  */
 import type { Article } from '../types.ts';
@@ -22,10 +22,35 @@ export function naverUrl(query: string, opts: { display?: number; start?: number
   return u.toString();
 }
 
+/** Environment variable names (GitHub Actions secrets of the same name). */
+export const NAVER_ENV = { id: 'NAVER_CLIENT_ID', secret: 'NAVER_CLIENT_SECRET' } as const;
+
+/**
+ * NAVER API HUB authentication: the Client ID goes in X-NCP-APIGW-API-KEY-ID and
+ * the Client Secret in X-NCP-APIGW-API-KEY. Credentials issued by the old NAVER
+ * Developers Center (X-Naver-Client-Id / -Secret) are not accepted by API HUB.
+ */
 export function naverHeaders(env: NodeJS.ProcessEnv = process.env): Record<string, string> | null {
-  const id = env.NAVER_API_KEY_ID, key = env.NAVER_API_KEY;
-  if (!id || !key) return null;
-  return { 'X-NCP-APIGW-API-KEY-ID': id, 'X-NCP-APIGW-API-KEY': key };
+  const id = env[NAVER_ENV.id]?.trim(), secret = env[NAVER_ENV.secret]?.trim();
+  if (!id || !secret) return null;
+  return { 'X-NCP-APIGW-API-KEY-ID': id, 'X-NCP-APIGW-API-KEY': secret };
+}
+
+/** Short, credential-free description of a failed API HUB response. */
+export function describeNaverError(status: number, body: string, netError?: string): string {
+  if (status === 0) return `network error${netError ? `: ${netError}` : ''}`;
+  let detail = '';
+  try {
+    const j = JSON.parse(body) as Record<string, any>;
+    const e = j.error ?? j;
+    const code = e.errorCode ?? e.code ?? '';
+    const msg = e.message ?? e.errorMessage ?? '';
+    detail = [code, msg].filter(Boolean).join(' ').slice(0, 160);
+  } catch { /* non-JSON body: omit */ }
+  const hint = status === 401 || status === 403
+    ? ' — authentication rejected: check that the Client ID/Secret were issued in NAVER API HUB (NAVER Cloud console), not the old NAVER Developers Center, and that News Search is subscribed'
+    : status === 429 ? ' — rate limited' : '';
+  return `HTTP ${status}${detail ? ` (${detail})` : ''}${hint}`;
 }
 
 /** Publisher label from the original article host (e.g. "yna.co.kr"). */
@@ -57,9 +82,9 @@ export function parseNaver(json: NaverResponse, retrievedAt: string): Article[] 
 
 export async function searchNaver(fetcher: Fetcher, query: string, now = new Date(), env = process.env): Promise<{ articles: Article[]; error?: string }> {
   const headers = naverHeaders(env);
-  if (!headers) return { articles: [], error: 'credentials not configured (NAVER_API_KEY_ID / NAVER_API_KEY)' };
+  if (!headers) return { articles: [], error: `credentials not configured (${NAVER_ENV.id} / ${NAVER_ENV.secret})` };
   const r = await fetcher(naverUrl(query), { headers, timeoutMs: 15_000 });
-  if (!r.ok) return { articles: [], error: `HTTP ${r.status}${r.error ? `: ${r.error}` : ''}` };
+  if (!r.ok) return { articles: [], error: describeNaverError(r.status, r.body, r.error) };
   try {
     return { articles: parseNaver(JSON.parse(r.body) as NaverResponse, now.toISOString()) };
   } catch (e) {

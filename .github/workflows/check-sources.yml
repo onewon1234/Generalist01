@@ -28,8 +28,8 @@ jobs:
       - name: Check sources
         env:
           # Optional: NAVER is reported as "credentials not configured" until these secrets exist.
-          NAVER_API_KEY_ID: ${{ secrets.NAVER_API_KEY_ID }}
-          NAVER_API_KEY: ${{ secrets.NAVER_API_KEY }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
         run: npm run check-sources -- --out source-report.json
       - uses: actions/upload-artifact@v6
         if: always()

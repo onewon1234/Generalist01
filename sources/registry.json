@@ -12,8 +12,8 @@
       "reliabilityTier": 2,
       "active": false,
       "credentials": [
-        "NAVER_API_KEY_ID",
-        "NAVER_API_KEY"
+        "NAVER_CLIENT_ID",
+        "NAVER_CLIENT_SECRET"
       ],
       "origin": "db:sources#3",
       "notes": "Korean news discovery; returns titles, links, descriptions and dates only."
