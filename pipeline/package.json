@@ -20,6 +20,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "fast-xml-parser": "5.11.2"
+    "fast-xml-parser": "5.11.2",
+    "node-html-parser": "9.0.4"
   }
 }
