@@ -2,7 +2,7 @@
  * preview: ingest live sources, research the strongest candidates and write a
  * private editorial preview.
  *   npx tsx src/cli/preview.ts --out-dir <dir>
- * Writes <dir>/preview.md and <dir>/preview.json. No AI calls, no database
+ * Writes <dir>/preview.md, preview.json and the source-distribution audit (audit.md/json). No AI calls, no database
  * writes, nothing published. Run it where the output stays private (not in
  * the public repository's Actions logs).
  */
@@ -13,6 +13,7 @@ import { loadRegistry } from '../collect/registry.ts';
 import { ingest } from '../ingest/ingest.ts';
 import { buildPreview } from '../preview/preview.ts';
 import { renderPreview } from '../preview/render.ts';
+import { renderAudit, sourceAudit } from '../preview/audit.ts';
 
 const arg = (k: string) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined; };
 const outDir = arg('--out-dir');
@@ -31,5 +32,8 @@ const preview = await buildPreview(res, httpFetch, (a) => subjectOf.get(a.source
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, 'preview.json'), JSON.stringify(preview, null, 2));
 writeFileSync(join(outDir, 'preview.md'), renderPreview(preview));
+const audit = sourceAudit(res, preview, registry);
+writeFileSync(join(outDir, 'audit.json'), JSON.stringify(audit, null, 2));
+writeFileSync(join(outDir, 'audit.md'), renderAudit(audit));
 const sel = preview.stories.filter((s) => s.selected);
 console.log(`preview: ${sel.length} selected of ${preview.pool} researched; ${preview.fetches} article requests; ${Math.round((Date.now() - t0) / 1000)}s → ${outDir}`);
