@@ -7,7 +7,11 @@ file in place when requirements change; do not append contradictory rules.
 ## 1. Product
 
 A Korean-language, website-first daily editorial publication for intellectually
-curious adults, mainly in their 20s and 30s.
+curious adults, mainly in their 20s and 30s. It is a **global generalist**
+publication, not a Korean news digest: published in Korean, it curates
+interesting and valuable developments from the whole world across current
+affairs, economics, science, technology, history, culture, society and human
+behaviour. Everyone gets the same broad edition (no personalization).
 
 Not a generic AI news summarizer, textbook explainer, RSS headline aggregator or
 manually curated sample collection. Its value is discovering consequential and
@@ -56,6 +60,17 @@ per-subject quotas.
   figures, decisions, outcomes or a meaningful change of perspective, and the
   story must state what is new versus the earlier coverage. A new headline,
   outlet or the passage of time alone is not a development.
+- **Global first.** Select mainly global issues and informative pieces across
+  fields. Korean domestic stories are usually 0–1 of six main stories as an
+  editorial tendency; more on days that warrant it. No country or subject quota
+  is enforced in code.
+- Distinguish **foreign events reported by Korean media** from **Korean domestic
+  events**. For a foreign event, prefer the original or international sources
+  (agencies, institutions, papers, local outlets) over a Korean outlet's relay.
+- NAVER search complements Korean coverage; it is not the centre of the edition.
+- Actively evaluate non-breaking knowledge pieces (history, culture, scientific
+  discovery, psychology, human behaviour); slower publishers must not lose to
+  wire services merely because they publish less often.
 - Every selected story keeps an explicit **why-now rationale**, **editorial
   angle**, **reader payoff** and **evidence record**.
 
@@ -95,13 +110,25 @@ official documents.
 Natural, engaging, precise Korean for an intelligent general reader, not a
 beginner.
 
-- Open with a concrete event, tension, discovery or question.
-- Cover the essential facts, then background and mechanism, then consequences,
-  implications or competing interpretations. The reader should come away
-  understanding something meaningful they did not before.
+- Storytelling, not a news summary or wire-style report. A reader with no
+  background should understand the whole situation from one piece. Each main
+  story answers, as a narrative rather than fixed subheadings or a template:
+  what happened; what the situation was before and how it got here; why it
+  happened (causes, interests); why it matters (changes, knock-on effects);
+  which perspectives and interpretations exist and what to watch next.
+- Open with a concrete event, tension, discovery or question. Plain, natural
+  sentences; explain technical terms briefly in passing. Longer than a summary
+  is fine when it adds understanding; cut ornament and repetition.
+- Keep these apart in the text: confirmed fact, causal analysis (whose),
+  expert opinion, stakeholder claim and uncertain forecast. Never invent
+  causation or add the model's own opinion; every interpretation is attributed
+  to a named source.
+- Background facts need sources too (an institution page or a read article),
+  not the model's memory.
+- The reader should come away understanding the key facts, the main
+  perspectives and how events connect.
 - Restrained headlines. No clickbait, fabricated tension, generic AI prose,
   padding or unsupported certainty.
-- Distinguish fact, interpretation and uncertainty in the text. Attribute claims.
 - Original wording and judgment; never imitate or closely paraphrase a reference
   publication.
 - Every published link (sources and concept links) must be verified.
