@@ -12,7 +12,8 @@
     "check": "npm run typecheck && npm test",
     "check-sources": "tsx src/cli/check-sources.ts",
     "ingest": "tsx src/cli/ingest.ts",
-    "preview": "tsx src/cli/preview.ts"
+    "preview": "tsx src/cli/preview.ts",
+    "read": "tsx src/cli/read.ts"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.11",

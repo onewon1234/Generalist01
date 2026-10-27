@@ -9,7 +9,7 @@ import { corroborate } from '../src/research/corroborate.ts';
 import { extractEvidence, figuresIn, splitSentences } from '../src/research/evidence.ts';
 import { extractPage } from '../src/research/extract.ts';
 import { RobotsCache, isAllowed, parseRobots } from '../src/research/robots.ts';
-import { retrieveArticle, type RetrievalRecord } from '../src/research/retrieve.ts';
+import { readArticle, retrieveArticle, type RetrievalRecord } from '../src/research/retrieve.ts';
 import { article } from './helpers.ts';
 
 const res = (status: number, body: string, contentType = 'text/html; charset=utf-8', finalUrl = ''): FetchResult =>
@@ -149,6 +149,11 @@ test('retrieve: read, blocked by robots, paywalled, restricted, partial, http er
   assert.deepEqual(restricted.evidence, [], 'opted-out text is not used');
   assert.equal((await r('https://thin.example/a', 'en')).status, 'partial');
   assert.equal((await r('https://ko.example/missing')).status, 'http-error');
+  // readArticle: paragraphs only for read pages, never for opted-out or blocked ones
+  const ra = async (url: string, language = 'ko') => readArticle(article({ url, language, publisher: new URL(url).host }), deps);
+  assert.ok((await ra('https://ko.example/a')).paragraphs.length >= 3);
+  for (const u of ['https://blocked.example/a', 'https://noai.example/a']) assert.deepEqual((await ra(u)).paragraphs, []);
+  assert.deepEqual((await ra('https://pay.example/a', 'en')).paragraphs, []);
 });
 
 test('retrieve: a redirect to a host whose robots.txt disallows us is not read', async () => {

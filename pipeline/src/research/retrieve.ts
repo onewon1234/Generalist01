@@ -52,6 +52,16 @@ export const MIN_READ_CHARS = { ko: 300, other: 800 } as const;
 export interface RetrieveDeps { fetcher: Fetcher; robots: RobotsCache; now?: () => Date }
 
 export async function retrieveArticle(a: Article, deps: RetrieveDeps): Promise<RetrievalRecord> {
+  return (await readArticle(a, deps)).record;
+}
+
+/**
+ * Same access rules as retrieveArticle, also returning the article paragraphs
+ * when (and only when) the status is `read`. The paragraphs are for transient
+ * use by the editor/writer stage; they are never stored or logged.
+ */
+export async function readArticle(a: Article, deps: RetrieveDeps): Promise<{ record: RetrievalRecord; paragraphs: string[] }> {
+  const done = (record: RetrievalRecord, paragraphs: string[] = []) => ({ record, paragraphs });
   const retrievedAt = (deps.now?.() ?? new Date()).toISOString();
   const base: RetrievalRecord = {
     url: a.url, finalUrl: null, publisher: a.publisher, sourceKey: a.sourceKey ?? null, feedPublishedAt: a.publishedAt ?? null,
@@ -59,21 +69,21 @@ export async function retrieveArticle(a: Article, deps: RetrieveDeps): Promise<R
     pagePublishedAt: null, pageModifiedAt: null, author: null, textChars: 0, textSha256: null, evidence: [],
   };
   base.robots = await deps.robots.check(a.url);
-  if (base.robots === 'disallowed') return { ...base, status: 'blocked-robots' };
-  if (base.robots === 'unreachable') return { ...base, status: 'robots-unreachable' };
+  if (base.robots === 'disallowed') return done({ ...base, status: 'blocked-robots' });
+  if (base.robots === 'unreachable') return done({ ...base, status: 'robots-unreachable' });
 
   const r = await deps.fetcher(a.url, { timeoutMs: 20_000, headers: { accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.5' } });
   base.httpStatus = r.status || null;
   base.finalUrl = r.finalUrl || null;
-  if (r.status === 0) return { ...base, status: 'network-error', note: r.error };
-  if (!r.ok) return { ...base, status: r.status === 402 ? 'paywalled' : 'http-error' };
-  if (!/html/i.test(r.contentType) && !/^\s*</.test(r.body)) return { ...base, status: 'not-html', note: r.contentType };
+  if (r.status === 0) return done({ ...base, status: 'network-error', note: r.error });
+  if (!r.ok) return done({ ...base, status: r.status === 402 ? 'paywalled' : 'http-error' });
+  if (!/html/i.test(r.contentType) && !/^\s*</.test(r.body)) return done({ ...base, status: 'not-html', note: r.contentType });
 
   // The fetch may have been redirected to another host: its robots.txt must allow us too.
   if (r.finalUrl && new URL(r.finalUrl).origin !== new URL(a.url).origin) {
     const after = await deps.robots.check(r.finalUrl);
-    if (after === 'disallowed') return { ...base, robots: after, status: 'blocked-robots', note: 'redirect target disallowed' };
-    if (after === 'unreachable') return { ...base, robots: after, status: 'robots-unreachable', note: 'redirect target robots unreachable' };
+    if (after === 'disallowed') return done({ ...base, robots: after, status: 'blocked-robots', note: 'redirect target disallowed' });
+    if (after === 'unreachable') return done({ ...base, robots: after, status: 'robots-unreachable', note: 'redirect target robots unreachable' });
   }
 
   const page = extractPage(r.body);
@@ -81,13 +91,13 @@ export async function retrieveArticle(a: Article, deps: RetrieveDeps): Promise<R
     title: page.title, pagePublishedAt: page.publishedAt, pageModifiedAt: page.modifiedAt, author: page.author,
     restrictions: page.restrictions,
   };
-  if (page.restrictions.length) return { ...base, ...meta, status: 'restricted', note: 'publisher opt-out; text not used' };
-  if (page.paywalled) return { ...base, ...meta, status: 'paywalled', note: 'isAccessibleForFree=false' };
+  if (page.restrictions.length) return done({ ...base, ...meta, status: 'restricted', note: 'publisher opt-out; text not used' });
+  if (page.paywalled) return done({ ...base, ...meta, status: 'paywalled', note: 'isAccessibleForFree=false' });
   const min = a.language === 'ko' ? MIN_READ_CHARS.ko : MIN_READ_CHARS.other;
   const text = page.paragraphs.join('\n');
   const hash = text ? createHash('sha256').update(text).digest('hex') : null;
-  if (page.textChars < min) return { ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'partial', note: `only ${page.textChars} chars of article text found` };
-  return { ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'read', evidence: extractEvidence(page.paragraphs) };
+  if (page.textChars < min) return done({ ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'partial', note: `only ${page.textChars} chars of article text found` });
+  return done({ ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'read', evidence: extractEvidence(page.paragraphs) }, page.paragraphs);
 }
 
 /** Sequential per host with a minimum gap, small global concurrency. */
