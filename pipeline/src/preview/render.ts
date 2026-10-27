@@ -5,6 +5,7 @@
  */
 import { broadOf } from '../config.ts';
 import type { RetrievalRecord } from '../research/retrieve.ts';
+import { MOD_LABEL } from './briefs.ts';
 import { SUBJECT_KO } from './classify.ts';
 import type { Preview, PreviewStory } from './preview.ts';
 
@@ -59,6 +60,14 @@ export function renderPreview(p: Preview): string {
     '## 선정된 이야기',
     '',
     ...sel.map((s, i) => story(s, i + 1) + '\n'),
+    '## 짧게 보는 세상 (후보)',
+    '',
+    '> 메인에 들지 않은 소식 중 원문이 확인된 것입니다. 한 문장 원고는 작성 단계에서 쓰고 `validateBrief`로 검사합니다.',
+    '> 원문 문장의 확실성 표시(사실·발표·의혹·예정·전망·가능성)는 문장에서 유지해야 합니다.',
+    '',
+    ...(p.briefs.length ? p.briefs.map((b, i) => `${i + 1}. **${b.title}** · ${SUBJECT_KO[broadOf(b.subject)] ?? b.subject} · 확실성: ${b.modality.map((m) => MOD_LABEL[m]).join('/')} · ${b.reason}\n   원문(${b.sourcePublisher}): “${b.sourceSentence}”\n   <${b.links[0]}>`) : ['- 후보 없음']),
+    '',
+    ...(p.briefsExcluded.length ? ['제외: ' + p.briefsExcluded.map((x) => `${x.title} (${x.reason})`).join(' · '), ''] : []),
     '## 선정되지 않은 후보',
     '',
     ...rest.map((s) => `- ${s.title} — ${s.rejectReason} · 원문 확인 ${s.corroboration.readPublishers.length}/${s.records.length}`),

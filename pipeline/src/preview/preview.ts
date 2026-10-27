@@ -18,6 +18,7 @@ import { politeFetcher, retrieveArticle, type RetrievalRecord } from '../researc
 import { assignCardSizes, selectEdition, suitability, type Bucket } from '../select.ts';
 import { hoursBetween } from '../text.ts';
 import type { Article, Cluster, Scores } from '../types.ts';
+import { chooseBriefs, type BriefCandidate } from './briefs.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
 
 export interface PreviewStory {
@@ -46,6 +47,9 @@ export interface Preview {
   pool: number;
   fetches: number;
   stories: PreviewStory[];
+  /** '짧게 보는 세상' candidates (sentences are written in the writer stage). */
+  briefs: BriefCandidate[];
+  briefsExcluded: { title: string; reason: string }[];
   warnings: string[];
 }
 
@@ -182,12 +186,15 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     st.reasoning = reasoningFor(st);
   }
   stories.sort((a, b) => Number(b.selected) - Number(a.selected) || b.suitability - a.suitability);
+  const { briefs, excluded } = chooseBriefs(stories);
   return {
     generatedAt: now.toISOString(),
     ingest: { ...res.counts, sourcesOk: res.health.filter((h) => h.ok).length, sources: res.health.length },
     pool: pool.length,
     fetches,
     stories,
+    briefs,
+    briefsExcluded: excluded,
     warnings: sel.warnings,
   };
 }

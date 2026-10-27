@@ -106,6 +106,25 @@ beginner.
   publication.
 - Every published link (sources and concept links) must be verified.
 
+### 짧게 보는 세상 (world in brief)
+
+A section after the main stories for useful items that do not merit a main
+story. Same collection, retrieval and editorial flow; no extra cost.
+
+- Each item is **one complete, self-contained Korean sentence** stating who,
+  what happened and the key result or meaning. No headline fragments, no
+  ornament, no background, no repetition.
+- Keep certainty exactly: fact, claim, allegation, scheduled, forecast and
+  possibility stay distinguishable; never turn uncertainty into fact. If an item
+  cannot be told accurately in one sentence, drop it rather than cut accuracy.
+- Each item links to a source whose text was actually read.
+- No item repeats a main story, another brief, or earlier coverage without
+  genuinely new information. No domestic/foreign or subject quotas.
+- Candidates and checks are deterministic (`pipeline/src/preview/briefs.ts`):
+  the writer stage writes the sentence; `validateBrief` must pass (one sentence,
+  numbers present in the evidence, hedges and attribution preserved, verified
+  link, no hype words).
+
 ## 5. Editorial workflow (separate model calls, not separate agents)
 
 Current operating mode (2026-10-27): **no paid AI API and no database writes**
