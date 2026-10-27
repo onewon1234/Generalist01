@@ -23,8 +23,11 @@ the label says how far it has been verified.
 ## 2. Vertical slice: one real current story
 - [x] Live RSS discovery — **real**: check-sources on Actions fetched 18/19 sources live
       (run 40317078713); 17 dated feeds activated. `hani` has no item dates (inactive).
-- [ ] NAVER API HUB — credential-dependent (secrets not set)
-- [ ] Daily collection run that stores candidates (todo; check-sources only reports)
+- [x] NAVER API HUB — **real**: secrets `NAVER_CLIENT_ID` / `NAVER_CLIENT_SECRET`, 250 items
+      from 5 queries (run 40500847744); activated
+- [x] Daily ingestion (collect → noise filter → freshness → story grouping → ranked
+      candidates) — workflow `ingest`, 05:17 KST; reports only
+- [ ] Persist articles and candidate clusters (needs an approved write path to Supabase)
 - [ ] Permitted source reading with recorded access level (robots, paywall, terms)
 - [ ] Evidence extraction: claims, dates, primary vs secondary, limitations
 - [ ] Candidate evaluation and why-now / angle / payoff

@@ -21,3 +21,4 @@ coverage/
 .DS_Store
 __pycache__/
 source-report.json
+ingest.json

@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
     "check": "npm run typecheck && npm test",
-    "check-sources": "tsx src/cli/check-sources.ts"
+    "check-sources": "tsx src/cli/check-sources.ts",
+    "ingest": "tsx src/cli/ingest.ts"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.11",

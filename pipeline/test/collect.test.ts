@@ -183,7 +183,7 @@ test('the committed registry is valid', () => {
   assert.ok(reg.length >= 12);
   assert.ok(reg.some((s) => s.kind === 'naver'));
   const active = reg.filter((s) => s.active);
-  assert.ok(active.every((s) => s.kind === 'rss' && s.verified), 'only live-verified feeds are active');
+  assert.ok(active.every((s) => !!s.verified), 'only live-verified sources are active');
   assert.equal(reg.find((s) => s.key === 'hani')?.active, false, 'undated feed stays inactive');
-  assert.equal(reg.find((s) => s.key === 'naver-news')?.active, false, 'credential-dependent source stays inactive');
+  assert.equal(reg.find((s) => s.key === 'naver-news')?.active, true, 'NAVER verified live with API HUB keys');
 });

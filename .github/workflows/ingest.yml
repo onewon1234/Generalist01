@@ -1,0 +1,43 @@
+name: ingest
+
+# Daily ingestion: collect active sources, filter, group into story candidates.
+# Read-only: no AI calls, no database writes. Results go to the run summary,
+# annotations and a short-lived artifact.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 20 * * *'   # 05:17 Asia/Seoul
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pipeline/package-lock.json
+      - run: npm ci
+      - name: Ingest
+        env:
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+        run: npm run ingest -- --out ingest.json
+      - uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: ingest
+          path: pipeline/ingest.json
+          retention-days: 7

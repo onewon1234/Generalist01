@@ -10,13 +10,14 @@
       "region": "KR",
       "subject": "world-politics-society",
       "reliabilityTier": 2,
-      "active": false,
+      "active": true,
       "credentials": [
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET"
       ],
       "origin": "db:sources#3",
-      "notes": "Korean news discovery; returns titles, links, descriptions and dates only."
+      "notes": "Korean news discovery; returns titles, links, descriptions and dates only.",
+      "verified": "2026-10-27 run 40500847744"
     },
     {
       "key": "bbc-world",
