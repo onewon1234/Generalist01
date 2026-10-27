@@ -14,7 +14,6 @@
  * The sentence itself is written in the writer stage (subscription-based or
  * human), never invented by rules.
  */
-import { broadOf } from '../config.ts';
 import { anchorWords, properNouns } from '../ingest/group.ts';
 import { figuresIn } from '../research/evidence.ts';
 import type { PreviewStory } from './preview.ts';
@@ -35,7 +34,7 @@ const KO_HEDGE: Record<Exclude<Modality, 'fact'>, RegExp> = {
   possibility: /가능성|수도 있|우려|어려울|쉽지 않|불투명|않을 수/,
   forecast: /전망|예상|관측|내다|것으로 보|추정|어려울 것/,
   scheduled: /예정|계획|추진|방침|할 것|하기로|착수/,
-  attributed: /밝혔|말했|전했|따르면|주장|발표|설명했|강조했|보도했|집계했|알려졌/,
+  attributed: /밝혔|말했|전했|따르면|주장|발표|설명했|강조했|보도했|보고했|집계했|알려졌|공개한|보고 있/,
 };
 
 export function modality(text: string): Modality[] {
@@ -57,6 +56,9 @@ export interface BriefCandidate {
   modality: Modality[];
   reason: string;
 }
+
+/** Reviews, opinion and sponsored pieces are not news items. */
+const NOT_NEWS = /\breview\b|리뷰|사설|칼럼|\bopinion\b|기고|sponsored|in partnership with/i;
 
 const HYPE = /충격|경악|역대급|놀라운|드디어|결국|무려|대박|초유의|발칵|shock|stunning|bombshell/i;
 /** Source sentences longer than this rarely compress into one accurate sentence. */
@@ -81,7 +83,6 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
   const mains = stories.filter((s) => s.selected);
   const excluded: { title: string; reason: string }[] = [];
   const out: BriefCandidate[] = [];
-  const perSubject = new Map<string, number>();
   const ranked = stories.filter((s) => !s.selected)
     .sort((a, b) => b.corroboration.readPublishers.length - a.corroboration.readPublishers.length || b.suitability - a.suitability);
   for (const s of ranked) {
@@ -90,15 +91,12 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
     let why: string | null = null;
     if (!read.length) why = '원문 확인 없음';
     else if (s.sports) why = '스포츠 결과';
+    else if (NOT_NEWS.test(s.title)) why = '리뷰·의견 기사';
     else if (overlapsMain(s, mains)) why = '메인 기사와 같은 사건';
     else if (!lede) why = '핵심 문장 없음';
     else if (lede.e.text.length > MAX_SOURCE_SENTENCE || lede.e.text.endsWith('…')) why = '한 문장으로 정확히 줄이기 어려움';
     else if (out.some((b) => overlapsMain(s, [{ title: b.title }]))) why = '다른 브리프와 같은 사건';
     if (why) { excluded.push({ title: s.title, reason: why }); continue; }
-    // soft breadth: a third brief from the same broad subject needs to be clearly better (no quotas)
-    const broad = broadOf(s.subject);
-    if ((perSubject.get(broad) ?? 0) >= 3) { excluded.push({ title: s.title, reason: '같은 분야 브리프가 이미 많음' }); continue; }
-    perSubject.set(broad, (perSubject.get(broad) ?? 0) + 1);
     out.push({
       key: s.key, title: s.title, subject: s.subject,
       sourceSentence: lede!.e.text, sourcePublisher: lede!.r.publisher,
@@ -107,7 +105,7 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
       modality: modality(lede!.e.text),
       reason: `원문 확인 ${read.length}건${s.corroboration.level === 'corroborated' ? ' · 교차 확인' : ''}`,
     });
-    if (out.length >= (opts.max ?? 8)) break;
+    if (out.length >= (opts.max ?? Infinity)) break;
   }
   return { briefs: out, excluded };
 }
@@ -117,6 +115,30 @@ export interface BriefCheck { ok: boolean; issues: string[] }
 /** Normalised numbers in a text: "1만60명" and "10,060" style digits, as plain digit strings. */
 function numbers(text: string): string[] {
   return [...text.matchAll(/\d[\d,]*(?:\.\d+)?/g)].map((m) => m[0].replace(/,/g, ''));
+}
+
+const fmt = (x: number) => String(Math.round(x * 1000) / 1000);
+
+/**
+ * Numbers an evidence text supports once English units are written the Korean
+ * way: "$16.2bn" → 162(억), "$2 trillion" → 2(조), "£60m" → 6000(만).
+ */
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+const WORD_RE = new RegExp(`\\b(${WORDS.join('|')}|dozen|hundred|thousand)\\b`, 'gi');
+const WORD_VAL: Record<string, string> = { dozen: '12', hundred: '100', thousand: '1000' };
+
+function evidenceNumbers(text: string): Set<string> {
+  const out = new Set(numbers(text));
+  // English number words ("killed nine people")
+  for (const m of text.matchAll(WORD_RE)) { const w = m[1].toLowerCase(); out.add(WORD_VAL[w] ?? String(WORDS.indexOf(w))); }
+  for (const m of text.matchAll(/(\d[\d,]*(?:\.\d+)?)\s*(bn|billion|tn|trillion|m|million)\b/gi)) {
+    const v = Number(m[1].replace(/,/g, ''));
+    const u = m[2].toLowerCase();
+    if (u === 'bn' || u === 'billion') { out.add(fmt(v * 10)); if (v >= 1000) out.add(fmt(v / 1000)); }
+    else if (u === 'tn' || u === 'trillion') out.add(fmt(v));
+    else { out.add(fmt(v * 100)); if (v >= 100) out.add(fmt(v / 100)); }
+  }
+  return out;
 }
 
 export function validateBrief(sentence: string, link: string, c: BriefCandidate): BriefCheck {
@@ -129,7 +151,7 @@ export function validateBrief(sentence: string, link: string, c: BriefCandidate)
   if (s.length < 25) issues.push('너무 짧아 주체·결과가 빠졌을 가능성');
   if (s.length > 170) issues.push('너무 김(170자 초과)');
   if (!c.links.includes(link)) issues.push('링크가 원문 확인된 출처가 아님');
-  const evNums = new Set([...numbers(c.evidenceText), ...figuresIn(c.evidenceText).flatMap(numbers)]);
+  const evNums = new Set([...evidenceNumbers(c.evidenceText), ...figuresIn(c.evidenceText).flatMap(numbers)]);
   for (const n of numbers(s)) if (!evNums.has(n)) issues.push(`근거에 없는 숫자: ${n}`);
   for (const m of c.modality) {
     if (m === 'fact') continue;

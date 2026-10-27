@@ -33,6 +33,8 @@ the label says how far it has been verified.
       — **real but heuristic**: selection quality is weak without the AI editor
 - [x] Sample Korean newsletter from real evidence — **manual**: selection and writing done
       by Claude in-session standing in for the unapproved AI stages
+- [x] '짧게 보는 세상' candidates and sentence checks (`briefs.ts`, `validateBrief`) — **real
+      candidates, manual sentences**: 10 briefs for the 2026-10-28 sample all pass the checks
 - [ ] AI editor / writer / fact checker / quality reviewer — **needs approval** (docs/APPROVALS.md B)
 - [ ] Private draft storage — **needs approval** (docs/APPROVALS.md A)
 

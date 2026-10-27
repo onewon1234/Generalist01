@@ -89,3 +89,24 @@ test('validateBrief rejects lost hedging, invented numbers, two sentences, unver
   assert.match(validateBrief('충격적으로 민주콩고 에볼라 확진자가 무려 1만 명을 넘었다.', 'https://yna.example/a', eb).issues.join(), /과장 표현/);
   assert.match(validateBrief('에볼라 1만 명 돌파', 'https://yna.example/a', eb).issues.join(), /평서문|너무 짧/);
 });
+
+test('validateBrief accepts English units written the Korean way, but not other numbers', () => {
+  const c = cand('Anthropic lost $80.7bn (£60bn) in the first half of this year.', ['The company\'s overall revenue was $16.2bn for the six-month period.'], 'https://bbc.example/a');
+  assert.deepEqual(validateBrief('앤트로픽이 공개한 상장 서류에 따르면 올해 상반기 매출은 162억 달러, 손실은 807억 달러였다.', 'https://bbc.example/a', c).issues, []);
+  assert.match(validateBrief('앤트로픽이 공개한 상장 서류에 따르면 올해 상반기 손실은 870억 달러였다.', 'https://bbc.example/a', c).issues.join(), /근거에 없는 숫자: 870/);
+});
+
+test('chooseBriefs: no subject quota; reviews and opinion are not briefs', () => {
+  const ko = (k: string, t: string, lede: string) => story(k, t, [rec(`https://yna.example/${k}`, '연합뉴스', [['lede', lede]])]);
+  const four = [1, 2, 3, 4].map((i) => ko(`p${i}`, `정치 소식 제목${'가나다라'[i - 1]}${i}번째 사건`, `정치 소식 ${i}번째 문장이 여기에 있다.`));
+  const review = story('r', 'Arnie & Barney review – dimwit ant double-act', [rec('https://g.example/r', 'G', [['lede', 'From the ugly design to the lacklustre script, skip it.']])]);
+  const { briefs, excluded } = chooseBriefs([...four, review]);
+  assert.equal(briefs.length, 4, 'four briefs from one subject are allowed');
+  assert.equal(excluded.find((x) => x.title.startsWith('Arnie'))?.reason, '리뷰·의견 기사');
+});
+
+test('validateBrief reads English number words in the evidence', () => {
+  const c = cand('Jordan struck Syria after an attack on a funeral that killed nine people.', ['Officials said five people were killed in the strike.'], 'https://bbc.example/j');
+  assert.deepEqual(validateBrief('요르단은 9명이 숨진 장례식 공격에 대한 보복으로 시리아를 공습했다고 밝혔고, 시리아 당국은 5명이 숨졌다고 전했다.', 'https://bbc.example/j', c).issues, []);
+  assert.match(validateBrief('요르단은 장례식 공격에 대한 보복으로 시리아를 공습해 7명이 숨졌다고 밝혔다.', 'https://bbc.example/j', c).issues.join(), /근거에 없는 숫자: 7/);
+});

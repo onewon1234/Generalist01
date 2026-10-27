@@ -11,7 +11,7 @@ const KW: Record<string, RegExp> = {
   'philosophy-literature-arts-culture': /영화|드라마|음악|전시|문학|소설|예술|공연|콘서트|k팝|케이팝|작가|미술|다큐|film|movie|music|art\b|artist|novel|book|museum|culture|documentary|theatre|theater|poetry|philosoph/i,
   'psychology-behavior-everyday': /수면|심리학|행복감|식단|육아|외로움|습관|정신건강|mental|sleep|exercise|happiness|behaviou?r|habit|loneliness|wellbeing|relationship|parenting/i,
 };
-const SPORTS = /프로농구|프로야구|프로축구|k리그|kbo|kbl|챔피언스리그|월드컵|올림픽|전적|연패|연승|득점|홈런|선발|감독|리그|\bvs\b|premier league|champions league|world cup|olympic|match report|score[sd]?\b|\bnba\b|\bnfl\b|\bmlb\b/i;
+const SPORTS = /프로농구|프로야구|프로축구|k리그|kbo|kbl|챔피언스리그|월드컵|올림픽|전적|연패|연승|득점|홈런|선발 (?:투수|출전|등판)|(?<!예술|음악|영화|연출|미술)감독|리그|\bvs\b|premier league|champions league|world cup|olympic|match report|score[sd]?\b|\bnba\b|\bnfl\b|\bmlb\b/i;
 
 export interface Classification { subject: string; sports: boolean; hits: Record<string, number> }
 
