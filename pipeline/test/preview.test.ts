@@ -120,3 +120,12 @@ test('pool: each default-composition desk gets research places even when ranked 
   assert.ok(pool.some((c) => c.key === 'ko'), pool.map((c) => c.key).join());
   assert.ok(pool.length <= 5);
 });
+
+test('heuristic evidence: one fully read source clears the evidence gate, none does not', async () => {
+  const { heuristicScores } = await import('../src/preview/preview.ts');
+  const c = { key: 'e', title: 'A standalone essay', freshnessType: 'evergreen' as const, articles: [article({ publisher: 'Aeon', reliabilityTier: 1 })] };
+  const one = heuristicScores(c, 'history-civilization-geography', false, { readPublishers: ['aeon'], unread: [], corroboratedFigures: [], singleSourceFigures: [], level: 'single-source' }, 30);
+  const none = heuristicScores(c, 'history-civilization-geography', false, { readPublishers: [], unread: [], corroboratedFigures: [], singleSourceFigures: [], level: 'unverified' }, 30);
+  assert.ok(one.evidence >= 5, String(one.evidence));
+  assert.ok(none.evidence < 5);
+});

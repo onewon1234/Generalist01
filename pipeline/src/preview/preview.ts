@@ -149,7 +149,8 @@ export function heuristicScores(c: Cluster, subject: string, sports: boolean, co
     narrative: 5,
     payoff: clamp(5 + (knowledge ? 1 : 0) + (read >= 2 ? 1 : 0)),
     relevance,
-    evidence: clamp(2 + read * 2.5 + (cor.level === 'corroborated' ? 1 : 0)),
+    // One fully read source can carry a story (5); independent reads and corroboration add more.
+    evidence: clamp(3 + read * 2 + (cor.level === 'corroborated' ? 1 : 0)),
     reliable: read >= 1,
     isMajor: pubs >= 8,
     ongoing: pubs >= 8,

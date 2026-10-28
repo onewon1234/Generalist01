@@ -202,7 +202,6 @@ export function renderArticle(e: Edition, s: Story): string {
     <header class="article-header">
       ${storyMeta(s)}
       <h1>${esc(s.headline)}</h1>
-      <p class="deck">${esc(s.deck)}</p>
       <p class="standfirst">${esc(s.standfirst)}</p>
     </header>
     <div class="article-body">
