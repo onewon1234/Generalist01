@@ -41,8 +41,9 @@ every check; subscription session (no paid API); recipient set in secrets.
    researched candidates (`stories`: title, desk, records with url, publisher,
    dates, access status, evidence sentences and an excerpt of up to 1,000
    characters), heuristic scores (not editorial judgment), brief candidates
-   (`briefs`), discovery leads and format exclusions. If today's pack is
-   missing (the research workflow failed), push nothing.
+   (`briefs`), discovery leads and format exclusions. If today's pack is not
+   there yet, `git pull` every 2 minutes until 06:30 KST (scheduled workflows
+   can start late); if it is still missing, push nothing.
 4. **Select** following CLAUDE.md §2 and the default composition: about one
    Korea story (a domestic social, cultural or economic phenomenon worth
    understanding, not routine news), one or two world stories with history and
