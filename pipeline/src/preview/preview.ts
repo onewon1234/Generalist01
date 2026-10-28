@@ -248,7 +248,7 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
   const sizes = assignCardSizes(sel.chosen);
   for (const st of stories) {
     const chosen = sel.chosen.find((c) => c.key === st.key);
-    const c = clusters.find((x) => x.key === st.key)!;
+    const c = pool.find((x) => x.key === st.key)!;
     st.selected = !!chosen;
     st.form = chosen?.form ?? c.freshnessType;
     st.desk = chosen?.desk ?? clusterDesk(c);

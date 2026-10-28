@@ -129,3 +129,24 @@ test('heuristic evidence: one fully read source clears the evidence gate, none d
   assert.ok(one.evidence >= 5, String(one.evidence));
   assert.ok(none.evidence < 5);
 });
+
+test('format gate: a review cluster stays out of the pool; a page bylined by a brand studio is rejected after reading', async () => {
+  const { res, fetcher } = fixture();
+  const review = cl('review', [
+    ['The Devils review – a frenzied aria', 'guardian.example', 'https://g.example/film/review'],
+    ['Film review: The Devils restored', 'other.example', 'https://o.example/review'],
+  ]);
+  const r2: IngestResult = { ...res, clusters: [...res.clusters, review], candidates: [...res.candidates, summarize(review)] };
+  const excluded: { title: string; url: string; kind: any; stage: any }[] = [];
+  assert.ok(!choosePool(r2, 10, () => 'world-politics-society', excluded).some((c) => c.key === 'review'));
+  assert.deepEqual(excluded.map((x) => [x.kind, x.stage]), [['review', 'pool']]);
+  const sponsored: Fetcher = async (url) => {
+    const r = await fetcher(url);
+    return r.ok && r.body.includes('<article>') ? { ...r, body: r.body.replace('<head>', '<head><meta name="author" content="Example Brand Studio">') } : r;
+  };
+  const p = await buildPreview(res, sponsored, () => 'world-politics-society', { now: NOW, minGapMs: 0 });
+  const fire = p.stories.find((s) => s.key === 'fire')!;
+  assert.equal(fire.selected, false);
+  assert.match(fire.rejectReason!, /format: 광고·후원 콘텐츠/);
+  assert.deepEqual(p.formExcluded.map((x) => x.stage), ['after reading']);
+});
