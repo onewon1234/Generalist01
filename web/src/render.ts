@@ -117,7 +117,6 @@ export function renderHome(e: Edition): string {
   const body = `${masthead(e, 0)}
 <main class="home">
   ${e.intro ? `<p class="intro">${esc(e.intro)}</p>` : ''}
-  ${e.briefs.length ? `<p class="jump"><a href="#briefs">짧게 보는 세상 ${e.briefs.length}건 바로 보기</a></p>` : ''}
   ${lead ? `<article class="lead">
     <a href="articles/${esc(lead.slug)}.html">
       <h1 class="lead-headline">${esc(lead.headline)}</h1>
@@ -125,34 +124,38 @@ export function renderHome(e: Edition): string {
     </a>
     ${storyMeta(lead)}
   </article>` : '<p class="empty">오늘 판에 실린 글이 없습니다.</p>'}
+  ${e.briefs.length ? renderLines(e.briefs) : ''}
   ${rest.length ? `<ol class="entries" aria-label="오늘의 다른 글">${rest.map(item).join('\n')}</ol>` : ''}
 </main>
-${e.briefs.length ? renderBriefs(e.briefs) : ''}
 ${footer()}`;
   return page(`Generalist Daily — ${koreanDate(e.date)}`, body, { description: e.intro ?? lead?.deck ?? '', preview: e.status !== 'published', provenance: e.provenance, depth: 0 });
 }
 
-/** "짧게 보는 세상": a separate band after the main stories, scannable on a phone. */
-export function renderBriefs(bs: Brief[]): string {
-  return `<section class="briefs" id="briefs" aria-labelledby="briefs-title">
-  <div class="briefs-inner">
-    <header class="briefs-header">
-      <h2 id="briefs-title">짧게 보는 세상</h2>
-      <p>메인에 싣지 않은 국내외 소식 ${bs.length}건</p>
-    </header>
-    <ul class="brief-list">
-      ${bs.map((b) => {
-        const u = safeUrl(b.url);
-        return `<li class="brief">
-        <span class="brief-tag">${esc(b.tag)}</span>
-        <div class="brief-body">
-          <p><strong class="brief-label">${esc(b.label)}</strong> ${esc(b.text)}</p>
-          <p class="brief-meta">${u ? `<a href="${esc(u)}" rel="noopener">${esc(b.publisher)}</a>` : esc(b.publisher)}<time datetime="${esc(b.published)}">${shortDate(b.published)}</time></p>
+/**
+ * "오늘의 한 줄": a news strip right under the lead story. Each row is one
+ * line (tag, line, date) that opens to the full one- or two-sentence item and
+ * its source. Plain <details>, so it works without script and on a phone.
+ */
+export function renderLines(bs: Brief[]): string {
+  return `<section class="lines" id="briefs" aria-labelledby="lines-title">
+  <header class="lines-header">
+    <h2 id="lines-title">오늘의 한 줄</h2>
+    <p>메인 글과 겹치지 않는 국내외 소식 ${bs.length}건 · 누르면 자세히</p>
+  </header>
+  <ul class="line-list">
+    ${bs.map((b) => {
+      const u = safeUrl(b.url);
+      return `<li class="line-item">
+      <details>
+        <summary><span class="line-tag">${esc(b.tag)}</span><span class="line-text">${esc(b.line)} <time datetime="${esc(b.published)}">${shortDate(b.published)}</time></span></summary>
+        <div class="line-detail">
+          <p>${esc(b.text)}</p>
+          <p class="line-source">${u ? `<a href="${esc(u)}" rel="noopener">${esc(b.publisher)} 원문</a>` : esc(b.publisher)}</p>
         </div>
-      </li>`;
-      }).join('\n')}
-    </ul>
-  </div>
+      </details>
+    </li>`;
+    }).join('\n')}
+  </ul>
 </section>`;
 }
 
@@ -214,7 +217,7 @@ export function renderArticle(e: Edition, s: Story): string {
   </article>
   <nav class="next" aria-label="다른 글">
     <a href="../index.html">오늘의 판으로 돌아가기</a>
-    ${e.briefs.length ? `<a href="../index.html#briefs">짧게 보는 세상 ${e.briefs.length}건</a>` : ''}
+    ${e.briefs.length ? `<a href="../index.html#briefs">오늘의 한 줄 ${e.briefs.length}건</a>` : ''}
   </nav>
 </main>
 ${footer()}`;

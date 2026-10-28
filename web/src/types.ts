@@ -19,22 +19,18 @@ export interface Edition {
 /** Desks of the default edition composition (see pipeline/src/desk.ts). */
 export type Desk = 'korea' | 'world' | 'economy' | 'tech' | 'explore';
 
-/** Ways a headline can draw the reader in (Headline Editor stage). */
-export type HeadlineStyle = 'paradox' | 'surprising-fact' | 'question' | 'conflict' | 'human' | 'connection' | 'plain';
-
-export interface HeadlineCandidate { style: HeadlineStyle; headline: string; deck: string }
-
 /**
- * Headline Editor record: several candidates in different styles, the chosen
- * one, and the previous version for comparison. Kept with the draft.
+ * Headline Editor record: the previous headline and deck, why they changed,
+ * the other edits made to the piece, and the subheadings before and after.
+ * Kept with the draft so a human editor can review the judgement.
  */
 export interface HeadlineReview {
-  candidates: HeadlineCandidate[];
-  /** Index into candidates. */
-  chosen: number;
-  /** Why this one: does it tell the story, spark curiosity, hint the payoff, stay accurate? */
+  before: { headline: string; deck?: string };
+  /** Why the new headline tells the story better (specific fact, clarity, accuracy against the body). */
   reason: string;
-  before?: { headline: string; deck?: string };
+  /** Body edits made in the same pass, each with its reason. */
+  changes?: string[];
+  subheads?: { before: (string | undefined)[]; after: (string | undefined)[] };
 }
 
 export interface Story {
@@ -84,7 +80,7 @@ export interface Source {
 }
 
 /**
- * One item of "짧게 보는 세상": one or two complete sentences with a field tag,
+ * One item of "오늘의 한 줄": one or two complete sentences with a field tag,
  * a short label for scanning, and the verified source with its publication time.
  */
 export interface Brief {
@@ -92,6 +88,8 @@ export interface Brief {
   tag: BriefTag;
   /** A few words naming the item, for scanning (not a headline fragment of the sentence). */
   label: string;
+  /** One scannable line (about 20–48 characters) shown in "오늘의 한 줄"; `text` opens on demand. */
+  line: string;
   text: string;
   url: string;
   publisher: string;

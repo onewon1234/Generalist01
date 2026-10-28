@@ -1,34 +1,51 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { checkBriefs, checkHeadlines, normalise } from '../src/checks.ts';
+import { checkBriefs, checkHeadlines, checkLine, checkSubheads, normalise } from '../src/checks.ts';
 import type { Edition, Story } from '../src/types.ts';
 
 function story(slug: string, headline: string, deck = '부제가 내용을 구체적으로 말한다', extra: Partial<Story> = {}): Story {
   return { slug, headline, deck, standfirst: '요약.', desk: 'world', domain: '세계', form: 'current', sections: [{ paragraphs: ['본문.[1]'] }],
     sources: [{ n: 1, publisher: 'P', title: 'T', url: `https://example.org/${slug}`, access: '원문 확인' }], ...extra };
 }
-const review = (h: string, d: string) => ({ candidates: [
-  { style: 'plain' as const, headline: '평범한 사실형 제목입니다', deck: '부제 하나를 여기에 적는다' },
-  { style: 'paradox' as const, headline: h, deck: d },
-  { style: 'question' as const, headline: '이것은 질문형 제목일까요?', deck: '부제 둘을 여기에 적는다' },
-], chosen: 1, reason: '이야기를 가장 정확하게 드러내면서 궁금증을 만든다' });
+const review = { before: { headline: '예전 제목', deck: '예전 부제' }, reason: '본문의 가장 구체적인 사실을 제목으로 올렸다' };
 
-test('headlines: shape, hype, repetition, candidates in several styles, not all questions', () => {
-  const ok = story('a', '다시 자라던 빙하가 멈춘 해', '부제가 내용을 구체적으로 말한다', { headlineReview: review('다시 자라던 빙하가 멈춘 해', '부제가 내용을 구체적으로 말한다') });
+test('headlines: shape, hype, repetition, a reason for the change; no candidate or question quotas', () => {
+  const ok = story('a', '다시 자라던 빙하가 멈춘 해', '부제가 내용을 구체적으로 말한다', { headlineReview: review });
   const e = { date: '2026-10-28', status: 'preview', stories: [ok], briefs: [] } as Edition;
   assert.deepEqual(checkHeadlines(e).errors, []);
   const bad = story('b', '충격! 빙하가 멈췄다', '충격! 빙하가 멈췄다');
   const r = checkHeadlines({ ...e, stories: [bad] }).errors.join('\n');
   assert.match(r, /hype/);
   assert.match(r, /deck repeats/);
-  const allQ = ['왜 빙하는 멈췄나?', '왜 투표는 돌까?', '왜 값이 다를까?'].map((h, i) => story(`q${i}`, h));
-  assert.match(checkHeadlines({ ...e, stories: allQ }).errors.join(), /3 of 3 headlines are questions/);
-  const mismatch = story('m', '실제 게재된 다른 제목', '부제가 내용을 구체적으로 말한다', { headlineReview: review('후보에서 고른 제목', '부제가 내용을 구체적으로 말한다') });
-  assert.match(checkHeadlines({ ...e, stories: [mismatch] }).errors.join(), /differ from the chosen candidate/);
+  const allQ = ['왜 빙하는 멈췄나?', '왜 투표는 돌까?', '왜 값이 다를까?'].map((h, i) => story(`q${i}`, h, '부제가 내용을 구체적으로 말한다', { headlineReview: review }));
+  assert.deepEqual(checkHeadlines({ ...e, stories: allQ }).errors, [], 'question headlines are the editor\'s call');
+  const noReason = story('n', '이유 없이 바뀐 제목', '부제가 내용을 구체적으로 말한다', { headlineReview: { ...review, reason: ' ' } });
+  assert.match(checkHeadlines({ ...e, stories: [noReason] }).errors.join(), /no reason/);
+});
+
+test('subheadings: generic ones are noted, concrete and short natural ones pass', () => {
+  const sec = (heading: string) => ({ heading, paragraphs: ['본문.[1]'] });
+  const s = story('s', '구체적인 제목입니다', '부제가 내용을 구체적으로 말한다', { sections: [{ paragraphs: ['첫.[1]'] },
+    sec('배경'), sec('결선까지'), sec('금리가 말해 주는 것'), sec('고칠 수 있을까'), sec('13년 동안 26번의 불'), sec('금리는 위험의 가격')] });
+  const notes = checkSubheads(s).join('\n');
+  for (const h of ['배경', '결선까지', '금리가 말해 주는 것', '고칠 수 있을까']) assert.match(notes, new RegExp(`"${h}"`));
+  for (const h of ['13년 동안 26번의 불', '금리는 위험의 가격']) assert.doesNotMatch(notes, new RegExp(`"${h}"`));
+});
+
+test('one-line version: length, no new numbers, hedges and attribution kept', () => {
+  const b = (line: string, text: string) => ({ tag: '한국' as const, label: 'x', line, text, url: 'https://x.example/a', publisher: 'P', published: '2026-10-27T03:00:00Z' });
+  const text = '금융위원회는 연 60%를 넘는 불법사금융의 처벌 상한을 징역 10년으로 높이는 법안을 발의할 계획이라고 밝혔다.';
+  assert.deepEqual(checkLine(b('금융위, 연 60% 넘는 불법사금융 처벌 징역 10년으로 상향 추진', text)), []);
+  assert.deepEqual(checkLine(b('금융위 "불법사금융 처벌 징역 10년으로"', text)), [], 'a quotation keeps attribution');
+  assert.match(checkLine(b('불법사금융 처벌 징역 10년으로 높아진다', text)).join(), /drops the plan wording/);
+  assert.match(checkLine(b('불법사금융 처벌 징역 15년으로 상향 추진', text)).join(), /number \(15\)/);
+  assert.match(checkLine(b('가'.repeat(49), text)).join(), /longer than 48/);
+  assert.match(checkLine(b('', text)).join(), /missing/);
+  assert.deepEqual(checkLine(b('영국 경찰, 남성 2명 기소', '영국 경찰이 두 남성을 기소했다.')), [], 'native Korean counts match digits');
 });
 
 test('briefs: tags, labels, dates against the edition time, duplicates, overlap with main stories', () => {
-  const b = (label: string, text: string, url: string, published = '2026-10-27T03:00:00Z', tag: any = '국제') => ({ tag, label, text, url, publisher: 'P', published });
+  const b = (label: string, text: string, url: string, published = '2026-10-27T03:00:00Z', tag: any = '국제') => ({ tag, label, line: label + ' 소식', text, url, publisher: 'P', published });
   const e = { date: '2026-10-28', status: 'preview', stories: [story('main', '메인 기사의 제목입니다')], briefs: [
     b('요르단 공습', '요르단군이 시리아 남부를 공습했다고 밝혔다.', 'https://bbc.example/1?at_medium=RSS'),
     b('같은 링크', '다른 문장이지만 같은 원문을 가리킨다.', 'https://bbc.example/1'),

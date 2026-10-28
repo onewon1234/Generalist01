@@ -19,7 +19,7 @@ function edition(): Edition {
       { slug: 'second', headline: '두 번째 이야기의 역설', deck: '둘째 부제도 구체적으로 쓴다', standfirst: '둘째 요약.', desk: 'explore', domain: '과학', form: 'evergreen',
         sections: [{ paragraphs: ['본문.[1]'] }], sources: [{ n: 1, publisher: 'Lab', title: 'Paper', url: 'https://example.org/p', access: '원문 확인' }] },
     ],
-    briefs: [{ tag: '국제', label: '어느 나라 선거', text: '한 문장 소식이다.', url: 'https://example.org/b', publisher: 'Wire', published: '2026-10-27T03:00:00Z' }],
+    briefs: [{ tag: '국제', label: '어느 나라 선거', line: '어느 나라 선거 결과 발표', text: '한 문장 소식이다.', url: 'https://example.org/b', publisher: 'Wire', published: '2026-10-27T03:00:00Z' }],
   };
 }
 
@@ -50,18 +50,20 @@ test('validateEdition: citations, sources and links must match', () => {
   assert.ok(p.some((x) => /bad slug/.test(x)));
 });
 
-test('home: question-led previews, preview banner, briefs, noindex while unpublished', () => {
+test('home: lead, then the one-line news strip, then the other stories; preview banner, noindex', () => {
   const h = renderHome(edition());
   assert.match(h, /<h1 class="lead-headline">첫 번째 &lt;제목&gt;이 바꾼 것<\/h1>/);
   assert.match(h, /<p class="lead-deck">부제가 내용을 구체적으로 말한다<\/p>/);
-  assert.match(h, /href="#briefs">짧게 보는 세상 1건 바로 보기/);
-  assert.match(h, /<section class="briefs" id="briefs"/);
-  assert.match(h, /<span class="brief-tag">국제<\/span>/);
-  assert.match(h, /<time datetime="2026-10-27T03:00:00Z">10월 27일<\/time>/);
-  assert.ok(h.indexOf('class="briefs"') > h.indexOf('</main>'), 'briefs are a separate band after the main stories');
+  assert.match(h, /<section class="lines" id="briefs"/);
+  assert.match(h, /<h2 id="lines-title">오늘의 한 줄<\/h2>/);
+  assert.match(h, /<summary><span class="line-tag">국제<\/span><span class="line-text">어느 나라 선거 결과 발표 <time datetime="2026-10-27T03:00:00Z">10월 27일<\/time><\/span><\/summary>/);
+  assert.match(h, /<div class="line-detail">\s*<p>한 문장 소식이다.<\/p>/);
+  assert.match(h, /href="https:\/\/example.org\/b" rel="noopener">Wire 원문/);
+  const lead = h.indexOf('class="lead"'), strip = h.indexOf('class="lines"'), rest = h.indexOf('class="entries"');
+  assert.ok(lead < strip && strip < rest, 'the strip sits right under the lead story');
+  assert.ok(strip < h.indexOf('</main>'));
   assert.match(h, /비공개 미리보기입니다/);
   assert.match(h, /noindex/);
-  assert.match(h, /짧게 보는 세상/);
   assert.match(h, /2026년 10월 28일 수요일/);
   const pub = renderHome({ ...edition(), status: 'published' });
   assert.doesNotMatch(pub, /비공개 미리보기|noindex/);

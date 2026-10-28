@@ -21,6 +21,7 @@ import type { Article, Cluster, FreshnessType, Scores } from '../types.ts';
 import { chooseBriefs, type BriefCandidate } from './briefs.ts';
 import { deskOf, DESK_PREFERENCE, DESK_WEIGHTS, type Desk } from '../desk.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
+import { contentKind, KIND_KO, type ContentKind } from '../kind.ts';
 
 export interface PreviewStory {
   key: string;
@@ -54,6 +55,8 @@ export interface Preview {
   /** '짧게 보는 세상' candidates (sentences are written in the writer stage). */
   briefs: BriefCandidate[];
   briefsExcluded: { title: string; reason: string }[];
+  /** Items kept out of the main candidates by format (review, sponsored, live blog, …), with the reason. */
+  formExcluded: { title: string; url: string; kind: ContentKind; stage: 'pool' | 'after reading' }[];
   /** Discovery leads from reference-only sources (not researched, not evidence). */
   leads: { title: string; url: string; source: string; publishedAt: string | null }[];
   warnings: string[];
@@ -80,7 +83,7 @@ const AI_TITLE = /\bAI\b|인공지능|artificial intelligence|chatbot|챗봇|LLM
  * cap made Korean wire items fill every place English stories could not take,
  * audit 2026-10-27 r5).
  */
-export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (a: Article) => string): Cluster[] {
+export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (a: Article) => string, excluded: Preview['formExcluded'] = []): Cluster[] {
   const byKey = new Map(res.clusters.map((c) => [c.key, c]));
   const subjectCap = Math.ceil(poolSize * 0.35);
   const eligible: { c: Cluster; broad: string; desk: Desk }[] = [];
@@ -91,7 +94,12 @@ export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (
     // Single-source stories are researched when the source is tier 1 or a slow,
     // non-news publisher (standalone features and essays are worth investigating).
     if (cand.publishers < 2 && !tier1 && c.freshnessType !== 'evergreen') continue;
-    const cls = classify(c.articles.map((a) => a.title), sourceSubject(c.articles[0]));
+    // Format gate: a cluster is a candidate only through an article that is a story.
+    const kinds = c.articles.map((a) => contentKind({ title: a.title, url: a.url, publisher: a.publisher }));
+    const storyIdx = kinds.indexOf('story');
+    if (storyIdx < 0) { excluded.push({ title: c.title, url: c.articles[0]?.url ?? '', kind: kinds[0], stage: 'pool' }); continue; }
+    if (kinds[0] !== 'story' || contentKind({ title: c.title }) !== 'story') c.title = c.articles[storyIdx].title;
+    const cls = classify(c.articles.map((a) => a.title), sourceSubject(c.articles[0]), { beat: c.freshnessType === 'evergreen' });
     if (cls.sports) continue;
     const desk = deskOf({ title: c.title, language: c.articles[0]?.language ?? '', category: cls.subject, aiPrimary: AI_TITLE.test(c.title) });
     eligible.push({ c, broad: broadOf(cls.subject), desk });
@@ -135,7 +143,25 @@ const clamp = (x: number) => Math.max(0, Math.min(10, Math.round(x * 10) / 10));
  * deterministic, and weak by design: curiosity, narrative and payoff need
  * editorial judgement, so they stay near neutral here.
  */
-export function heuristicScores(c: Cluster, subject: string, sports: boolean, cor: Corroboration, ageH: number | null): Scores {
+/**
+ * Depth of what was actually read: the longest permitted text and its figures.
+ * A 800-character wire item and a 9,000-character feature are not the same
+ * material for an explanatory piece; this is evidence about the material, not a
+ * desk bonus.
+ */
+export interface Depth { maxChars: number; figures: number }
+export function depthOf(records: RetrievalRecord[]): Depth {
+  const read = records.filter((r) => r.status === 'read');
+  return { maxChars: Math.max(0, ...read.map((r) => r.textChars ?? 0)), figures: new Set(read.flatMap((r) => r.evidence.flatMap((e) => e.figures))).size };
+}
+/** Narrative material: −1 below 1,500 characters, 0 to 4,000, then up to +2 at 10,000+. */
+export function depthNarrative(d: Depth): number {
+  if (d.maxChars < 1500) return -1;
+  if (d.maxChars < 4000) return 0;
+  return Math.min(2, (d.maxChars - 4000) / 3000);
+}
+
+export function heuristicScores(c: Cluster, subject: string, sports: boolean, cor: Corroboration, ageH: number | null, depth: Depth = { maxChars: 4000, figures: 0 }): Scores {
   const pubs = independentPublishers(c);
   const read = cor.readPublishers.length;
   const figures = cor.corroboratedFigures.length;
@@ -145,8 +171,8 @@ export function heuristicScores(c: Cluster, subject: string, sports: boolean, co
   const title = c.title;
   return {
     curiosity: clamp(5 + (knowledge ? 1.5 : 0)),
-    understanding: clamp(4 + Math.min(2, read) + Math.min(2, figures) * 0.5),
-    narrative: 5,
+    understanding: clamp(4 + Math.min(2, read) + Math.min(2, figures) * 0.5 + (depth.maxChars >= 6000 ? 0.5 : depth.maxChars < 1500 ? -0.5 : 0)),
+    narrative: clamp(5 + depthNarrative(depth)),
     payoff: clamp(5 + (knowledge ? 1 : 0) + (read >= 2 ? 1 : 0)),
     relevance,
     // One fully read source can carry a story (5); independent reads and corroboration add more.
@@ -189,7 +215,8 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
   const now = opts.now ?? new Date();
   const polite = politeFetcher(fetcher, opts.minGapMs ?? 1500);
   const robots = new RobotsCache(polite);
-  const pool = choosePool(res, opts.poolSize ?? 24, sourceSubject);
+  const formExcluded: Preview['formExcluded'] = [];
+  const pool = choosePool(res, opts.poolSize ?? 24, sourceSubject, formExcluded);
   let fetches = 0;
   const stories: PreviewStory[] = [];
   const clusters: Cluster[] = [];
@@ -197,14 +224,19 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     const picks = pickArticles(c, opts.perStory ?? 3);
     const records: RetrievalRecord[] = [];
     for (const a of picks) { records.push(await retrieveArticle(a, { fetcher: polite, robots, now: () => new Date() })); fetches++; }
+    // Sponsored content is often visible only on the page (byline "… Insights", "Partner content").
+    const pageKinds = records.filter((r) => r.status === 'read').map((r) => contentKind({ title: r.title ?? '', url: r.finalUrl ?? r.url, author: r.author }));
+    const formReject = pageKinds.length > 0 && pageKinds.every((k) => k !== 'story') ? pageKinds[0] : null;
+    if (formReject) formExcluded.push({ title: c.title, url: records[0]?.url ?? '', kind: formReject, stage: 'after reading' });
     const cor = corroborate(records);
     const texts = [...c.articles.map((a) => a.title), ...records.flatMap((r) => r.evidence.map((e) => e.text))];
-    const cls = classify(texts, sourceSubject(c.articles[0]));
+    const cls = classify(texts, sourceSubject(c.articles[0]), { beat: c.freshnessType === 'evergreen' });
     const newest = c.articles.map(sourceTime).filter((t): t is string => !!t).sort().at(-1);
     const ageH = newest ? Math.round(hoursBetween(newest, now) * 10) / 10 : null;
-    const scores = heuristicScores(c, cls.subject, cls.sports, cor, ageH);
+    const scores = heuristicScores(c, cls.subject, cls.sports, cor, ageH, depthOf(records));
     c.scores = scores;
-    clusters.push(c);
+    if (formReject) c.rejectReason = `format: ${KIND_KO[formReject]}`;
+    else clusters.push(c);
     const s: Omit<PreviewStory, 'reasoning'> = {
       key: c.key, title: c.title, language: c.articles[0]?.language ?? '', subject: cls.subject, sports: cls.sports,
       publishers: independentPublishers(c), articles: c.articles.length, newestAgeHours: ageH, records, corroboration: cor,
@@ -234,6 +266,7 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     stories,
     briefs,
     briefsExcluded: excluded,
+    formExcluded,
     leads: (res.leads ?? []).sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '')).slice(0, 40)
       .map((a) => ({ title: a.title, url: a.url, source: a.publisher, publishedAt: a.publishedAt ?? null })),
     warnings: sel.warnings,

@@ -1,0 +1,109 @@
+{
+ "note": "Korean candidate references (2026-10-28 selection diagnosis): the only active Korean source was the Yonhap wire, so Korea candidates were short single-source wire items. Verify before activation; not a claim that any is licensed or accessible.",
+ "candidates": [
+  {
+   "key": "khan",
+   "name": "경향신문",
+   "homepage": "https://www.khan.co.kr",
+   "urls": [
+    "https://www.khan.co.kr/rss/rssdata/total_news.xml"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "world-politics-society",
+   "reliabilityTier": 1,
+   "evergreen": false
+  },
+  {
+   "key": "weekly-khan",
+   "name": "주간경향",
+   "homepage": "https://weekly.khan.co.kr",
+   "urls": [
+    "https://weekly.khan.co.kr/rss/rssdata/total_news.xml"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "world-politics-society",
+   "reliabilityTier": 2,
+   "evergreen": true
+  },
+  {
+   "key": "sisain",
+   "name": "시사IN",
+   "homepage": "https://www.sisain.co.kr",
+   "urls": [
+    "https://www.sisain.co.kr/rss/allArticle.xml"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "world-politics-society",
+   "reliabilityTier": 2,
+   "evergreen": true
+  },
+  {
+   "key": "hankyung",
+   "name": "한국경제",
+   "homepage": "https://www.hankyung.com",
+   "urls": [
+    "https://www.hankyung.com/feed/all-news"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "economics-finance-business",
+   "reliabilityTier": 2,
+   "evergreen": false
+  },
+  {
+   "key": "mk",
+   "name": "매일경제",
+   "homepage": "https://www.mk.co.kr",
+   "urls": [
+    "https://www.mk.co.kr/rss/30000001/"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "economics-finance-business",
+   "reliabilityTier": 2,
+   "evergreen": false
+  },
+  {
+   "key": "byline",
+   "name": "바이라인네트워크",
+   "homepage": "https://byline.network",
+   "urls": [
+    "https://byline.network/feed/"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "science-technology-ai",
+   "reliabilityTier": 2,
+   "evergreen": false
+  },
+  {
+   "key": "bloter",
+   "name": "블로터",
+   "homepage": "https://www.bloter.net",
+   "urls": [
+    "https://www.bloter.net/rss/allArticle.xml"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "science-technology-ai",
+   "reliabilityTier": 2,
+   "evergreen": false
+  },
+  {
+   "key": "chosun",
+   "name": "조선일보",
+   "homepage": "https://www.chosun.com",
+   "urls": [
+    "https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml"
+   ],
+   "language": "ko",
+   "region": "KR",
+   "subject": "world-politics-society",
+   "reliabilityTier": 1,
+   "evergreen": false
+  }
+ ]
+}

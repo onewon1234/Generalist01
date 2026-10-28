@@ -3,6 +3,7 @@
  * Evidence snippets are quoted in their original language (translation and
  * article writing need the AI stages, which are not enabled).
  */
+import { KIND_KO } from '../kind.ts';
 import { broadOf } from '../config.ts';
 import type { RetrievalRecord } from '../research/retrieve.ts';
 import { MOD_LABEL } from './briefs.ts';
@@ -69,6 +70,10 @@ export function renderPreview(p: Preview): string {
     ...(p.briefs.length ? p.briefs.map((b, i) => `${i + 1}. [${b.tag}] **${b.title}** · ${KST(b.publishedAt)} · 확실성: ${b.modality.map((m) => MOD_LABEL[m]).join('/')} · ${b.reason}\n   원문(${b.sourcePublisher}): “${b.sourceSentence}”\n   <${b.links[0]}>`) : ['- 후보 없음']),
     '',
     ...(p.briefsExcluded.length ? ['제외: ' + p.briefsExcluded.map((x) => `${x.title} (${x.reason})`).join(' · '), ''] : []),
+    '## 형식 때문에 메인 후보에서 뺀 항목',
+    '',
+    ...(p.formExcluded?.length ? p.formExcluded.map((x) => `- ${KIND_KO[x.kind]} (${x.stage === 'pool' ? '제목·주소' : '원문 확인 후'}): ${x.title} <${x.url}>`) : ['- 없음']),
+    '',
     '## 참고 단서 (영상 채널·유료 매체, 근거로 쓰지 않음)',
     '',
     '> 주제와 각도를 찾기 위한 목록입니다. 쓰려면 접근 가능한 원문을 따로 찾아 읽어야 합니다.',

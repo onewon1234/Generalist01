@@ -14,6 +14,7 @@
  * The sentence itself is written in the writer stage (subscription-based or
  * human), never invented by rules.
  */
+import { contentKind, KIND_KO } from '../kind.ts';
 import { broadOf } from '../config.ts';
 import { deskOf } from '../desk.ts';
 import { anchorWords, properNouns } from '../ingest/group.ts';
@@ -113,6 +114,7 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
     if (!read.length) why = '원문 확인 없음';
     else if (s.sports) why = '스포츠 결과';
     else if (NOT_NEWS.test(s.title)) why = '리뷰·의견 기사';
+    else if (contentKind({ title: s.title, url: s.records[0]?.url }) !== 'story') why = KIND_KO[contentKind({ title: s.title, url: s.records[0]?.url })];
     else if (overlapsMain(s, mains)) why = '메인 기사와 같은 사건';
     else if (!lede) why = '핵심 문장 없음';
     else if (lede.e.text.length > MAX_SOURCE_SENTENCE || lede.e.text.endsWith('…')) why = '한 문장으로 정확히 줄이기 어려움';
