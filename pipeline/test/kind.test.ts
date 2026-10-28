@@ -14,6 +14,7 @@ test('content kind: formats that must not become main stories (r9 cases)', () =>
   assert.equal(k('Israeli voters: hope and despair as election ballots are counted', 'https://www.aljazeera.com/video/newsfeed/2026/10/28/israeli-voters'), 'video');
   assert.equal(k('What we know about Ukraine-Russia truce in Oleshky', 'https://www.bbc.co.uk/news/videos/c687z5ne1w4ro'), 'video');
   assert.equal(k('Lit Hub Daily: October 28, 2026'), 'digest');
+  assert.equal(k('Both blocs claim upper hand in crucial Israeli election | First Thing'), 'digest');
   assert.equal(k('Photos: Spain high-speed train crash kills 30'), 'video');
   assert.equal(k('This week we launched the new Dezeen website'), 'house');
   assert.equal(k('Dezeen Awards public vote reveals 16 winning designs', '', '', 'Dezeen'), 'house');

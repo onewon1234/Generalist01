@@ -25,7 +25,7 @@ const RULES: [Exclude<ContentKind, 'story'>, (x: { t: string; u: string; a: stri
   ['video', ({ t, u }) => /\/(videos?|watch|video\/newsfeed|gallery|galleries|in-pictures)\//i.test(u) || /^(photos?|in pictures|watch|video)\s*[:：|]/i.test(t)],
   ['review', ({ t }) => /\breview\s*[–—-]|\breview[:：]|\breview$|\breviewed\b|리뷰|서평|\[신간\]/i.test(t)],
   ['opinion', ({ t, u }) => /\bopinion\b|\bop-ed\b|사설|칼럼|기고|시론|\[논단\]|\[기자수첩\]/i.test(t) || /\/(opinion|commentisfree|editorials?)\//i.test(u)],
-  ['digest', ({ t }) => /\b(daily|weekly)[:：]|\bthis week in\b|\bweek in review\b|\bround-?up\b|\bnewsletter\b|\bthe download\b|\bmorning briefing\b|간추린|모닝 ?브리핑|오늘의 주요 뉴스|헤드라인 모음/i.test(t)],
+  ['digest', ({ t }) => /\b(daily|weekly)[:：]|\bthis week in\b|\bweek in review\b|\bround-?up\b|\bnewsletter\b|\bthe download\b|\bmorning briefing\b|\|\s*(first thing|first edition|morning mail)\b|간추린|모닝 ?브리핑|오늘의 주요 뉴스|헤드라인 모음/i.test(t)],
   ['house', ({ t, p }) => /\bwe (have )?launched\b|\bour new (website|app|look)\b|\bsubscribe\b|\bjoin us\b|구독하세요|창간 \d+주년/i.test(t)
     || (!!p && new RegExp(`^${escape(p.split(/[\s–-]/)[0])} (awards?|debate|day|prize)\\b`, 'i').test(t))],
 ];
