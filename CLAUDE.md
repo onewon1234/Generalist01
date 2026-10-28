@@ -33,7 +33,8 @@ deliverable.
   edition, about 22 minutes, is an accepted reference); never cut a good piece
   to hit a length target.
 - Homepage cards are short previews; article pages carry complete writing.
-- No accounts, comments or personalization. Email is an optional future channel.
+- No accounts, comments or personalization. The daily email links each story
+  to its article page (`web/src/email.ts`).
 
 ## 2. Editorial selection
 
@@ -259,11 +260,13 @@ extra cost.
 
 ## 5. Editorial workflow (separate model calls, not separate agents)
 
-Current operating mode (2026-10-27): **no paid AI API and no database writes**
-until separately approved. Rule-based stages run unattended at no cost; the AI
-roles below run through the user's existing subscriptions (semi-automatic) and
-are labelled as such. Never present a skill or plugin as unattended automation
-unless it actually runs on a schedule without the user.
+Current operating mode (2026-10-28): **no paid AI API and no database writes**
+until separately approved. The AI roles below run in a Claude scheduled task on
+the user's subscription: a fresh cloud session every morning follows
+`docs/DAILY-RUN.md` and pushes one sealed edition. It depends on the
+subscription's usage limits; when a run cannot finish a good edition, nothing is
+published. Rule-based stages run at no cost. Never present a skill or plugin as
+unattended automation unless it actually runs on a schedule without the user.
 
 | Role | Responsibility |
 |---|---|
@@ -293,11 +296,14 @@ writing only. Prefer an efficient, testable design over agent complexity.
 ## 6. Architecture and run model
 
 ```
-GitHub Actions (Asia/Seoul schedule, no local machine)
-  discover → read permitted sources → extract evidence → evaluate & select
-  → write → fact-check → quality review → private in_review edition
-Supabase Postgres (free plan, project ref luogxbqimauqzoasgesj, ap-northeast-2)
-web/ (static site built from published data only)
+Claude scheduled task (~06:00 KST, subscription, docs/DAILY-RUN.md)
+  discover → read → select → write → headline edit → fact-check → review
+  → validate (web checks) → seal → push sealed-editions/<date>.sealed.json
+GitHub Actions publish.yml (push or 08:12/08:47 KST fallback)
+  decrypt → validate → wait for 08:00 KST → GitHub Pages → verify URLs
+  → Gmail email once → delivery log; alert on failure
+pipeline/ (rule-based collection, reading, selection previews; runs locally/CI)
+Supabase Postgres (free plan, project ref luogxbqimauqzoasgesj): not yet used by the daily flow
 ```
 
 - Build a vertical slice first: one real current story end to end, then extend
@@ -306,8 +312,14 @@ web/ (static site built from published data only)
 - Retries are idempotent: one edition per date, no duplicate rows.
 - Log every stage to `pipeline_runs`, including source failures, model
   failures, missing evidence, token usage and cost.
-- The pipeline only creates `in_review` drafts. **Public publishing is never
-  automatic**; it is a separate, human-approved step.
+- **Publishing** (approved by the user on 2026-10-28): an edition that passes
+  every deterministic check is published automatically at 08:00 KST by
+  `.github/workflows/publish.yml` (GitHub Pages, https://onewon1234.github.io/Generalist01/,
+  and one Gmail email to the publisher). Editions reach the public repository
+  only encrypted (`sealed-editions/`, `web/src/seal.ts`); the private key is the
+  GitHub secret `EDITION_PRIVATE_KEY`. Each date is sent once (`delivery/`); a
+  missing or invalid edition triggers an alert and is never replaced by an older
+  one. Pages stay `noindex` until search visibility is separately approved.
 
 ## 7. Data and security
 
@@ -327,7 +339,8 @@ web/ (static site built from published data only)
 - Paid resources or real paid API calls (Claude API, paid NAVER plans, hosting)
 - Production database schema changes, data changes or deletions
 - Security policy changes (RLS policies, grants, keys, public buckets)
-- Public deployment or publishing any edition
+- Public deployment beyond the approved daily flow above, search-engine
+  indexing, new recipients, or publishing outside that flow
 - Writes to an external system the user has not already approved for that scope
 - Anything irreversible or security-sensitive
 
