@@ -1,0 +1,151 @@
+name: publish
+
+# Publishes the day's edition at 08:00 Asia/Seoul: decrypts the sealed edition
+# pushed by the daily editorial session, builds the whole site, deploys GitHub
+# Pages, verifies the article URLs and sends the email once. A missing or invalid
+# edition is never replaced by an older one: the reader gets nothing and the
+# publisher gets an alert.
+on:
+  push:
+    branches: [main]
+    paths: ['sealed-editions/*.sealed.json']
+  schedule:
+    - cron: '12 23 * * *'   # 08:12 KST: fallback / missing-edition alert
+    - cron: '47 23 * * *'   # 08:47 KST: second fallback
+  workflow_dispatch:
+    inputs:
+      date: { description: 'Edition date (YYYY-MM-DD, default today in KST)', required: false }
+      test: { description: 'Test run: send a [테스트] email to the publisher, no delivery log, no wait', type: boolean, default: true }
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+env:
+  BASE_URL: https://onewon1234.github.io/Generalist01/
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+        working-directory: web
+
+      - name: Decide
+        id: decide
+        run: |
+          DATE="${{ inputs.date }}"
+          [ -n "$DATE" ] || DATE=$(TZ=Asia/Seoul date +%F)
+          TEST="${{ inputs.test && 'true' || 'false' }}"
+          # A push outside the morning window (05:00–12:00 KST) is a rehearsal:
+          # deploy and send a [테스트] email to the publisher, no delivery log.
+          H=$(TZ=Asia/Seoul date +%H)
+          if [ "${{ github.event_name }}" = "push" ] && { [ "$H" -lt 5 ] || [ "$H" -ge 12 ]; }; then TEST=true; fi
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+          echo "test=$TEST" >> "$GITHUB_OUTPUT"
+          if [ "$TEST" != "true" ] && [ -f "delivery/$DATE.sent.json" ]; then echo "already=true" >> "$GITHUB_OUTPUT"; else echo "already=false" >> "$GITHUB_OUTPUT"; fi
+          echo "edition date $DATE, test=$TEST"
+
+      - name: Prepare (decrypt, validate, build)
+        id: prep
+        if: steps.decide.outputs.already != 'true'
+        working-directory: web
+        env:
+          EDITION_PRIVATE_KEY: ${{ secrets.EDITION_PRIVATE_KEY }}
+        run: npx tsx scripts/prepare.ts --date ${{ steps.decide.outputs.date }} --sealed ../sealed-editions --work "$RUNNER_TEMP/editions" --site "$RUNNER_TEMP/site" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Alert when there is no valid edition
+        if: steps.decide.outputs.already != 'true' && steps.prep.outputs.ready != 'true' && (github.event_name != 'push')
+        working-directory: web
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NEWSLETTER_TO: ${{ secrets.GMAIL_USER }}
+        run: |
+          D=${{ steps.decide.outputs.date }}
+          if [ -f "../delivery/$D.alert.json" ] && [ "${{ github.event_name }}" = "schedule" ]; then echo "alert already sent"; exit 1; fi
+          npx tsx scripts/send-mail.ts alert "[Generalist Daily] $D 판 발행 실패" "오늘($D) 판을 발행하지 않았습니다. 이전 판은 다시 보내지 않습니다. 사유: ${{ steps.prep.outputs.reason }}. 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "{\"date\":\"$D\",\"reason\":\"${{ steps.prep.outputs.reason }}\",\"at\":\"$(date -u +%FT%TZ)\"}" > "../delivery/$D.alert.json"
+            git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
+            git add "../delivery/$D.alert.json" && git commit -m "delivery: $D alert [skip ci]" && (git push || (git pull --rebase && git push))
+          fi
+          exit 1
+
+      - name: Stop when the pushed edition is not publishable
+        if: github.event_name == 'push' && steps.decide.outputs.already != 'true' && steps.prep.outputs.ready != 'true'
+        run: |
+          echo "::error::${{ steps.prep.outputs.reason }}"
+          exit 1
+
+      - name: Wait until 08:00 KST
+        if: steps.prep.outputs.ready == 'true' && steps.decide.outputs.test != 'true'
+        run: |
+          target=$(TZ=Asia/Seoul date -d "${{ steps.decide.outputs.date }} 08:00" +%s); now=$(date +%s)
+          if [ "$now" -lt "$target" ]; then echo "waiting $((target-now)) s"; sleep $((target-now)); fi
+
+      - uses: actions/configure-pages@v5
+        if: steps.prep.outputs.ready == 'true'
+      - uses: actions/upload-pages-artifact@v4
+        if: steps.prep.outputs.ready == 'true'
+        with:
+          path: ${{ runner.temp }}/site
+      - id: deploy
+        if: steps.prep.outputs.ready == 'true'
+        uses: actions/deploy-pages@v4
+
+      - name: Verify article URLs
+        if: steps.prep.outputs.ready == 'true'
+        run: |
+          D=${{ steps.decide.outputs.date }}
+          for s in ${{ steps.prep.outputs.slugs }}; do
+            u="${BASE_URL}$D/articles/$s.html"; ok=0
+            for i in $(seq 1 20); do c=$(curl -s -o /dev/null -w '%{http_code}' "$u"); [ "$c" = 200 ] && { ok=1; break; }; sleep 15; done
+            [ $ok = 1 ] && echo "200 $u" || { echo "not reachable: $u"; exit 1; }
+          done
+
+      - name: Send email
+        if: steps.prep.outputs.ready == 'true'
+        working-directory: web
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NEWSLETTER_TO: ${{ secrets.NEWSLETTER_TO }}
+        run: |
+          D=${{ steps.decide.outputs.date }}
+          if [ "${{ steps.decide.outputs.test }}" = "true" ]; then
+            npx tsx scripts/send-mail.ts edition "${{ steps.prep.outputs.edition }}" --base "$BASE_URL" --test
+            exit 0
+          fi
+          git pull --rebase -q
+          if [ -f "../delivery/$D.sent.json" ]; then echo "already sent"; exit 0; fi
+          npx tsx scripts/send-mail.ts edition "${{ steps.prep.outputs.edition }}" --base "$BASE_URL"
+          echo "{\"date\":\"$D\",\"sentAt\":\"$(date -u +%FT%TZ)\",\"run\":\"${{ github.run_id }}\"}" > "../delivery/$D.sent.json"
+          git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
+          git add "../delivery/$D.sent.json" && git commit -m "delivery: $D sent [skip ci]"
+          for i in 1 2 3; do git push && break || git pull --rebase; done
+
+      - name: Alert on failure
+        if: failure() && steps.prep.outputs.ready == 'true'
+        working-directory: web
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NEWSLETTER_TO: ${{ secrets.GMAIL_USER }}
+        run: |
+          npx tsx scripts/send-mail.ts alert "[Generalist Daily] ${{ steps.decide.outputs.date }} 발행 중 오류" "배포 또는 발송 단계에서 실패했습니다. 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

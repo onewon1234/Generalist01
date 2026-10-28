@@ -62,7 +62,7 @@ function kst(iso?: string): string {
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400;600;700;900&display=swap';
 
-function page(title: string, body: string, opts: { description: string; preview: boolean; provenance?: string; depth: number }): string {
+function page(title: string, body: string, opts: { description: string; preview: boolean; provenance?: string; depth: number; indexable?: boolean }): string {
   const root = opts.depth ? '../'.repeat(opts.depth) : './';
   return `<!doctype html>
 <html lang="ko">
@@ -71,7 +71,10 @@ function page(title: string, body: string, opts: { description: string; preview:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(opts.description)}">
-${opts.preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
+${opts.preview || !opts.indexable ? '<meta name="robots" content="noindex, nofollow">' : ''}
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(opts.description)}">
+<meta name="theme-color" content="#f5f6f2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
@@ -128,7 +131,7 @@ export function renderHome(e: Edition): string {
   ${rest.length ? `<ol class="entries" aria-label="오늘의 다른 글">${rest.map(item).join('\n')}</ol>` : ''}
 </main>
 ${footer()}`;
-  return page(`Generalist Daily — ${koreanDate(e.date)}`, body, { description: e.intro ?? lead?.deck ?? '', preview: e.status !== 'published', provenance: e.provenance, depth: 0 });
+  return page(`Generalist Daily — ${koreanDate(e.date)}`, body, { description: e.intro ?? lead?.deck ?? '', preview: e.status !== 'published', provenance: e.provenance, depth: 0, indexable: e.indexable });
 }
 
 /**
@@ -216,12 +219,13 @@ export function renderArticle(e: Edition, s: Story): string {
     ${renderSources(s.sources)}
   </article>
   <nav class="next" aria-label="다른 글">
-    <a href="../index.html">오늘의 판으로 돌아가기</a>
+    <a href="../index.html">이 판의 첫 화면으로</a>
+    <a href="../../archive.html">지난 판</a>
     ${e.briefs.length ? `<a href="../index.html#briefs">오늘의 한 줄 ${e.briefs.length}건</a>` : ''}
   </nav>
 </main>
 ${footer()}`;
-  return page(`${s.headline} — Generalist Daily`, body, { description: s.standfirst, preview: e.status !== 'published', provenance: e.provenance, depth: 1 });
+  return page(`${s.headline} — Generalist Daily`, body, { description: s.standfirst, preview: e.status !== 'published', provenance: e.provenance, depth: 1, indexable: e.indexable });
 }
 
 function footer(): string {

@@ -101,8 +101,9 @@ const HEDGES: [string, RegExp][] = [
 const ATTRIBUTED = /밝혔|따르면|주장|말했|전했|보고 있|보고했|발표/;
 const KO_COUNT: Record<string, string> = { 한: '1', 두: '2', 세: '3', 네: '4', 다섯: '5', 여섯: '6', 일곱: '7', 여덟: '8', 아홉: '9', 열: '10' };
 /** Digits in the text, plus native Korean counts before a noun ("두 남성" → 2). */
-function numbers(s: string): Set<string> {
+function numbers(s: string, native = true): Set<string> {
   const out = new Set((s.match(/\d+(?:[.,]\d+)?/g) ?? []).map((x) => x.replace(/,/g, '')));
+  if (!native) return out;
   for (const m of s.matchAll(/(?<![가-힣])(한|두|세|네|다섯|여섯|일곱|여덟|아홉|열) ?(?=[가-힣])/g)) out.add(KO_COUNT[m[1]]);
   return out;
 }
@@ -120,7 +121,7 @@ export function checkLine(b: Brief): string[] {
   if (l === b.text.trim()) out.push('line repeats the full text');
   if (HYPE.test(l)) out.push('hype wording in the line');
   const have = numbers(b.text);
-  for (const n of numbers(l)) if (!have.has(n)) out.push(`line has a number (${n}) the text does not`);
+  for (const n of numbers(l, false)) if (!have.has(n)) out.push(`line has a number (${n}) the text does not`);
   const quoted = /["“”'‘’]/.test(l);
   /** Korean headline grammar names the speaker first: "금융위, …". */
   const actorFirst = /^[^\s,]{1,12}( [^\s,]{1,8})?,/.test(l);

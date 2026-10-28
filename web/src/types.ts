@@ -14,6 +14,8 @@ export interface Edition {
   briefs: Brief[];
   /** How this edition was produced, shown in the preview banner (e.g. manual demonstration). */
   provenance?: string;
+  /** Search engines may index the page. Off unless separately approved by the user. */
+  indexable?: boolean;
 }
 
 /** Desks of the default edition composition (see pipeline/src/desk.ts). */

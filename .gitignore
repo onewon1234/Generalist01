@@ -22,3 +22,6 @@ coverage/
 __pycache__/
 source-report.json
 ingest.json
+
+# The edition public key is not a secret (it only encrypts); the private key lives in a GitHub secret.
+!keys/edition-public.pem

@@ -66,7 +66,9 @@ test('home: lead, then the one-line news strip, then the other stories; preview 
   assert.match(h, /noindex/);
   assert.match(h, /2026년 10월 28일 수요일/);
   const pub = renderHome({ ...edition(), status: 'published' });
-  assert.doesNotMatch(pub, /비공개 미리보기|noindex/);
+  assert.doesNotMatch(pub, /비공개 미리보기/);
+  assert.match(pub, /noindex/, 'not indexed until search visibility is approved');
+  assert.doesNotMatch(renderHome({ ...edition(), status: 'published', indexable: true }), /noindex/);
 });
 
 test('article: standfirst, sections, timeline after the first section, numbered notes', () => {
