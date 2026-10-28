@@ -4,6 +4,7 @@
  * emitted; citation markers become footnote links.
  */
 import type { Brief, Edition, Section, Source, Story } from './types.ts';
+import { checkBriefs, checkHeadlines } from './checks.ts';
 
 const ESC: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ESC[c]);
@@ -99,43 +100,60 @@ function storyMeta(s: Story): string {
   return `<p class="meta">${parts.join('')}</p>`;
 }
 
+function shortDate(iso: string): string {
+  const t = new Date(Date.parse(iso) + 9 * 3_600_000);
+  return `${t.getUTCMonth() + 1}월 ${t.getUTCDate()}일`;
+}
+
 export function renderHome(e: Edition): string {
   const [lead, ...rest] = e.stories;
   const item = (s: Story) => `<li class="entry">
     <a href="articles/${esc(s.slug)}.html">
-      <p class="entry-question">${esc(s.question)}</p>
-      <p class="entry-headline">${esc(s.headline)}</p>
+      <h2 class="entry-headline">${esc(s.headline)}</h2>
+      <p class="entry-deck">${esc(s.deck)}</p>
     </a>
     ${storyMeta(s)}
   </li>`;
   const body = `${masthead(e, 0)}
 <main class="home">
   ${e.intro ? `<p class="intro">${esc(e.intro)}</p>` : ''}
+  ${e.briefs.length ? `<p class="jump"><a href="#briefs">짧게 보는 세상 ${e.briefs.length}건 바로 보기</a></p>` : ''}
   ${lead ? `<article class="lead">
     <a href="articles/${esc(lead.slug)}.html">
-      <h1 class="lead-question">${esc(lead.question)}</h1>
-      <p class="lead-headline">${esc(lead.headline)}</p>
-      <p class="lead-standfirst">${esc(lead.standfirst)}</p>
+      <h1 class="lead-headline">${esc(lead.headline)}</h1>
+      <p class="lead-deck">${esc(lead.deck)}</p>
     </a>
     ${storyMeta(lead)}
   </article>` : '<p class="empty">오늘 판에 실린 글이 없습니다.</p>'}
   ${rest.length ? `<ol class="entries" aria-label="오늘의 다른 글">${rest.map(item).join('\n')}</ol>` : ''}
-  ${e.briefs.length ? renderBriefs(e.briefs) : ''}
 </main>
+${e.briefs.length ? renderBriefs(e.briefs) : ''}
 ${footer()}`;
-  return page(`Generalist Daily — ${koreanDate(e.date)}`, body, { description: e.intro ?? lead?.question ?? '', preview: e.status !== 'published', provenance: e.provenance, depth: 0 });
+  return page(`Generalist Daily — ${koreanDate(e.date)}`, body, { description: e.intro ?? lead?.deck ?? '', preview: e.status !== 'published', provenance: e.provenance, depth: 0 });
 }
 
-function renderBriefs(bs: Brief[]): string {
-  return `<section class="briefs" aria-labelledby="briefs-title">
-    <h2 id="briefs-title">짧게 보는 세상</h2>
-    <ul>
+/** "짧게 보는 세상": a separate band after the main stories, scannable on a phone. */
+export function renderBriefs(bs: Brief[]): string {
+  return `<section class="briefs" id="briefs" aria-labelledby="briefs-title">
+  <div class="briefs-inner">
+    <header class="briefs-header">
+      <h2 id="briefs-title">짧게 보는 세상</h2>
+      <p>메인에 싣지 않은 국내외 소식 ${bs.length}건</p>
+    </header>
+    <ul class="brief-list">
       ${bs.map((b) => {
         const u = safeUrl(b.url);
-        return `<li>${esc(b.text)} ${u ? `<a class="brief-source" href="${esc(u)}" rel="noopener">${esc(b.publisher)}</a>` : ''}</li>`;
+        return `<li class="brief">
+        <span class="brief-tag">${esc(b.tag)}</span>
+        <div class="brief-body">
+          <p><strong class="brief-label">${esc(b.label)}</strong> ${esc(b.text)}</p>
+          <p class="brief-meta">${u ? `<a href="${esc(u)}" rel="noopener">${esc(b.publisher)}</a>` : esc(b.publisher)}<time datetime="${esc(b.published)}">${shortDate(b.published)}</time></p>
+        </div>
+      </li>`;
       }).join('\n')}
     </ul>
-  </section>`;
+  </div>
+</section>`;
 }
 
 function renderSection(sec: Section, sources: Source[]): string {
@@ -184,6 +202,7 @@ export function renderArticle(e: Edition, s: Story): string {
     <header class="article-header">
       ${storyMeta(s)}
       <h1>${esc(s.headline)}</h1>
+      <p class="deck">${esc(s.deck)}</p>
       <p class="standfirst">${esc(s.standfirst)}</p>
     </header>
     <div class="article-body">
@@ -196,6 +215,7 @@ export function renderArticle(e: Edition, s: Story): string {
   </article>
   <nav class="next" aria-label="다른 글">
     <a href="../index.html">오늘의 판으로 돌아가기</a>
+    ${e.briefs.length ? `<a href="../index.html#briefs">짧게 보는 세상 ${e.briefs.length}건</a>` : ''}
   </nav>
 </main>
 ${footer()}`;
@@ -223,5 +243,6 @@ export function validateEdition(e: Edition): string[] {
     for (const n of ns) if (!cited.has(n)) out.push(`${s.slug}: source ${n} is never cited`);
   }
   for (const b of e.briefs) if (!safeUrl(b.url)) out.push(`brief without http(s) link: ${b.text.slice(0, 30)}`);
+  out.push(...checkHeadlines(e).errors, ...checkBriefs(e).errors);
   return out;
 }

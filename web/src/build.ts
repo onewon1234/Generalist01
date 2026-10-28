@@ -6,6 +6,7 @@
  */
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { checkBriefs, checkHeadlines } from './checks.ts';
 import { renderArticle, renderHome, validateEdition } from './render.ts';
 import type { Edition } from './types.ts';
 
@@ -17,6 +18,8 @@ if (!file || !out) { console.error('usage: build <edition.json> --out <dir>'); p
 const e = JSON.parse(readFileSync(file, 'utf8')) as Edition;
 const problems = validateEdition(e);
 if (problems.length) { console.error('edition has problems:\n- ' + problems.join('\n- ')); process.exit(1); }
+const notes = [...checkHeadlines(e).notes, ...checkBriefs(e).notes];
+if (notes.length) console.log('notes for the editor:\n- ' + notes.join('\n- '));
 mkdirSync(join(out, 'articles'), { recursive: true });
 copyFileSync(join(import.meta.dirname, 'style.css'), join(out, 'style.css'));
 writeFileSync(join(out, 'index.html'), renderHome(e));

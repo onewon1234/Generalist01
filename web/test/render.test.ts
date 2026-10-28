@@ -9,17 +9,17 @@ function edition(): Edition {
     date: '2026-10-28', status: 'preview', provenance: '시험용 가짜 데이터',
     intro: '오늘은 두 편입니다.',
     stories: [
-      { slug: 'first-story', headline: '첫 번째 <제목>', standfirst: '요약 문장.', question: '무엇이 바뀌었나?', domain: '세계', place: '어딘가', form: 'current',
+      { slug: 'first-story', headline: '첫 번째 <제목>이 바꾼 것', deck: '부제가 내용을 구체적으로 말한다', standfirst: '요약 문장.', desk: 'world', domain: '세계', place: '어딘가', form: 'current',
         sections: [{ paragraphs: ['첫 문단입니다.[1] **중요한** 대목입니다.[1][2]'] }, { heading: '배경', paragraphs: ['둘째 문단.[2]'] }],
         timeline: { title: '흐름', events: [{ when: '10월 4일', what: '1차 투표.[1]' }] },
         sources: [
           { n: 1, publisher: 'Example News', title: 'One', url: 'https://example.org/1', published: '2026-10-27T01:46:38Z', access: '원문 확인' },
           { n: 2, publisher: 'Example Review', author: 'A. Writer', title: 'Two', url: 'https://example.org/2', access: '원문 확인' },
         ] },
-      { slug: 'second', headline: '두 번째', standfirst: '둘째 요약.', question: '왜 놀라운가?', domain: '과학', form: 'evergreen',
+      { slug: 'second', headline: '두 번째 이야기의 역설', deck: '둘째 부제도 구체적으로 쓴다', standfirst: '둘째 요약.', desk: 'explore', domain: '과학', form: 'evergreen',
         sections: [{ paragraphs: ['본문.[1]'] }], sources: [{ n: 1, publisher: 'Lab', title: 'Paper', url: 'https://example.org/p', access: '원문 확인' }] },
     ],
-    briefs: [{ text: '한 문장 소식이다.', url: 'https://example.org/b', publisher: 'Wire' }],
+    briefs: [{ tag: '국제', label: '어느 나라 선거', text: '한 문장 소식이다.', url: 'https://example.org/b', publisher: 'Wire', published: '2026-10-27T03:00:00Z' }],
   };
 }
 
@@ -52,8 +52,13 @@ test('validateEdition: citations, sources and links must match', () => {
 
 test('home: question-led previews, preview banner, briefs, noindex while unpublished', () => {
   const h = renderHome(edition());
-  assert.match(h, /<h1 class="lead-question">무엇이 바뀌었나\?<\/h1>/);
-  assert.match(h, /첫 번째 &lt;제목&gt;/);
+  assert.match(h, /<h1 class="lead-headline">첫 번째 &lt;제목&gt;이 바꾼 것<\/h1>/);
+  assert.match(h, /<p class="lead-deck">부제가 내용을 구체적으로 말한다<\/p>/);
+  assert.match(h, /href="#briefs">짧게 보는 세상 1건 바로 보기/);
+  assert.match(h, /<section class="briefs" id="briefs"/);
+  assert.match(h, /<span class="brief-tag">국제<\/span>/);
+  assert.match(h, /<time datetime="2026-10-27T03:00:00Z">10월 27일<\/time>/);
+  assert.ok(h.indexOf('class="briefs"') > h.indexOf('</main>'), 'briefs are a separate band after the main stories');
   assert.match(h, /비공개 미리보기입니다/);
   assert.match(h, /noindex/);
   assert.match(h, /짧게 보는 세상/);
