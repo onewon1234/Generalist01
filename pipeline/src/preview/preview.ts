@@ -15,10 +15,11 @@ import type { IngestResult } from '../ingest/ingest.ts';
 import { corroborate, type Corroboration } from '../research/corroborate.ts';
 import { RobotsCache } from '../research/robots.ts';
 import { politeFetcher, retrieveArticle, type RetrievalRecord } from '../research/retrieve.ts';
-import { assignCardSizes, selectEdition, suitability } from '../select.ts';
+import { assignCardSizes, clusterDesk, selectEdition, suitability } from '../select.ts';
 import { hoursBetween } from '../text.ts';
 import type { Article, Cluster, FreshnessType, Scores } from '../types.ts';
 import { chooseBriefs, type BriefCandidate } from './briefs.ts';
+import { deskOf, DESK_PREFERENCE, DESK_WEIGHTS, type Desk } from '../desk.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
 
 export interface PreviewStory {
@@ -38,6 +39,8 @@ export interface PreviewStory {
   selected: boolean;
   /** Current story or evergreen piece. */
   form?: FreshnessType;
+  /** Editorial desk of the default composition. */
+  desk?: Desk;
   cardSize?: string;
   rejectReason?: string;
 }
@@ -65,19 +68,23 @@ export interface PreviewOptions {
   minGapMs?: number;
 }
 
+const AI_TITLE = /\bAI\b|인공지능|artificial intelligence|chatbot|챗봇|LLM/i;
+
 /**
  * Candidate pool for research: strongest clusters first (ranking already takes
  * turns between sources), capped per broad subject so research covers several
- * domains. There is no per-language share: a language cap made Korean wire
- * items fill every place English stories could not take (audit 2026-10-27 r5).
+ * domains. Each desk of the default composition with a preferred minimum
+ * (Korea, world, economy, AI/tech) first gets up to DESK_WEIGHTS.poolReserve
+ * places from its best-ranked candidates, so the editor can actually consider
+ * them; the rest is filled by rank. There is no per-language share (a language
+ * cap made Korean wire items fill every place English stories could not take,
+ * audit 2026-10-27 r5).
  */
 export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (a: Article) => string): Cluster[] {
   const byKey = new Map(res.clusters.map((c) => [c.key, c]));
-  const perSubject = new Map<string, number>();
   const subjectCap = Math.ceil(poolSize * 0.35);
-  const out: Cluster[] = [];
+  const eligible: { c: Cluster; broad: string; desk: Desk }[] = [];
   for (const cand of res.candidates) {
-    if (out.length >= poolSize) break;
     const c = byKey.get(cand.key);
     if (!c) continue;
     const tier1 = c.articles.some((a) => a.reliabilityTier === 1);
@@ -86,12 +93,25 @@ export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (
     if (cand.publishers < 2 && !tier1 && c.freshnessType !== 'evergreen') continue;
     const cls = classify(c.articles.map((a) => a.title), sourceSubject(c.articles[0]));
     if (cls.sports) continue;
-    const broad = broadOf(cls.subject);
-    if ((perSubject.get(broad) ?? 0) >= subjectCap) continue;
-    perSubject.set(broad, (perSubject.get(broad) ?? 0) + 1);
-    out.push(c);
+    const desk = deskOf({ title: c.title, language: c.articles[0]?.language ?? '', category: cls.subject, aiPrimary: AI_TITLE.test(c.title) });
+    eligible.push({ c, broad: broadOf(cls.subject), desk });
   }
-  return out;
+  const perSubject = new Map<string, number>();
+  const out = new Set<Cluster>();
+  const take = (x: (typeof eligible)[number]) => {
+    if (out.size >= poolSize || out.has(x.c) || (perSubject.get(x.broad) ?? 0) >= subjectCap) return false;
+    perSubject.set(x.broad, (perSubject.get(x.broad) ?? 0) + 1);
+    out.add(x.c);
+    return true;
+  };
+  for (const d of Object.keys(DESK_PREFERENCE) as Desk[]) {
+    if (DESK_PREFERENCE[d].min < 1) continue;
+    let n = 0;
+    for (const x of eligible) if (x.desk === d && n < DESK_WEIGHTS.poolReserve && take(x)) n++;
+  }
+  for (const x of eligible) take(x);
+  // Keep ranking order in the pool.
+  return eligible.map((x) => x.c).filter((c) => out.has(c));
 }
 
 /** Up to `n` articles from distinct publishers: most reliable, then newest. */
@@ -135,7 +155,7 @@ export function heuristicScores(c: Cluster, subject: string, sports: boolean, co
     ongoing: pubs >= 8,
     elementary: false,
     contemporaryHook: true,
-    aiPrimary: /\bAI\b|인공지능|artificial intelligence|chatbot|챗봇|LLM/i.test(title),
+    aiPrimary: AI_TITLE.test(title),
     whyNow: ageH == null ? '' : `최근 ${Math.round(ageH)}시간 안에 ${pubs}개 매체가 보도`,
     angle: '',
     category: subject,
@@ -198,6 +218,7 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     const c = clusters.find((x) => x.key === st.key)!;
     st.selected = !!chosen;
     st.form = chosen?.form ?? c.freshnessType;
+    st.desk = chosen?.desk ?? clusterDesk(c);
     st.cardSize = sizes.get(st.key)?.size;
     st.rejectReason = chosen ? undefined : c.rejectReason ?? 'not selected (lower adjusted score)';
     st.reasoning = reasoningFor(st);

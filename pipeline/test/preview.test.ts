@@ -107,3 +107,16 @@ test('pool: a single-source piece from an evergreen (non-news) publisher is rese
     candidates: [summarize(essay), summarize(wire)], leads: [] } as IngestResult;
   assert.deepEqual(choosePool(res, 10, () => 'history-civilization-geography').map((c) => c.key), ['essay']);
 });
+
+test('pool: each default-composition desk gets research places even when ranked low', () => {
+  const mk = (key: string, title: string, language: string, sourceKey: string) => ({ key, title, freshnessType: 'timely' as const,
+    articles: [article({ title, language, publisher: `${sourceKey} pub`, reliabilityTier: 1, sourceKey })] });
+  const world = Array.from({ length: 12 }, (_, i) => mk(`w${i}`, `Election crisis deepens in country number ${i}`, 'en', `wire${i}`));
+  const korea = mk('ko', '금융위, 초고금리 불법사금융 처벌 강화 추진', 'ko', 'yonhap');
+  const clusters = [...world, korea];
+  const res = { collectedAt: NOW.toISOString(), health: [], counts: {} as any, noiseByReason: {}, clusters,
+    candidates: clusters.map(summarize), leads: [] } as IngestResult;
+  const pool = choosePool(res, 5, () => 'world-politics-society');
+  assert.ok(pool.some((c) => c.key === 'ko'), pool.map((c) => c.key).join());
+  assert.equal(pool.length, 5);
+});

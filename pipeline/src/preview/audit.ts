@@ -11,7 +11,7 @@ import type { Article, Cluster } from '../types.ts';
 import type { Preview } from './preview.ts';
 
 export type Tally = Record<string, number>;
-export interface StageAudit { stage: string; total: number; bySource: Tally; byLanguage: Tally; bySubject?: Tally; note?: string }
+export interface StageAudit { stage: string; total: number; bySource: Tally; byLanguage: Tally; bySubject?: Tally; byDesk?: Tally; note?: string }
 export interface SourceAudit {
   stages: StageAudit[];
   /** Clusters where one outlet appears under several names (feed section, host name); counted once. */
@@ -22,15 +22,8 @@ export interface SourceAudit {
 
 const inc = (t: Tally, k: string, n = 1) => { t[k] = (t[k] ?? 0) + n; };
 
-/**
- * Event location of a Korean-language story, estimated from its title:
- * 'foreign' when it names another country, foreign leader or institution.
- * An estimate for auditing, not an editorial classification.
- */
-const FOREIGN = /미국|美|중국|中|일본|日|러시아|露|우크라|유럽|EU|유로존|영국|英|프랑스|佛|독일|獨|이스라엘|이란|가자|하마스|시리아|요르단|레바논|사우디|튀르키예|인도|파키스탄|베트남|대만|북한|브라질|아르헨|멕시코|캐나다|호주|아프리카|콩고|수단|나토|NATO|유엔|UN|트럼프|시진핑|푸틴|네타냐후|룰라|벨기에|폴란드|스페인|이탈리아|그리스|필리핀|태국|인니|인도네시아|말레이|싱가포르|몽골|현지시간|외신/;
-export function koreanScope(title: string, evidence = ''): 'foreign' | 'domestic' {
-  return FOREIGN.test(title) || /\(현지시간\)/.test(evidence) ? 'foreign' : 'domestic';
-}
+export { koreanScope } from '../desk.ts';
+import { koreanScope } from '../desk.ts';
 
 function tallyArticles(arts: Article[], src: Map<string, SourceConfig>) {
   const bySource: Tally = {}, byLanguage: Tally = {};
@@ -66,7 +59,8 @@ export function sourceAudit(res: IngestResult, p: Preview, registry: SourceConfi
 
   const pool = clusterStage('5. 조사 후보(원문 확인 대상)', p.stories.map((s) => s.key));
   pool.bySubject = {};
-  for (const s of p.stories) inc(pool.bySubject, broadOf(s.subject));
+  pool.byDesk = {};
+  for (const s of p.stories) { inc(pool.bySubject, broadOf(s.subject)); if (s.desk) inc(pool.byDesk, s.desk); }
   stages.push(pool);
 
   const recs = p.stories.flatMap((s) => s.records);
@@ -83,7 +77,8 @@ export function sourceAudit(res: IngestResult, p: Preview, registry: SourceConfi
   const sel = p.stories.filter((s) => s.selected);
   const selected = clusterStage('8. 자동 선정', sel.map((s) => s.key));
   selected.bySubject = {};
-  for (const s of sel) inc(selected.bySubject, broadOf(s.subject));
+  selected.byDesk = {};
+  for (const s of sel) { inc(selected.bySubject, broadOf(s.subject)); if (s.desk) inc(selected.byDesk, s.desk); }
   stages.push(selected);
 
   const duplicatePublisherClusters = res.clusters.flatMap((c) => {
@@ -107,6 +102,7 @@ export function renderAudit(a: SourceAudit): string {
   for (const s of a.stages) {
     out.push(`## ${s.stage} — ${s.total}`, `- 언어: ${fmt(s.byLanguage, s.total)}`, `- 출처: ${fmt(s.bySource, s.total, 12)}`);
     if (s.bySubject) out.push(`- 분야: ${fmt(s.bySubject, s.total)}`);
+    if (s.byDesk) out.push(`- 데스크(기본 구성): ${fmt(s.byDesk, s.total)}`);
     if (s.note) out.push(`- 기준: ${s.note}`);
     out.push('');
   }

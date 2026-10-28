@@ -1,4 +1,5 @@
 import { DIVERSITY, EDITION, EVERGREEN, FRESHNESS_BONUS, WEIGHTS, broadOf } from './config.ts';
+import { deskAdjustment, deskOf, DESK_KO, DESK_PREFERENCE, type Desk } from './desk.ts';
 import { checkFreshness } from './freshness.ts';
 import { checkRepeat, choosePrimary, independentPublishers, type PublishedRef } from './cluster.ts';
 import { hoursBetween } from './text.ts';
@@ -64,6 +65,18 @@ function freshnessBonus(c: Cluster, now: Date): number {
   return FRESHNESS_BONUS.find((b) => age <= b.maxHours)?.bonus ?? 0;
 }
 
+/** Desk of a cluster: the editor's choice, else derived from category, language and title. */
+export function clusterDesk(c: Cluster): Desk {
+  const s = c.scores!;
+  return s.desk ?? deskOf({ title: c.title, language: c.articles[0]?.language ?? '', category: s.category, aiPrimary: s.aiPrimary });
+}
+
+function deskCounts(chosen: Cluster[]): Partial<Record<Desk, number>> {
+  const out: Partial<Record<Desk, number>> = {};
+  for (const x of chosen) { const d = clusterDesk(x); out[d] = (out[d] ?? 0) + 1; }
+  return out;
+}
+
 function adjusted(c: Cluster, cov: Coverage, chosen: Cluster[], now: Date): number {
   const s = c.scores!;
   const broad = broadOf(s.category);
@@ -71,12 +84,17 @@ function adjusted(c: Cluster, cov: Coverage, chosen: Cluster[], now: Date): numb
   v -= (cov.subject7d.get(broad) ?? 0) * DIVERSITY.per7dStory;
   v -= (cov.subject30d.get(broad) ?? 0) * DIVERSITY.per30dStory;
   if (s.subtopic && (cov.subtopic7d.get(s.subtopic.toLowerCase()) ?? 0) > 0) v -= DIVERSITY.sameSubtopic7d;
-  v -= chosen.filter((x) => broadOf(x.scores!.category) === broad).length * DIVERSITY.sameSubjectInEdition;
+  // Same subject counts as repetition only within the same desk (a Korean politics
+  // story does not repeat a Brazilian one).
+  const desk = clusterDesk(c);
+  v -= chosen.filter((x) => broadOf(x.scores!.category) === broad && clusterDesk(x) === desk).length * DIVERSITY.sameSubjectInEdition;
   v -= chosen.filter((x) => x.freshnessType === c.freshnessType).length * DIVERSITY.sameFormInEdition;
+  // The user's default composition (desk preference): a nudge, never a quota.
+  v += deskAdjustment(clusterDesk(c), deskCounts(chosen), c.suitability ?? 0, EDITION.minSuitability);
   return Math.round(v * 100) / 100;
 }
 
-export interface Selection { chosen: (Cluster & { form: FreshnessType })[]; decisions: Decision[]; warnings: string[] }
+export interface Selection { chosen: (Cluster & { form: FreshnessType; desk: Desk })[]; decisions: Decision[]; warnings: string[] }
 
 /**
  * Editor-in-Chief selection. Deterministic given scores and coverage.
@@ -111,13 +129,17 @@ export function selectEdition(candidates: Cluster[], now: Date, recent: Publishe
     const top = ranked[0];
     if (!top) break;
     top.c.adjusted = top.v;
-    chosen.push(Object.assign(top.c, { form: top.c.freshnessType }));
+    chosen.push(Object.assign(top.c, { form: top.c.freshnessType, desk: clusterDesk(top.c) }));
     const s = top.c.scores!;
-    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${top.c.freshnessType}: suitability ${top.c.suitability}, adjusted ${top.v}; payoff: ${s.readerPayoff || 'n/a'}; why now: ${s.whyNow || 'n/a'}`, clusterKey: top.c.key });
+    decisions.push({ stage: 'editor_in_chief', decision: 'selected', reason: `${clusterDesk(top.c)}/${top.c.freshnessType}: suitability ${top.c.suitability}, adjusted ${top.v}; payoff: ${s.readerPayoff || 'n/a'}; why now: ${s.whyNow || 'n/a'}`, clusterKey: top.c.key });
   }
 
   const forms = new Set(chosen.map((c) => c.form));
   if (chosen.length >= 3 && forms.size === 1) warnings.push(`variety: all ${chosen.length} stories are ${[...forms][0]} pieces; check the edition is more than a news digest (not enforced)`);
+  const counts = deskCounts(chosen);
+  for (const d of Object.keys(DESK_PREFERENCE) as Desk[]) {
+    if ((counts[d] ?? 0) < DESK_PREFERENCE[d].min) warnings.push(`composition: no ${d} (${DESK_KO[d]}) story cleared the bar; not padded`);
+  }
   if (chosen.length < EDITION.min) warnings.push(`underfilled: only ${chosen.length} stories passed the gates (minimum ${EDITION.min}); do not approve without review`);
   for (const c of eligible) if (!chosen.includes(c as any)) decisions.push({ stage: 'editor_in_chief', decision: 'rejected', reason: `not selected (adjusted ${adjusted(c, cov, chosen, now)})`, clusterKey: c.key });
   return { chosen, decisions, warnings };

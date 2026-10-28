@@ -76,6 +76,8 @@ export interface Scores {
   angle: string;
   /** One line: what the reader gains. */
   readerPayoff?: string;
+  /** Editorial desk (see pipeline/src/desk.ts); computed from category and title when absent. */
+  desk?: import('./desk.ts').Desk;
   /** Subject slug from table `subjects`. */
   category: string;
   subtopic?: string | null;

@@ -6,6 +6,7 @@
 import { broadOf } from '../config.ts';
 import type { RetrievalRecord } from '../research/retrieve.ts';
 import { MOD_LABEL } from './briefs.ts';
+import { DESK_KO } from '../desk.ts';
 import { SUBJECT_KO } from './classify.ts';
 import type { Preview, PreviewStory } from './preview.ts';
 
@@ -25,7 +26,7 @@ function sourceLine(r: RetrievalRecord, i: number): string {
 function story(s: PreviewStory, n: number): string {
   const out: string[] = [];
   out.push(`### ${n}. ${s.title}`);
-  out.push(`분야: ${SUBJECT_KO[broadOf(s.subject)] ?? s.subject}${s.form ? ` · 형식: ${FORM[s.form] ?? s.form}` : ''}${s.cardSize ? ` · 카드: ${s.cardSize}` : ''}`);
+  out.push(`분야: ${SUBJECT_KO[broadOf(s.subject)] ?? s.subject}${s.desk ? ` · 데스크: ${DESK_KO[s.desk]}` : ''}${s.form ? ` · 형식: ${FORM[s.form] ?? s.form}` : ''}${s.cardSize ? ` · 카드: ${s.cardSize}` : ''}`);
   out.push('', '**선정 근거**', ...s.reasoning.map((r) => `- ${r}`));
   const idx = new Map(s.records.map((r, i) => [r, i + 1]));
   const ev = s.records.filter((r) => r.status === 'read').flatMap((r) => r.evidence.map((e) => ({ e, i: idx.get(r)! })));
@@ -76,7 +77,7 @@ export function renderPreview(p: Preview): string {
     '',
     '## 선정되지 않은 후보',
     '',
-    ...rest.map((s) => `- ${s.title} — ${s.rejectReason} · 원문 확인 ${s.corroboration.readPublishers.length}/${s.records.length}`),
+    ...rest.map((s) => `- [${s.desk ? DESK_KO[s.desk] : '-'}] ${s.title} — ${s.rejectReason} · 원문 확인 ${s.corroboration.readPublishers.length}/${s.records.length}`),
     '',
     '## 한계',
     '- 점수와 분야 분류는 규칙 기반 추정입니다. 편집 판단(각도, 독자에게 주는 의미)과 한국어 원고는 AI 단계 승인 후 생성됩니다.',
