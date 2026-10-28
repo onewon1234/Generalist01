@@ -64,7 +64,7 @@ test('chooseBriefs: excludes main events, unread, sports, overlong sentences; on
 });
 
 function cand(sourceSentence: string, evidence: string[], link = 'https://yna.example/a'): BriefCandidate {
-  return { key: 'k', title: 't', subject: 'x', sourceSentence, sourcePublisher: '연합뉴스', links: [link], evidenceText: [sourceSentence, ...evidence].join('\n'), modality: modality(sourceSentence), reason: '' };
+  return { key: 'k', title: 't', subject: 'x', sourceSentence, sourcePublisher: '연합뉴스', links: [link], evidenceText: [sourceSentence, ...evidence].join('\n'), modality: modality(sourceSentence), reason: '', tag: '국제', publishedAt: null };
 }
 
 test('validateBrief accepts a faithful one-sentence brief', () => {
@@ -109,4 +109,13 @@ test('validateBrief reads English number words in the evidence', () => {
   const c = cand('Jordan struck Syria after an attack on a funeral that killed nine people.', ['Officials said five people were killed in the strike.'], 'https://bbc.example/j');
   assert.deepEqual(validateBrief('요르단은 9명이 숨진 장례식 공격에 대한 보복으로 시리아를 공습했다고 밝혔고, 시리아 당국은 5명이 숨졌다고 전했다.', 'https://bbc.example/j', c).issues, []);
   assert.match(validateBrief('요르단은 장례식 공격에 대한 보복으로 시리아를 공습해 7명이 숨졌다고 밝혔다.', 'https://bbc.example/j', c).issues.join(), /근거에 없는 숫자: 7/);
+});
+
+test('briefTag: field tags follow desks and subjects', async () => {
+  const { briefTag } = await import('../src/preview/briefs.ts');
+  assert.equal(briefTag('금융위, 초고금리 불법사금융 처벌 강화', 'ko', 'world-politics-society'), '한국');
+  assert.equal(briefTag('Why Jordan has struck Syria', 'en', 'world-politics-society'), '국제');
+  assert.equal(briefTag("'재정 빨간불' 벨기에도 국채 금리 급등", 'ko', 'economics-finance-business'), '경제');
+  assert.equal(briefTag("Anthropic's blockbuster share listing", 'en', 'science-technology-ai'), '과학');
+  assert.equal(briefTag('AI models cost more when you don’t use English', 'en', 'science-technology-ai'), '기술');
 });

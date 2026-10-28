@@ -26,9 +26,11 @@ before selecting.
 
 Score every plausible candidate 0–10 on the reader-payoff criteria of
 CLAUDE.md §2: curiosity, understanding, narrative potential, intellectual
-payoff, relevance, evidence quality; then build a varied portfolio. No quotas:
-current stories and evergreen pieces compete equally; Korean domestic stories
-are usually 0–1. For each pick write: why now, angle, reader payoff (one line),
+payoff, relevance, evidence quality; then build a varied portfolio. Weigh the
+user's default composition (about 1 Korea, 1–2 world, 1 economy, 1 AI/tech,
+0–2 exploration; desks are shown in `preview.md`): fill a desk only with a
+candidate that is genuinely good, say so when a desk is empty that day, and
+exceed a desk's usual range only for an exceptional story. For each pick write: why now, angle, reader payoff (one line),
 and the question or discovery the homepage preview will pose. Record why strong
 candidates were left out. Foreign events found via a Korean outlet: find the
 original or international sources first.
@@ -51,8 +53,25 @@ No fabricated scenes, dialogue, causal links or emotions. Write the edition as
 `web/editions/<date>.json` (schema: `web/src/types.ts`): headline, standfirst,
 homepage question, sections, optional timeline/explainer, numbered sources.
 
-Briefs ("짧게 보는 세상"): one complete sentence each; check every sentence
-with `validateBrief` (`pipeline/src/preview/briefs.ts`).
+Economy and AI/tech pieces: news plus one piece of lasting knowledge (event →
+why it draws attention → principle/background → unexpected connection or case
+→ meaning for people), as an example structure, not a template.
+
+Briefs ("짧게 보는 세상"): 6–10 items, each with a field tag, a short label,
+one or two complete sentences, the source and its publication time; check
+every sentence with `validateBrief` (`pipeline/src/preview/briefs.ts`). No item
+may repeat a main story.
+
+## 4b. Headline Editor
+
+After the body is final, write at least three headline + deck candidates in
+different styles (paradox, surprising fact, question, conflict, human story,
+unexpected connection, plain). Judge each: does the headline alone say what
+the story is about; does it spark curiosity; does it hint at what the reader
+will understand; is it free of academic stiffness; does the body deliver it;
+is it free of exaggeration, clickbait and distortion? Pick one, record the
+candidates, the reason and the previous headline in `headlineReview`. Vary the
+forms across the edition (not all questions).
 
 ## 5. Fact-check (fact checker)
 

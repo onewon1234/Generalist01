@@ -14,6 +14,8 @@
  * The sentence itself is written in the writer stage (subscription-based or
  * human), never invented by rules.
  */
+import { broadOf } from '../config.ts';
+import { deskOf } from '../desk.ts';
 import { anchorWords, properNouns } from '../ingest/group.ts';
 import { figuresIn } from '../research/evidence.ts';
 import type { PreviewStory } from './preview.ts';
@@ -55,6 +57,25 @@ export interface BriefCandidate {
   evidenceText: string;
   modality: Modality[];
   reason: string;
+  /** Field tag for readers (한국, 국제, 경제, 기술, 과학, 문화, 사회). */
+  tag: BriefTag;
+  /** Publication time of the source the sentence comes from (for the date check). */
+  publishedAt: string | null;
+}
+
+export type BriefTag = '한국' | '국제' | '경제' | '기술' | '과학' | '문화' | '사회';
+
+/** Reader-facing field tag from desk and subject. */
+export function briefTag(title: string, language: string, subject: string): BriefTag {
+  const desk = deskOf({ title, language, category: subject });
+  if (desk === 'korea') return '한국';
+  if (desk === 'world') return '국제';
+  if (desk === 'economy') return '경제';
+  if (desk === 'tech') return '기술';
+  const broad = broadOf(subject);
+  if (broad === 'science-technology-ai') return '과학';
+  if (broad === 'philosophy-literature-arts-culture' || broad === 'history-civilization-geography') return '문화';
+  return '사회';
 }
 
 /** Reviews, opinion and sponsored pieces are not news items. */
@@ -104,6 +125,8 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
       evidenceText: [s.title, ...read.flatMap((r) => [r.title ?? '', ...r.evidence.map((e) => e.text)])].join('\n'),
       modality: modality(lede!.e.text),
       reason: `원문 확인 ${read.length}건${s.corroboration.level === 'corroborated' ? ' · 교차 확인' : ''}`,
+      tag: briefTag(s.title, s.language, s.subject),
+      publishedAt: lede!.r.pagePublishedAt ?? lede!.r.feedPublishedAt ?? null,
     });
     if (out.length >= (opts.max ?? Infinity)) break;
   }

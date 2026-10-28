@@ -66,7 +66,7 @@ export function renderPreview(p: Preview): string {
     '> 메인에 들지 않은 소식 중 원문이 확인된 것입니다. 한 문장 원고는 작성 단계에서 쓰고 `validateBrief`로 검사합니다.',
     '> 원문 문장의 확실성 표시(사실·발표·의혹·예정·전망·가능성)는 문장에서 유지해야 합니다.',
     '',
-    ...(p.briefs.length ? p.briefs.map((b, i) => `${i + 1}. **${b.title}** · ${SUBJECT_KO[broadOf(b.subject)] ?? b.subject} · 확실성: ${b.modality.map((m) => MOD_LABEL[m]).join('/')} · ${b.reason}\n   원문(${b.sourcePublisher}): “${b.sourceSentence}”\n   <${b.links[0]}>`) : ['- 후보 없음']),
+    ...(p.briefs.length ? p.briefs.map((b, i) => `${i + 1}. [${b.tag}] **${b.title}** · ${KST(b.publishedAt)} · 확실성: ${b.modality.map((m) => MOD_LABEL[m]).join('/')} · ${b.reason}\n   원문(${b.sourcePublisher}): “${b.sourceSentence}”\n   <${b.links[0]}>`) : ['- 후보 없음']),
     '',
     ...(p.briefsExcluded.length ? ['제외: ' + p.briefsExcluded.map((x) => `${x.title} (${x.reason})`).join(' · '), ''] : []),
     '## 참고 단서 (영상 채널·유료 매체, 근거로 쓰지 않음)',

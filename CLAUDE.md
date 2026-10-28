@@ -29,8 +29,9 @@ writing stories by hand. A manually written sample edition is never the
 deliverable.
 
 - One finite edition per day, normally 5–7 stories; never pad with weak stories.
-- Total reading time initially about 10–15 minutes, set by story quality and
-  depth, not by length targets.
+- Total reading time follows story quality and depth (the 2026-10-28 test
+  edition, about 22 minutes, is an accepted reference); never cut a good piece
+  to hit a length target.
 - Homepage cards are short previews; article pages carry complete writing.
 - No accounts, comments or personalization. Email is an optional future channel.
 
@@ -38,7 +39,17 @@ deliverable.
 
 Select 5–7 main stories by their combined intellectual, explanatory, cultural
 and narrative value. There is no news/feature mix, no minimum number of news
-reports and no per-subject or per-country quota. Excellent non-news stories
+reports and no hard per-subject or per-country quota.
+
+**Default composition (the user's editorial preference, not a quota):** about
+one Korea story, one or two world/politics/international stories, one economy
+story, one AI/technology story, and zero to two free-exploration pieces
+(science, culture, history, philosophy, psychology, language, art). Selection
+weighs it (`pipeline/src/desk.ts`): a desk below its usual count gets a bonus
+only for candidates clearly above the quality bar; a desk past its usual
+maximum is penalised; a missing desk is noted, never padded; an exceptional
+story may exceed the usual range. The research pool reserves a few places per
+desk so the editor can actually consider them. Excellent non-news stories
 compete equally, including for the featured homepage place. Short news updates
 belong in "짧게 보는 세상", so the main edition need not carry every update.
 
@@ -86,9 +97,8 @@ never decide, and a high-frequency news wire must not dominate the ranking
   figures, decisions, outcomes or a meaningful change of perspective, and the
   story must state what is new versus the earlier coverage. A new headline,
   outlet or the passage of time alone is not a development.
-- **Global first.** Korean domestic stories are usually 0–1 of the main
-  stories as an editorial tendency; more on days that warrant it. Nothing is
-  enforced in code.
+- **Global outlook.** About one main story is a Korea story (see the default
+  composition); the rest of the edition looks outward.
 - Distinguish the **event's geography** from the **reporting source**. A foreign
   event reported by a Korean outlet is a foreign story: never suppress it for
   that reason, and look for the original or international sources before
@@ -167,17 +177,33 @@ conventional news report or a stitched summary.
   sake of storytelling. Background facts need sources too (an institution page
   or a read article), not the model's memory.
 - Longer is not deeper: cut ornament, padding and repetition.
-- Restrained, accurate headlines. No clickbait, fabricated tension, generic AI
-  prose or unsupported certainty.
+- **Economy and AI/technology** deliver the news and one piece of lasting
+  knowledge each day, for example: the latest event → why people are watching
+  → the principle and background → an unexpected connection or concrete case
+  → what it means for our lives and society (an example, not a template).
+  Economy pieces teach economic principles and people's choices through real
+  events, not textbook exposition. AI/technology pieces go beyond product
+  launches: how it works, its limits, costs, and industrial and social change.
+
+### Headlines (Headline Editor stage)
+
+After writing, a separate Headline Editor step drafts at least three headline
+and deck (subtitle) candidates in different styles — paradox, surprising fact,
+question, conflict, human story, unexpected connection, plain — and picks the
+best, recording the reason and the previous version (`headlineReview` in the
+edition JSON). Criteria: the headline alone says what the story is about; it
+sparks curiosity; it hints at the new understanding; it is not academic or
+stiff; the body fulfils it; no exaggeration, clickbait or distortion. Do not
+make every headline a question (`checkHeadlines` rejects editions where most
+are). The homepage shows the headline with a short deck that makes it concrete.
 - Original wording and judgment; never imitate or closely paraphrase a reference
   publication.
 - Every published link (sources and concept links) must be verified.
 
 ### Homepage and article pages
 
-- The homepage preview poses the compelling question or discovery of the
-  story, not a headline summary; the article page delivers the depth the
-  preview promises.
+- The homepage preview shows the headline and a short deck that makes it
+  concrete; the article page delivers the depth the preview promises.
 - Article layout: comfortable reading width, responsive mobile-first
   typography, accessible contrast; clear headline and concise standfirst;
   short coherent paragraphs with natural whitespace; meaningful section
@@ -190,12 +216,18 @@ conventional news report or a stitched summary.
 
 ### 짧게 보는 세상 (world in brief)
 
-A section after the main stories for useful items that do not merit a main
-story. Same collection, retrieval and editorial flow; no extra cost.
+A separate band after the main stories (with a jump link at the top of the
+homepage and at the end of each article) for useful domestic and international
+items that do not merit a main story: usually 6–10 items. Same collection,
+retrieval and editorial flow; no extra cost.
 
-- Each item is **one complete, self-contained Korean sentence** stating who,
-  what happened and the key result or meaning. No headline fragments, no
-  ornament, no background, no repetition.
+- Each item has a field tag (한국, 국제, 경제, 기술, 과학, 문화, 사회), a
+  short label for scanning, **one or two complete Korean sentences** stating
+  who, what happened and the key result or meaning, and the source with its
+  publication date. No headline fragments, no ornament, no repetition.
+- Dates are checked against the edition (source published within 72 hours
+  before 09:00 KST of the edition date, never after); duplicates and items that
+  repeat a main story are rejected (`checkBriefs` in `web/src/checks.ts`).
 - Keep certainty exactly: fact, claim, allegation, scheduled, forecast and
   possibility stay distinguishable; never turn uncertainty into fact. If an item
   cannot be told accurately in one sentence, drop it rather than cut accuracy.
