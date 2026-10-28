@@ -184,6 +184,9 @@ conventional news report or a stitched summary.
   Economy pieces teach economic principles and people's choices through real
   events, not textbook exposition. AI/technology pieces go beyond product
   launches: how it works, its limits, costs, and industrial and social change.
+- Original wording and judgment; never imitate or closely paraphrase a reference
+  publication.
+- Every published link (sources and concept links) must be verified.
 
 ### Headlines (Headline Editor stage)
 
@@ -196,9 +199,6 @@ sparks curiosity; it hints at the new understanding; it is not academic or
 stiff; the body fulfils it; no exaggeration, clickbait or distortion. Do not
 make every headline a question (`checkHeadlines` rejects editions where most
 are). The homepage shows the headline with a short deck that makes it concrete.
-- Original wording and judgment; never imitate or closely paraphrase a reference
-  publication.
-- Every published link (sources and concept links) must be verified.
 
 ### Homepage and article pages
 
