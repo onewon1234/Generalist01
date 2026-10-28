@@ -1,0 +1,5 @@
+Scheduled session smoke test
+UTC time: 2026-10-28T13:26:45Z
+Step 2 (web: npm ci && npm test): npm ci OK; tests 12, pass 12, fail 0
+Step 3 WebFetch BBC world RSS: FAILED (PROVENANCE_REQUIRED - permission request not answered in unattended session)
+Step 3 curl BBC world RSS: 000 (proxy CONNECT tunnel failed, response 403 - host not on egress allowlist)
