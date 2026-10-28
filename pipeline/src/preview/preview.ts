@@ -21,6 +21,7 @@ import type { Article, Cluster, FreshnessType, Scores } from '../types.ts';
 import { chooseBriefs, type BriefCandidate } from './briefs.ts';
 import { deskOf, DESK_PREFERENCE, DESK_WEIGHTS, type Desk } from '../desk.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
+import { crossLanguageDuplicates } from './crosslang.ts';
 import { contentKind, isRoutineNotice, KIND_KO, type ContentKind } from '../kind.ts';
 
 export interface PreviewStory {
@@ -267,6 +268,12 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     };
     stories.push({ ...s, reasoning: [] });
   }));
+  // One story per event across languages (title clustering works within a language).
+  for (const [kept, dup] of crossLanguageDuplicates(stories.filter((st) => clusters.some((c) => c.key === st.key)))) {
+    const c = clusters.find((x) => x.key === dup.key)!;
+    c.rejectReason = `same event as "${kept.title}" (other language)`;
+    clusters.splice(clusters.indexOf(c), 1);
+  }
   const sel = selectEdition(clusters, now, [], { subject7d: new Map(), subject30d: new Map(), subtopic7d: new Map() });
   const sizes = assignCardSizes(sel.chosen);
   for (const st of stories) {

@@ -61,3 +61,15 @@ test('coverage breadth counts at most three publishers per language', async () =
   assert.equal(coverageBreadth(ko), 3);
   assert.equal(coverageBreadth(mixed), 3);
 });
+
+test('cross-language duplicates: same country and a shared people count (r11 Spanish train crash)', async () => {
+  const { crossLanguageDuplicates } = await import('../src/preview/crosslang.ts');
+  const st = (key: string, language: string, title: string, figures: string[], suitability: number) => ({ key, language, title, suitability,
+    records: [{ title, evidence: [{ text: title, figures }] }], corroboration: { corroboratedFigures: [], singleSourceFigures: [] } }) as any;
+  const ko = st('ko', 'ko', '스페인 중부서 고속열차 충돌로 최소 30명 사망…한국인 6명 경상', ['30명', '6명'], 64.8);
+  const en = st('en', 'en', 'What we know so far about deadly Spain train crash', ['30people', '140km'], 64.3);
+  const other = st('o', 'en', 'Cyclone in India leaves 30 dead', ['30dead'], 60);
+  const pairs = crossLanguageDuplicates([ko, en, other]);
+  assert.deepEqual(pairs.map(([a, b]) => [a.key, b.key]), [['en', 'ko']], 'the international report is kept');
+  assert.deepEqual(crossLanguageDuplicates([ko, other]), [], 'same count, different country: not merged');
+});

@@ -113,6 +113,7 @@ export function chooseBriefs(stories: PreviewStory[], opts: BriefOptions = {}): 
     let why: string | null = null;
     if (!read.length) why = '원문 확인 없음';
     else if (s.sports) why = '스포츠 결과';
+    else if (s.rejectReason?.startsWith('same event as')) why = '다른 언어 기사와 같은 사건';
     else if (s.rejectReason?.startsWith('format:') && s.rejectReason !== 'format: 일상 공시·동정') why = s.rejectReason.slice(8);
     else if (NOT_NEWS.test(s.title)) why = '리뷰·의견 기사';
     else if (contentKind({ title: s.title, url: s.records[0]?.url }) !== 'story') why = KIND_KO[contentKind({ title: s.title, url: s.records[0]?.url })];
