@@ -1,0 +1,33 @@
+Scheduled session smoke test 2
+UTC time: 2026-10-28T13:44:52Z
+
+1. git clone: OK (main @ 6016a99)
+
+2. BBC
+   WebSearch "BBC News world latest" (standard): OK, but no bbc.com / bbc.co.uk URL in results
+     (only third-party mirrors such as startimestv.com, telsu.fi).
+   Retry with allowed_domains [bbc.com, bbc.co.uk]: ERROR PROXY_REJECTED
+     "The WebSearch proxy rejected the request (HTTP 400): The request was invalid"
+   Retry "site:bbc.com news world": OK, still no bbc.com URL.
+   WebFetch https://www.bbc.com/news/world (fallback, URL not from search): ERROR PROVENANCE_REQUIRED
+     "The permission request for this URL was not answered in time and was withdrawn."
+   Headline / first sentence: not obtained.
+
+3. Rest of World
+   WebSearch "Rest of World AI" (standard): OK
+   WebFetch https://restofworld.org/collection/ai-global-impact-2024/ : WORKED
+     Headline: "AI's global impact in 2024 — beyond Silicon Valley"
+     First sentence: "AI isn't coming."
+     (Note: this is a 2024 collection page, not a current article.)
+
+4. Yonhap
+   WebSearch "연합뉴스 최신 뉴스" (standard): OK, but no yna.co.kr URL in results.
+   Retry with allowed_domains [yna.co.kr]: ERROR PROXY_REJECTED (HTTP 400, same message)
+   Retry "site:yna.co.kr 뉴스": OK, still no yna.co.kr URL.
+   WebFetch https://www.yna.co.kr/ (fallback): ERROR PROVENANCE_REQUIRED (same message as BBC)
+   Headline / first sentence: not obtained.
+
+Conclusion: in an unattended session WebFetch works only for URLs returned by WebSearch;
+standard WebSearch did not return BBC or Yonhap article URLs, allowed_domains is rejected
+by the proxy, and direct fetches need a user permission that nobody can grant unattended.
+Nothing was published. Firecrawl was not used.
