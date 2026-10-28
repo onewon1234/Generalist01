@@ -42,8 +42,10 @@ every check; subscription session (no paid API); recipient set in secrets.
    dates, access status, evidence sentences and an excerpt of up to 1,000
    characters), heuristic scores (not editorial judgment), brief candidates
    (`briefs`), discovery leads and format exclusions. If today's pack is not
-   there yet, `git pull` every 2 minutes until 06:30 KST (scheduled workflows
-   can start late); if it is still missing, push nothing.
+   there, request one: `echo <date> > research-packs/request-<date>` then
+   commit and push that file only (it starts `.github/workflows/research.yml`,
+   about 4 minutes), and `git pull` every 2 minutes. If no pack exists 30
+   minutes after the run started, push nothing.
 4. **Select** following CLAUDE.md §2 and the default composition: about one
    Korea story (a domestic social, cultural or economic phenomenon worth
    understanding, not routine news), one or two world stories with history and

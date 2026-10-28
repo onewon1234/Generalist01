@@ -60,7 +60,10 @@ jobs:
         run: bash scripts/test/test_safe_rm.sh
       - name: no secrets or dumps committed
         run: |
-          if git ls-files | grep -E '(^|/)\.env($|\.)|\.pem$|\.key$|\.dump$|db-export/|recovery.*\.zip$'; then
+          if git ls-files | grep -E '(^|/)\.env($|\.)|\.pem$|\.key$|\.dump$|db-export/|recovery.*\.zip$' | grep -vE '^keys/[a-z]+-public\.pem$'; then
             echo "forbidden file committed"; exit 1; fi
+          # Public keys only: an encryption public key is not a secret, a private key is.
+          for f in keys/*-public.pem; do [ -e "$f" ] || continue
+            grep -q 'BEGIN PUBLIC KEY' "$f" && ! grep -q 'PRIVATE KEY' "$f" || { echo "$f is not a public key"; exit 1; }; done
           if git grep -nE 'sb_secret_[A-Za-z0-9]|service_role["'"'"']?\s*[:=]\s*["'"'"']ey|sk-ant-[A-Za-z0-9]' -- . ':!.github/workflows/ci.yml'; then
             echo "possible credential committed"; exit 1; fi
