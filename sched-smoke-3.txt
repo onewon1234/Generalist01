@@ -1,0 +1,20 @@
+Scheduled session smoke test 3
+UTC time: 2026-10-28T13:53:52Z
+
+Step 1: git clone https://github.com/onewon1234/Generalist01 -> OK
+Step 2: feed URLs from sources/registry.json -> OK
+  bbc-world      https://feeds.bbci.co.uk/news/world/rss.xml
+  guardian-world https://www.theguardian.com/world/rss
+  quanta         https://www.quantamagazine.org/feed/
+  yonhap         https://www.yna.co.kr/rss/news.xml
+Step 3: WebFetch on each feed -> FAILED for all four, same error:
+  {"error_type":"PROVENANCE_REQUIRED","source":"target","message":"The permission request for this URL was not answered in time and was withdrawn. Ask the user to include the URL in a message, or retry once they reply: a retry sends them a new permission request and waits for them again."}
+  No item titles, links or publication times retrieved.
+Step 4: BBC article fetch -> NOT RUN (no article link available because the BBC feed fetch failed).
+  No alternative fetch method (curl/python) was used, per web content restrictions.
+
+Conclusion: in an unattended scheduled session, WebFetch on URLs that come only
+from a repository file (not from a user message or a prior search result)
+requires an interactive permission approval that nobody can answer, so it is
+withdrawn. Feed collection must use another path (e.g. allowlist these
+domains for the task, or run the deterministic pipeline collector).
