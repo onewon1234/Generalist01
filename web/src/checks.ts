@@ -1,5 +1,5 @@
 /**
- * Deterministic edition checks for the Headline Editor and "짧게 보는 세상".
+ * Deterministic edition checks for the Headline Editor and "오늘의 한 줄".
  * Errors block the build; notes are shown for the editor to judge. Judgement
  * itself (curiosity, accuracy against the body) stays with the editor stage;
  * these checks catch what code can: shape, hype, repetition, dates, duplicates.

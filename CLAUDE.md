@@ -45,13 +45,16 @@ reports and no hard per-subject or per-country quota.
 one Korea story, one or two world/politics/international stories, one economy
 story, one AI/technology story, and zero to two free-exploration pieces
 (science, culture, history, philosophy, psychology, language, art). Selection
-weighs it (`pipeline/src/desk.ts`): a desk below its usual count gets a bonus
-only for candidates clearly above the quality bar; a desk past its usual
+weighs it (`pipeline/src/desk.ts`), but only among items that are stories
+(reviews, opinion, sponsored content, live blogs, video pages, digests and a
+publisher's own announcements never become main stories: `pipeline/src/kind.ts`).
+A desk below its usual count gets a bonus only for candidates clearly above the
+quality bar; a desk past its usual
 maximum is penalised; a missing desk is noted, never padded; an exceptional
 story may exceed the usual range. The research pool reserves a few places per
 desk so the editor can actually consider them. Excellent non-news stories
 compete equally, including for the featured homepage place. Short news updates
-belong in "짧게 보는 세상", so the main edition need not carry every update.
+belong in "오늘의 한 줄", so the main edition need not carry every update.
 
 Discovery domains (a healthy mix over time, not daily categories): context-rich
 current global events; science and research; history and overlooked historical
@@ -188,17 +191,29 @@ conventional news report or a stitched summary.
   publication.
 - Every published link (sources and concept links) must be verified.
 
-### Headlines (Headline Editor stage)
+### Headlines and subheadings (Headline Editor stage)
 
-After writing, a separate Headline Editor step drafts at least three headline
-and deck (subtitle) candidates in different styles — paradox, surprising fact,
-question, conflict, human story, unexpected connection, plain — and picks the
-best, recording the reason and the previous version (`headlineReview` in the
-edition JSON). Criteria: the headline alone says what the story is about; it
-sparks curiosity; it hints at the new understanding; it is not academic or
-stiff; the body fulfils it; no exaggeration, clickbait or distortion. Do not
-make every headline a question (`checkHeadlines` rejects editions where most
-are). The homepage shows the headline with a short deck that makes it concrete.
+After the body is final, a separate Headline Editor step reviews the headline,
+deck and subheadings as a professional editor would. Criteria come from a study
+of real Korean and international outlets (`docs/editorial/HEADLINE-STUDY.md`);
+never reuse another outlet's headline.
+
+- Read alone, the headline says roughly what the story is about and makes the
+  reader want to read it. No abstract metaphors, unfamiliar technical terms or
+  teasers that hide the subject.
+- It carries the body's most interesting concrete fact (a place, person,
+  number, record or change) when there is one. Follow Korean headline grammar:
+  news leads with the event and its result; explainers state the event and the
+  question the piece answers (`~이유`, `무엇으로 ~나`).
+- Records, firsts, numbers, scientific and causal claims in a headline or deck
+  are verified against the primary source; a claim is marked as the speaker's.
+- The deck adds what the headline cannot hold (actor, figure, scale, time,
+  the question) and never repeats it.
+- Subheadings name the event, finding, change or conflict of their section and,
+  read in order, tell the story. Short natural ones are fine; generic ones
+  ("배경", "앞으로", "~하는 것", "고칠 수 있을까") are not (`checkSubheads` notes them).
+- No candidate-count, style or question-ratio rule. Record the previous version,
+  the reason and the body edits made in the same pass (`headlineReview`).
 
 ### Homepage and article pages
 
@@ -214,17 +229,20 @@ are). The homepage shows the headline with a short deck that makes it concrete.
   permit (no article images from sources). No dense blocks, nested cards,
   decorative clutter or formulaic AI layouts.
 
-### 짧게 보는 세상 (world in brief)
+### 오늘의 한 줄 (news strip)
 
-A separate band after the main stories (with a jump link at the top of the
-homepage and at the end of each article) for useful domestic and international
-items that do not merit a main story: usually 6–10 items. Same collection,
-retrieval and editorial flow; no extra cost.
+A news strip directly under the lead story on the homepage (articles link back
+to it) for useful domestic and international items that do not merit a main
+story: usually 6–10 items. Same collection, retrieval and editorial flow; no
+extra cost.
 
-- Each item has a field tag (한국, 국제, 경제, 기술, 과학, 문화, 사회), a
-  short label for scanning, **one or two complete Korean sentences** stating
-  who, what happened and the key result or meaning, and the source with its
-  publication date. No headline fragments, no ornament, no repetition.
+- Each row shows a field tag (한국, 국제, 경제, 기술, 과학, 문화, 사회), **one
+  scannable line** (`line`, at most 48 characters, Korean headline grammar) and
+  the source date; it opens (`<details>`, no script) to **one or two complete
+  Korean sentences** (`text`) stating who, what happened and the key result or
+  meaning, with the source link. A short `label` is kept for checks.
+- The line may only shorten the text: no number the text lacks, and the text's
+  plan, possibility or suspicion wording and attribution are kept (`checkLine`).
 - Dates are checked against the edition (source published within 72 hours
   before 09:00 KST of the edition date, never after); duplicates and items that
   repeat a main story are rejected (`checkBriefs` in `web/src/checks.ts`).

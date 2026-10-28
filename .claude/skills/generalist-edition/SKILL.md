@@ -57,21 +57,32 @@ Economy and AI/tech pieces: news plus one piece of lasting knowledge (event →
 why it draws attention → principle/background → unexpected connection or case
 → meaning for people), as an example structure, not a template.
 
-Briefs ("짧게 보는 세상"): 6–10 items, each with a field tag, a short label,
-one or two complete sentences, the source and its publication time; check
-every sentence with `validateBrief` (`pipeline/src/preview/briefs.ts`). No item
-may repeat a main story.
+오늘의 한 줄 (news strip): 6–10 items, each with a field tag, a short label,
+one scannable `line` (≤ 48 characters) and one or two complete sentences
+(`text`), the source and its publication time. Check every sentence with
+`validateBrief` (`pipeline/src/preview/briefs.ts`); the build checks the line
+against the text (`checkLine`). No item may repeat a main story.
 
 ## 4b. Headline Editor
 
-After the body is final, write at least three headline + deck candidates in
-different styles (paradox, surprising fact, question, conflict, human story,
-unexpected connection, plain). Judge each: does the headline alone say what
-the story is about; does it spark curiosity; does it hint at what the reader
-will understand; is it free of academic stiffness; does the body deliver it;
-is it free of exaggeration, clickbait and distortion? Pick one, record the
-candidates, the reason and the previous headline in `headlineReview`. Vary the
-forms across the edition (not all questions).
+Read `docs/editorial/HEADLINE-STUDY.md` first. For each piece, after the body is
+final:
+
+1. Find the most interesting concrete fact in the body. Does the headline carry
+   it, and does the headline alone say what the story is about while making the
+   reader want to read? If not, rewrite. No abstract metaphor or unfamiliar term
+   as the entry point; follow Korean headline grammar.
+2. Verify every record, number, scientific or causal claim in the headline and
+   deck against the primary source; mark claims as the speaker's.
+3. Rewrite the deck to add the actor, figure, scale, time or question.
+4. Rewrite each subheading to name its section's event, finding, change or
+   conflict; read them in order and check they tell the story.
+5. Re-read the lead, the placement of background, the causal chain and the
+   ending; fix only what is wrong, and say why.
+
+Record the previous headline and deck, the reason, the body edits and the
+subheadings before/after in `headlineReview`. There is no candidate-count,
+style or question-ratio rule: quality, not variety of forms, decides.
 
 ## 5. Fact-check (fact checker)
 
