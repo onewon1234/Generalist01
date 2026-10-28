@@ -43,3 +43,21 @@ test('classify: "war" is a word, not part of "Awards" or "software"', () => {
   assert.deepEqual(classify(['Design awards for new software'], 'philosophy-literature-arts-culture').hits, {});
   assert.equal(classify(['The war in Ukraine'], 'x').subject, 'world-politics-society');
 });
+
+test('routine notices (r10): main-story material only with another angle', async () => {
+  const { isRoutineNotice } = await import('../src/kind.ts');
+  for (const t of ['이재용, 故이건희 6주기 추모음악회 참석…삼성家·경영진 한자리에', 'SK하닉 ‘최고 실적’…3분기 영업익 83조', '유한양행, 3분기 영업이익 347억…전년 동기 대비 44.2% 증가',
+    '티맥스소프트, 자사주 300억원 매입·소각 결정', 'LG화학, 엔솔 지분 2.5조 PRS 처분', '농협銀, NH미소금융에 1000억 출연', "'인도 최대 IPO' 지오 플랫폼스, 상장 첫날 21% 폭등…시총 176조원 달해"])
+    assert.ok(isRoutineNotice(t), t);
+  for (const t of ['구룡마을 또 큰불…강남 마지막 판자촌이 해마다 타는 이유', '구글·애플 ‘인앱결제 강제’ 과징금 637억원 확정', '아직 들어오지 않은 주문 예측까지…배민이 꿈꾸는 도시', 'AI models cost more when you don’t use English'])
+    assert.ok(!isRoutineNotice(t), t);
+});
+
+test('coverage breadth counts at most three publishers per language', async () => {
+  const { coverageBreadth } = await import('../src/preview/preview.ts');
+  const a = (publisher: string, language: string) => ({ publisher, language }) as any;
+  const ko = { key: 'k', title: 't', freshnessType: 'timely', articles: ['연합뉴스', '경향신문', '한국경제', '매일경제', '블로터'].map((p) => a(p, 'ko')) } as any;
+  const mixed = { key: 'm', title: 't', freshnessType: 'timely', articles: [a('BBC', 'en'), a('Guardian', 'en'), a('연합뉴스', 'ko')] } as any;
+  assert.equal(coverageBreadth(ko), 3);
+  assert.equal(coverageBreadth(mixed), 3);
+});

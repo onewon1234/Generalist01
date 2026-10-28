@@ -21,7 +21,7 @@ import type { Article, Cluster, FreshnessType, Scores } from '../types.ts';
 import { chooseBriefs, type BriefCandidate } from './briefs.ts';
 import { deskOf, DESK_PREFERENCE, DESK_WEIGHTS, type Desk } from '../desk.ts';
 import { classify, SUBJECT_KO } from './classify.ts';
-import { contentKind, KIND_KO, type ContentKind } from '../kind.ts';
+import { contentKind, isRoutineNotice, KIND_KO, type ContentKind } from '../kind.ts';
 
 export interface PreviewStory {
   key: string;
@@ -86,6 +86,9 @@ const AI_TITLE = /\bAI\b|인공지능|artificial intelligence|chatbot|챗봇|LLM
 export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (a: Article) => string, excluded: Preview['formExcluded'] = []): Cluster[] {
   const byKey = new Map(res.clusters.map((c) => [c.key, c]));
   const subjectCap = Math.ceil(poolSize * 0.35);
+  // The same breadth rule per desk: research covers the whole edition, not one desk.
+  const deskCap = Math.ceil(poolSize * 0.35);
+  const perDesk = new Map<Desk, number>();
   const eligible: { c: Cluster; broad: string; desk: Desk }[] = [];
   for (const cand of res.candidates) {
     const c = byKey.get(cand.key);
@@ -107,8 +110,9 @@ export function choosePool(res: IngestResult, poolSize: number, sourceSubject: (
   const perSubject = new Map<string, number>();
   const out = new Set<Cluster>();
   const take = (x: (typeof eligible)[number]) => {
-    if (out.size >= poolSize || out.has(x.c) || (perSubject.get(x.broad) ?? 0) >= subjectCap) return false;
+    if (out.size >= poolSize || out.has(x.c) || (perSubject.get(x.broad) ?? 0) >= subjectCap || (perDesk.get(x.desk) ?? 0) >= deskCap) return false;
     perSubject.set(x.broad, (perSubject.get(x.broad) ?? 0) + 1);
+    perDesk.set(x.desk, (perDesk.get(x.desk) ?? 0) + 1);
     out.add(x.c);
     return true;
   };
@@ -161,13 +165,32 @@ export function depthNarrative(d: Depth): number {
   return Math.min(2, (d.maxChars - 4000) / 3000);
 }
 
+/**
+ * Coverage breadth for relevance: distinct publishers, counting at most
+ * BREADTH_PER_LANGUAGE per language. A domestic story covered by every Korean
+ * outlet is one country's news cycle, not wider significance; without this the
+ * Korean outlets activated on 2026-10-28 filled the r10 pool (22 of 40) with
+ * routine domestic items on publisher count alone.
+ */
+export const BREADTH_PER_LANGUAGE = 3;
+export function coverageBreadth(c: Cluster): number {
+  const byLang = new Map<string, Set<string>>();
+  for (const a of c.articles) {
+    const l = a.language || '?';
+    if (!byLang.has(l)) byLang.set(l, new Set());
+    byLang.get(l)!.add(publisherKey(a.publisher));
+  }
+  return [...byLang.values()].reduce((n, s) => n + Math.min(BREADTH_PER_LANGUAGE, s.size), 0);
+}
+
 export function heuristicScores(c: Cluster, subject: string, sports: boolean, cor: Corroboration, ageH: number | null, depth: Depth = { maxChars: 4000, figures: 0 }): Scores {
   const pubs = independentPublishers(c);
+  const breadth = coverageBreadth(c);
   const read = cor.readPublishers.length;
   const figures = cor.corroboratedFigures.length;
   const knowledge = c.freshnessType === 'evergreen' || ['science-technology-ai', 'history-civilization-geography', 'psychology-behavior-everyday', 'philosophy-literature-arts-culture'].includes(broadOf(subject));
   const current = ageH != null && ageH <= 48 ? 1 : 0;
-  const relevance = clamp(4 + Math.min(3, Math.log2(pubs) * 1.2) + current + (c.articles.some((a) => a.reliabilityTier === 1) ? 0.5 : 0) - (sports ? 3 : 0));
+  const relevance = clamp(4 + Math.min(3, Math.log2(breadth) * 1.2) + current + (c.articles.some((a) => a.reliabilityTier === 1) ? 0.5 : 0) - (sports ? 3 : 0));
   const title = c.title;
   return {
     curiosity: clamp(5 + (knowledge ? 1.5 : 0)),
@@ -226,7 +249,7 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
     for (const a of picks) { records.push(await retrieveArticle(a, { fetcher: polite, robots, now: () => new Date() })); fetches++; }
     // Sponsored content is often visible only on the page (byline "… Insights", "Partner content").
     const pageKinds = records.filter((r) => r.status === 'read').map((r) => contentKind({ title: r.title ?? '', url: r.finalUrl ?? r.url, author: r.author }));
-    const formReject = pageKinds.length > 0 && pageKinds.every((k) => k !== 'story') ? pageKinds[0] : null;
+    const formReject: ContentKind | null = pageKinds.length > 0 && pageKinds.every((k) => k !== 'story') ? pageKinds[0] : isRoutineNotice(c.title) ? 'routine' : null;
     if (formReject) formExcluded.push({ title: c.title, url: records[0]?.url ?? '', kind: formReject, stage: 'after reading' });
     const cor = corroborate(records);
     const texts = [...c.articles.map((a) => a.title), ...records.flatMap((r) => r.evidence.map((e) => e.text))];
