@@ -1,0 +1,48 @@
+name: research
+
+# Morning research for the daily editorial session (05:17 KST): collect the
+# registry's feeds, read permitted article pages (robots.txt, opt-outs and
+# paywalls respected), extract evidence and short excerpts, and commit the
+# result encrypted with keys/research-public.pem. The scheduled Claude session
+# cannot reach news sites itself, so this is its research input. Nothing
+# readable is written to the public repository or the logs.
+on:
+  schedule:
+    - cron: '17 20 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: pipeline
+      - run: npm ci
+        working-directory: web
+      - name: Collect and read
+        working-directory: pipeline
+        env:
+          ALLOW_PUBLIC_PREVIEW: '1'
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+        run: npx tsx src/cli/preview.ts --out-dir "$RUNNER_TEMP/research" --pool 60 --per-story 3 > /dev/null 2> "$RUNNER_TEMP/err.txt" || { echo "preview failed (details withheld from public logs)"; exit 1; }
+      - name: Seal and commit
+        run: |
+          D=$(TZ=Asia/Seoul date +%F)
+          (cd web && npx tsx src/seal.ts seal "$RUNNER_TEMP/research/preview.json" "../research-packs/$D.sealed.json" --pub ../keys/research-public.pem --date "$D")
+          git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
+          git add "research-packs/$D.sealed.json"
+          git commit -m "research: $D (sealed) [skip ci]"
+          for i in 1 2 3; do git push && break || git pull --rebase; done

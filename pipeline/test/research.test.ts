@@ -195,3 +195,10 @@ test('extractPage: deck (og:description) and subheadings inside the article body
   assert.equal(p.description, '부제가 여기 있다');
   assert.deepEqual(p.subheads, ['첫 소제목', '둘째 소제목']);
 });
+
+test('excerpt: whole paragraphs up to 1000 characters, never more', async () => {
+  const { excerptOf, EXCERPT_CHARS } = await import('../src/research/retrieve.ts');
+  const p = ['가'.repeat(400), '나'.repeat(400), '다'.repeat(400)];
+  assert.equal([...excerptOf(p)].length, 801);
+  assert.ok([...excerptOf(['라'.repeat(3000)])].length <= EXCERPT_CHARS);
+});

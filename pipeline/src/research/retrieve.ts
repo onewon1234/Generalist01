@@ -43,7 +43,23 @@ export interface RetrievalRecord {
   textChars: number;
   textSha256: string | null;
   evidence: Evidence[];
+  /**
+   * Opening of the permitted article text, at most EXCERPT_CHARS characters
+   * (the storage limit for source text). Only for status 'read'.
+   */
+  excerpt?: string;
   note?: string;
+}
+
+export const EXCERPT_CHARS = 1000;
+export function excerptOf(paragraphs: string[], max = EXCERPT_CHARS): string {
+  let out = '';
+  for (const p of paragraphs) {
+    const next = out ? `${out}\n${p}` : p;
+    if ([...next].length > max) { if (!out) out = [...p].slice(0, max - 1).join('') + '…'; break; }
+    out = next;
+  }
+  return out;
 }
 
 /** Minimum article text for 'read' (Korean text is denser than English). */
@@ -98,7 +114,7 @@ export async function readArticle(a: Article, deps: RetrieveDeps): Promise<{ rec
   const text = page.paragraphs.join('\n');
   const hash = text ? createHash('sha256').update(text).digest('hex') : null;
   if (page.textChars < min) return done({ ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'partial', note: `only ${page.textChars} chars of article text found` });
-  return done({ ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'read', evidence: extractEvidence(page.paragraphs) }, page.paragraphs);
+  return done({ ...base, ...meta, textChars: page.textChars, textSha256: hash, status: 'read', evidence: extractEvidence(page.paragraphs), excerpt: excerptOf(page.paragraphs) }, page.paragraphs);
 }
 
 /** Sequential per host with a minimum gap, small global concurrency. */

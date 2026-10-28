@@ -15,11 +15,16 @@ every check; subscription session (no paid API); recipient set in secrets.
 - If a good edition (at least 5 main stories that pass the checks) cannot be
   finished by **07:45 KST**, push nothing. The publish workflow then sends the
   publisher a failure alert. Never reuse or re-date an earlier edition.
-- Facts only from sources you actually fetched in this run with WebFetch.
-  Do not use Firecrawl (it is billed). Skip paywalled pages and sources the
-  registry marks as restricted; never work around a block. Background facts
-  need a fetched source too. Record the access level honestly (`원문 확인` only for a
-  page whose text you read).
+- Facts only from (a) the morning research pack, whose pages the rule-based
+  pipeline read under robots.txt, opt-out and paywall rules, and (b) pages you
+  fetch in this run. In an unattended session WebFetch works only for URLs that
+  a WebSearch in the same session returned (checked 2026-10-28); direct URLs
+  are refused. Do not use Firecrawl (it is billed) or any other way around a
+  block. Background facts need a source too. Record the access level
+  honestly: `원문 확인` for pages the pipeline or you read, `발췌 확인` when only
+  the pack's excerpt was available.
+- The research key is given in the task prompt. Write it to `/tmp/research.pem`
+  only; never print, commit or copy it anywhere else.
 
 ## Steps
 
@@ -30,13 +35,14 @@ every check; subscription session (no paid API); recipient set in secrets.
 2. Edition date: today in Asia/Seoul (`TZ=Asia/Seoul date +%F`). Look at the
    last 7 days of `sealed-editions/` file names to know which dates exist; you
    cannot read them, so avoid repeating an event only if you know it was covered.
-3. **Discover** (the shell has no internet access; use WebFetch). Fetch the feeds
-   of the active, non-`referenceOnly` sources in `sources/registry.json`
-   (start with BBC World, Guardian World, Al Jazeera, The Conversation, Rest of
-   World, MIT Technology Review, Quanta, Aeon, Smithsonian, BBC Business,
-   Yonhap, 경향신문, 주간경향, 한국경제, 바이라인네트워크). Ask WebFetch for
-   every item's title, link and publication time; keep items from the last
-   36 hours (evergreen sources: 30 days).
+3. **Open the research pack** (the shell has no internet access):
+   `cd web && npx tsx src/seal.ts unseal ../research-packs/<date>.sealed.json /tmp/research.json --key-file /tmp/research.pem`.
+   It is the pipeline preview (`pipeline/src/preview/preview.ts`): about 60
+   researched candidates (`stories`: title, desk, records with url, publisher,
+   dates, access status, evidence sentences and an excerpt of up to 1,000
+   characters), heuristic scores (not editorial judgment), brief candidates
+   (`briefs`), discovery leads and format exclusions. If today's pack is
+   missing (the research workflow failed), push nothing.
 4. **Select** following CLAUDE.md §2 and the default composition: about one
    Korea story (a domestic social, cultural or economic phenomenon worth
    understanding, not routine news), one or two world stories with history and
@@ -46,9 +52,12 @@ every check; subscription session (no paid API); recipient set in secrets.
    digests and routine notices (`pipeline/src/kind.ts`). One story per event:
    check that the articles you combine describe the same event. Do not pad:
    five excellent stories beat seven.
-5. **Research** each chosen story: fetch at least two independent sources where
-   they exist, plus the primary source (paper, official release, data) for
-   scientific, numeric, record ("처음", "n년 만에") and causal claims.
+5. **Research** each chosen story beyond the pack: run WebSearch with the
+   story's distinctive names and terms (mode standard, extended only when
+   needed), then WebFetch the relevant results to read more of the reporting
+   and the primary source (paper, official release, data) for scientific,
+   numeric, record ("처음", "n년 만에") and causal claims. Prefer at least two
+   independent sources per story. If a story cannot be supported well, drop it.
 6. **Write** each story in Korean per CLAUDE.md §4 (narrative-first, attributed
    interpretation, no fabricated scenes), about 3–5 minutes each. Then the
    Headline Editor pass (CLAUDE.md "Headlines and subheadings"), recording

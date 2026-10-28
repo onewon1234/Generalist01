@@ -5,8 +5,8 @@
  * holds the private key (GitHub secret EDITION_PRIVATE_KEY) and decrypts it at
  * publication time. RSA-OAEP-256 wraps a random AES-256-GCM key.
  *
- *   npx tsx src/seal.ts seal <edition.json> <out.sealed.json> [--pub keys/edition-public.pem]
- *   npx tsx src/seal.ts unseal <in.sealed.json> <out.json>   (key from $EDITION_PRIVATE_KEY)
+ *   npx tsx src/seal.ts seal <edition.json> <out.sealed.json> [--pub keys/edition-public.pem] [--date YYYY-MM-DD]
+ *   npx tsx src/seal.ts unseal <in.sealed.json> <out.json> [--key-file <pem>]   (default key: $EDITION_PRIVATE_KEY)
  */
 import { constants, createCipheriv, createDecipheriv, privateDecrypt, publicEncrypt, randomBytes } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -36,12 +36,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (cmd === 'seal' && input && output) {
     const pub = readFileSync(pubIdx > 0 ? process.argv[pubIdx + 1] : join(import.meta.dirname, '..', '..', 'keys', 'edition-public.pem'), 'utf8');
     const plain = readFileSync(input, 'utf8');
-    const date = (JSON.parse(plain) as { date: string }).date;
+    const dIdx = process.argv.indexOf('--date');
+    const date = dIdx > 0 ? process.argv[dIdx + 1] : (JSON.parse(plain) as { date: string }).date;
     writeFileSync(output, JSON.stringify(seal(plain, pub, date)) + '\n');
     console.log(`sealed edition ${date} → ${output}`);
   } else if (cmd === 'unseal' && input && output) {
-    const key = process.env.EDITION_PRIVATE_KEY;
-    if (!key) { console.error('EDITION_PRIVATE_KEY is not set'); process.exit(2); }
+    const kIdx = process.argv.indexOf('--key-file');
+    const key = kIdx > 0 ? readFileSync(process.argv[kIdx + 1], 'utf8') : process.env.EDITION_PRIVATE_KEY;
+    if (!key) { console.error('no private key (EDITION_PRIVATE_KEY or --key-file)'); process.exit(2); }
     writeFileSync(output, unseal(JSON.parse(readFileSync(input, 'utf8')), key));
     console.log(`unsealed ${input} → ${output}`);
   } else { console.error('usage: seal <edition.json> <out> | unseal <in> <out>'); process.exit(2); }
