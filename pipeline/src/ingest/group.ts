@@ -185,7 +185,9 @@ export function groupArticles(articles: Article[], threshold = GROUP_THRESHOLD):
         // English: common words ("court", "risk", "call") link unrelated stories; require shared names.
         const props = Math.max(...sample.map((m) => [...d.proper].filter((w) => m.proper.has(w)).length));
         const phrase = sample.some((m) => [...d.phrases].some((p) => m.phrases.has(p)));
-        if (props < 1 || (props < 2 && !phrase && s < LATIN_ONE_NAME_THRESHOLD)) continue;
+        const shared = Math.max(...det.map((x) => x.shared));
+        // One shared name plus one common word ("China" + "love", r14) is not an event.
+        if (props < 1 || (props < 2 && !phrase && (s < LATIN_ONE_NAME_THRESHOLD || shared < 3))) continue;
       }
       if (s > bestScore) { bestScore = s; best = g; }
     }

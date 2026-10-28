@@ -198,3 +198,9 @@ test('known limitation: sentence-case headlines sharing country names can still 
   ]);
   assert.equal(cs.length, 2);
 });
+
+test('one shared name and one common word do not merge (preview r14, 2026-10-28)', () => {
+  const a = article({ title: 'From a seed in China to the ‘backdrop for countless love stories’: a ginkgo’s 167-year journey to Victorian tree of the year', publisher: 'The Guardian', language: 'en', excerpt: null });
+  const b = article({ title: 'US and China share a love of "new things and innovation" says Ma Yansong', publisher: 'Dezeen', language: 'en', excerpt: null });
+  assert.equal(groupArticles([a, b]).length, 2);
+});

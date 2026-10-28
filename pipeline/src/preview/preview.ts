@@ -245,7 +245,9 @@ export async function buildPreview(res: IngestResult, fetcher: Fetcher, sourceSu
   const stories: PreviewStory[] = [];
   const clusters: Cluster[] = [];
   await Promise.all(pool.map(async (c) => {
-    const picks = pickArticles(c, opts.perStory ?? 3);
+    // Read only the articles that are stories: a review or live page in the same cluster is not evidence.
+    const storyArticles = c.articles.filter((a) => contentKind({ title: a.title, url: a.url, publisher: a.publisher }) === 'story');
+    const picks = pickArticles({ ...c, articles: storyArticles.length ? storyArticles : c.articles }, opts.perStory ?? 3);
     const records: RetrievalRecord[] = [];
     for (const a of picks) { records.push(await retrieveArticle(a, { fetcher: polite, robots, now: () => new Date() })); fetches++; }
     // Sponsored content is often visible only on the page (byline "… Insights", "Partner content").
