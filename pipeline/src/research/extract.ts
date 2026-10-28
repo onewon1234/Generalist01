@@ -20,6 +20,10 @@ export interface PageExtract {
   restrictions: string[];
   paragraphs: string[];
   textChars: number;
+  /** Standfirst/dek as published (og:description or description meta). */
+  description: string | null;
+  /** Section headings (h2/h3) inside the article body, in order. */
+  subheads: string[];
 }
 
 const CONTAINERS = [
@@ -86,17 +90,20 @@ function paragraphsIn(el: HTMLElement): string[] {
  * the most article-like text wins (the first match is often a summary box or
  * teaser, e.g. a second <article> element).
  */
-function paragraphsOf(root: HTMLElement): string[] {
+function paragraphsOf(root: HTMLElement): { paragraphs: string[]; subheads: string[] } {
   let best: string[] = [];
+  let bestHeads: string[] = [];
   let bestLen = 0;
   for (const sel of CONTAINERS) {
     for (const el of root.querySelectorAll(sel)) {
-      const ps = paragraphsIn(parse(el.outerHTML) as unknown as HTMLElement);
+      const copy = parse(el.outerHTML) as unknown as HTMLElement;
+      const heads = copy.querySelectorAll('h2, h3').map((h) => clean(h.innerHTML)).filter((h) => h.length >= 2 && h.length <= 120);
+      const ps = paragraphsIn(copy);
       const len = ps.join('').length;
-      if (len > bestLen) { best = ps; bestLen = len; }
+      if (len > bestLen) { best = ps; bestLen = len; bestHeads = heads; }
     }
   }
-  return bestLen >= 120 ? best : [];
+  return bestLen >= 120 ? { paragraphs: best, subheads: dedupe(bestHeads) } : { paragraphs: [], subheads: [] };
 }
 
 function dedupe(ps: string[]): string[] {
@@ -116,7 +123,7 @@ export function extractPage(html: string, headers: Record<string, string> = {}):
   const paywalled = isFalse(article.isAccessibleForFree) ||
     (Array.isArray(article.hasPart) ? article.hasPart : [article.hasPart]).some((p: any) => p && isFalse(p.isAccessibleForFree));
   const author = article.author ? (Array.isArray(article.author) ? article.author : [article.author]).map((a: any) => a?.name ?? a).filter(Boolean).join(', ') : meta(root, 'author', 'article:author');
-  const paragraphs = paragraphsOf(root);
+  const { paragraphs, subheads } = paragraphsOf(root);
   return {
     title: meta(root, 'og:title', 'twitter:title') ?? (root.querySelector('title')?.text.trim() || null),
     canonical: root.querySelector('link[rel="canonical"]')?.getAttribute('href') ?? meta(root, 'og:url'),
@@ -129,5 +136,7 @@ export function extractPage(html: string, headers: Record<string, string> = {}):
     restrictions,
     paragraphs,
     textChars: paragraphs.join(' ').length,
+    description: meta(root, 'og:description', 'description', 'twitter:description'),
+    subheads,
   };
 }

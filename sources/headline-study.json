@@ -1,0 +1,31 @@
+{
+  "note": "Publications studied for headline, deck and subheading craft (editorial study only; not evidence sources). Feeds are read for titles and descriptions; a few recent articles per feed are opened under the normal access rules to see their published deck and subheadings. Nothing is republished.",
+  "feeds": [
+    { "name": "연합뉴스", "kind": "korean-news", "url": "https://www.yna.co.kr/rss/news.xml" },
+    { "name": "경향신문", "kind": "korean-news", "url": "https://www.khan.co.kr/rss/rssdata/total_news.xml" },
+    { "name": "한겨레", "kind": "korean-news", "url": "https://www.hani.co.kr/rss/" },
+    { "name": "조선일보", "kind": "korean-news", "url": "https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml" },
+    { "name": "시사IN", "kind": "korean-magazine", "url": "https://www.sisain.co.kr/rss/allArticle.xml" },
+    { "name": "주간경향", "kind": "korean-magazine", "url": "https://weekly.khan.co.kr/rss/rssdata/total_news.xml" },
+    { "name": "동아사이언스", "kind": "korean-science", "url": "https://www.dongascience.com/rss/news" },
+    { "name": "한국경제", "kind": "korean-economy", "url": "https://www.hankyung.com/feed/all-news" },
+    { "name": "매일경제", "kind": "korean-economy", "url": "https://www.mk.co.kr/rss/30000001/" },
+    { "name": "바이라인네트워크", "kind": "korean-tech", "url": "https://byline.network/feed/" },
+    { "name": "블로터", "kind": "korean-tech", "url": "https://www.bloter.net/rss/allArticle.xml" },
+    { "name": "BBC News", "kind": "news", "url": "https://feeds.bbci.co.uk/news/world/rss.xml" },
+    { "name": "The Guardian", "kind": "news", "url": "https://www.theguardian.com/world/rss" },
+    { "name": "The Conversation", "kind": "explainer", "url": "https://theconversation.com/global/articles.atom" },
+    { "name": "BBC Future", "kind": "explainer", "url": "https://www.bbc.com/future/feed.rss" },
+    { "name": "Quanta Magazine", "kind": "science", "url": "https://www.quantamagazine.org/feed/" },
+    { "name": "Knowable Magazine", "kind": "science", "url": "https://knowablemagazine.org/rss" },
+    { "name": "Nautilus", "kind": "science", "url": "https://nautil.us/feed/" },
+    { "name": "Smithsonian Magazine", "kind": "science", "url": "https://www.smithsonianmag.com/rss/latest_articles/" },
+    { "name": "Aeon", "kind": "ideas", "url": "https://aeon.co/feed.rss" },
+    { "name": "JSTOR Daily", "kind": "history", "url": "https://daily.jstor.org/feed/" },
+    { "name": "Rest of World", "kind": "tech", "url": "https://restofworld.org/feed/latest" },
+    { "name": "MIT Technology Review", "kind": "tech", "url": "https://www.technologyreview.com/feed/" },
+    { "name": "BBC Business", "kind": "economy", "url": "https://feeds.bbci.co.uk/news/business/rss.xml" },
+    { "name": "The Atlantic", "kind": "magazine", "url": "https://www.theatlantic.com/feed/all/" },
+    { "name": "Vox", "kind": "explainer", "url": "https://www.vox.com/rss/index.xml" }
+  ]
+}

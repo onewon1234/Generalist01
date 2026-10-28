@@ -60,8 +60,9 @@ export async function retrieveArticle(a: Article, deps: RetrieveDeps): Promise<R
  * when (and only when) the status is `read`. The paragraphs are for transient
  * use by the editor/writer stage; they are never stored or logged.
  */
-export async function readArticle(a: Article, deps: RetrieveDeps): Promise<{ record: RetrievalRecord; paragraphs: string[] }> {
-  const done = (record: RetrievalRecord, paragraphs: string[] = []) => ({ record, paragraphs });
+export async function readArticle(a: Article, deps: RetrieveDeps): Promise<{ record: RetrievalRecord; paragraphs: string[]; description?: string | null; subheads?: string[] }> {
+  let page: ReturnType<typeof extractPage> | undefined;
+  const done = (record: RetrievalRecord, paragraphs: string[] = []) => ({ record, paragraphs, description: page?.description ?? null, subheads: record.status === 'read' ? page?.subheads ?? [] : [] });
   const retrievedAt = (deps.now?.() ?? new Date()).toISOString();
   const base: RetrievalRecord = {
     url: a.url, finalUrl: null, publisher: a.publisher, sourceKey: a.sourceKey ?? null, feedPublishedAt: a.publishedAt ?? null,
@@ -86,7 +87,7 @@ export async function readArticle(a: Article, deps: RetrieveDeps): Promise<{ rec
     if (after === 'unreachable') return done({ ...base, robots: after, status: 'robots-unreachable', note: 'redirect target robots unreachable' });
   }
 
-  const page = extractPage(r.body);
+  page = extractPage(r.body);
   const meta = {
     title: page.title, pagePublishedAt: page.publishedAt, pageModifiedAt: page.modifiedAt, author: page.author,
     restrictions: page.restrictions,

@@ -186,3 +186,12 @@ test('corroboration counts only read articles from different publishers', () => 
   const d = corroborate([rec('a', 'read', ['27일', '2023년']), rec('b', 'read', ['27일', '2023년'])]);
   assert.deepEqual(d.corroboratedFigures, []);
 });
+
+test('extractPage: deck (og:description) and subheadings inside the article body', async () => {
+  const { extractPage } = await import('../src/research/extract.ts');
+  const html = `<html><head><meta property="og:description" content="부제가 여기 있다"></head><body><header><h2>사이트 메뉴</h2></header><article>
+    <p>${'첫 문단의 본문이 충분히 길게 이어진다. '.repeat(4)}</p><h2>첫 소제목</h2><p>${'둘째 문단도 충분히 길게 이어진다. '.repeat(4)}</p><h3>둘째 소제목</h3><p>${'셋째 문단 역시 길게 쓴다. '.repeat(4)}</p></article></body></html>`;
+  const p = extractPage(html);
+  assert.equal(p.description, '부제가 여기 있다');
+  assert.deepEqual(p.subheads, ['첫 소제목', '둘째 소제목']);
+});
