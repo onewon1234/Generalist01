@@ -48,7 +48,7 @@ export function renderEmail(e: Edition, base: string, opts: { test?: boolean } =
 <body style="margin:0;padding:0;background:${PAPER};">
 <div style="display:none;max-height:0;overflow:hidden;">${esc(e.intro ?? e.stories[0]?.deck ?? '')}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER};"><tr><td align="center" style="padding:20px 14px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;word-break:keep-all;overflow-wrap:break-word;">
 <tr><td style="padding:0 0 14px;border-bottom:2px solid ${INK};">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
     <td style="font-family:${SERIF};font-size:24px;font-weight:900;color:${INK};"><a href="${esc(editionUrl(base, e))}" style="color:${INK};text-decoration:none;">Generalist Daily</a></td>
