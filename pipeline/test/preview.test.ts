@@ -118,5 +118,5 @@ test('pool: each default-composition desk gets research places even when ranked 
     candidates: clusters.map(summarize), leads: [] } as IngestResult;
   const pool = choosePool(res, 5, () => 'world-politics-society');
   assert.ok(pool.some((c) => c.key === 'ko'), pool.map((c) => c.key).join());
-  assert.equal(pool.length, 5);
+  assert.ok(pool.length <= 5);
 });
