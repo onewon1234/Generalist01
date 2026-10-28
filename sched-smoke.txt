@@ -1,0 +1,5 @@
+Scheduled session smoke test
+UTC time: 2026-10-28T14:05:32Z
+Step 2 (web: npm ci && npm test): PASS — 12 tests, 12 pass, 0 fail
+Step 3a (WebFetch BBC world RSS): FAILED — PROVENANCE_REQUIRED; the URL permission request went unanswered in an unattended session and was withdrawn
+Step 3b (curl BBC world RSS): FAILED — http_code 000, exit 56; agent proxy connect_rejected for feeds.bbci.co.uk (host not on the session's allowed-domain list)
