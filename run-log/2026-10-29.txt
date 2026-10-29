@@ -1,0 +1,19 @@
+Generalist Daily - unattended morning run log
+Edition date: 2026-10-29 (Asia/Seoul)
+Run started: 2026-10-29 22:49 KST (13:49 UTC). Deadline per DAILY-RUN: 07:45 KST.
+
+Steps
+- Repository cloned, DAILY-RUN.md read: done.
+- Research pack: present (research-packs/2026-10-29.json, committed 22:47 KST) but not used.
+- Stories selected / written / checked / sealed / edition pushed: NOT done.
+- Pushed delivery/2026-10-29.skip.json to main (commit 4380ca8, 22:50 KST).
+
+Why I stopped
+The run began about 15 hours after the 07:45 KST deadline. DAILY-RUN's hard rule and
+the task prompt say: if a good edition cannot be finished by 07:45 KST (no added
+message set another deadline), push no edition and push the skip file instead.
+Note: the publish workflow treats a push outside 05:00-12:00 KST as a rehearsal
+(test=true), so the alert email for this skip will be a test-mode alert.
+
+To rehearse the full flow in the evening, fire the task with an added message
+that sets the edition date and a later deadline.
