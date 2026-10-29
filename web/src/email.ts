@@ -33,7 +33,7 @@ export function renderEmail(e: Edition, base: string, opts: { test?: boolean } =
     const srcs = s.sources.slice(0, 3).map((x) => a(x.url, esc(x.publisher), 'color:' + MUTED + ';text-decoration:underline;')).join(' · ');
     return `<tr><td style="padding:${i ? '22px' : '6px'} 0 22px;border-bottom:1px solid ${RULE};">
   <p style="margin:0 0 6px;font-family:${SANS};font-size:12px;color:${MUTED};">${esc(s.domain)}${s.place ? ` · ${esc(s.place)}` : ''} · ${readingMinutes(s)}분</p>
-  <h2 style="margin:0 0 8px;font-family:${SERIF};font-size:${i ? '20px' : '25px'};line-height:1.4;font-weight:800;color:${INK};"><a href="${esc(url)}" style="color:${INK};text-decoration:none;">${esc(s.headline)}</a></h2>
+  <h2 style="margin:0 0 8px;font-family:${SERIF};font-size:${i ? '19px' : '22px'};line-height:1.42;font-weight:800;color:${INK};"><a href="${esc(url)}" style="color:${INK};text-decoration:none;">${esc(s.headline)}</a></h2>
   <p style="margin:0 0 10px;font-family:${SERIF};font-size:16px;line-height:1.7;color:${MUTED};">${esc(s.deck)}</p>
   <p style="margin:0;font-family:${SANS};font-size:14px;"><a href="${esc(url)}" style="color:${ACCENT};text-decoration:none;font-weight:600;">전문 읽기 →</a></p>
   ${srcs ? `<p style="margin:8px 0 0;font-family:${SANS};font-size:12px;color:${MUTED};">출처: ${srcs}</p>` : ''}

@@ -78,7 +78,17 @@ every check; subscription session (no paid API); recipient set in secrets.
    numeric, record ("처음", "n년 만에") and causal claims. Prefer at least two
    independent sources per story. If a story cannot be supported well, drop it.
 6. **Write** each story in Korean per CLAUDE.md §4 (narrative-first, attributed
-   interpretation, no fabricated scenes), about 3–5 minutes each. Then the
+   interpretation, no fabricated scenes). Depth, not length: every main story
+   explains, each with a cited source, (a) the background and how we got here,
+   (b) the cause or mechanism, (c) the main actors and their interests,
+   (d) the consequences, and (e) what is still unknown or disputed. When a part
+   cannot be supported by a source you read, say it is not known yet; never
+   fill it from memory. Find free, reliable additional material (official
+   releases, papers, institutions' pages, reputable outlets) through
+   WebSearch. Several outlets repeating one wire report or one press release
+   count as one source, not as independent corroboration; say "단일 출처"
+   when that is all there is. A story that cannot be explained this way is
+   dropped, even if that leaves five. Then the
    Headline Editor pass (CLAUDE.md "Headlines and subheadings"), recording
    `headlineReview` with the reason.
 7. **오늘의 한 줄**: 6–10 items not covered by the main stories, from fetched
@@ -97,6 +107,12 @@ every check; subscription session (no paid API); recipient set in secrets.
     cd .. && git add sealed-editions/<date>.sealed.json && git commit -m "edition: <date> (sealed)" && git push origin HEAD:main
     ```
     If the push is rejected, `git pull --rebase` and push again.
-11. End with a short report: chosen stories by desk with the reason, stories
+11. The run log (`run-log/<date>.txt` on branch `claude/run-log`) must record:
+    actual start and end time (KST); number of main stories and total reading
+    time (from `readingMinutes`); for every story, its sources with the access
+    level actually reached and whether its key claims are independently
+    corroborated or single-source; whether every quality check passed (build
+    errors and editor notes); and whether sealing and the push to GitHub
+    succeeded (commit id). Then end with a short report: chosen stories by desk with the reason, stories
     considered and dropped, sources that could not be read, and the time the
     edition was pushed.

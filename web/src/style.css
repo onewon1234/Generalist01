@@ -54,13 +54,13 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-
 .home a { text-decoration: none; display: block; }
 .lead { padding: 2.25rem 0 2rem; border-bottom: 1px solid var(--rule); }
 .lead-headline {
-  font-size: clamp(1.9rem, 5.2vw, 3rem); line-height: 1.28; font-weight: 900;
+  font-size: clamp(1.6rem, 4.6vw, 2.6rem); line-height: 1.32; font-weight: 900;
   letter-spacing: -.02em; margin: 0 0 .9rem; max-width: 20em; transition: color .15s;
 }
-.lead-deck { margin: 0; font-size: 1.125rem; line-height: 1.7; color: var(--muted); max-width: var(--measure); }
+.lead-deck { margin: 0; font-size: 1.0625rem; line-height: 1.7; color: var(--muted); max-width: var(--measure); }
 .entries { list-style: none; margin: 0; padding: 0; }
 .entry { padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
-.entry-headline { font-size: clamp(1.25rem, 3.2vw, 1.55rem); line-height: 1.45; font-weight: 700; margin: 0 0 .4rem; transition: color .15s; }
+.entry-headline { font-size: clamp(1.15rem, 3vw, 1.45rem); line-height: 1.45; font-weight: 700; margin: 0 0 .4rem; transition: color .15s; }
 .entry-deck { font-size: 1rem; line-height: 1.7; margin: 0; color: var(--muted); max-width: var(--measure); }
 .home a:hover .lead-headline, .home a:hover .entry-headline { color: var(--accent); }
 .meta { font-family: var(--sans); font-size: .8125rem; color: var(--muted); margin: .6rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
@@ -94,9 +94,9 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-
 .article { padding-bottom: 3rem; }
 .article-header { max-width: var(--measure); padding: 2.5rem 0 1.5rem; }
 .article-header .meta { margin: 0 0 1rem; }
-.article h1 { font-size: clamp(1.75rem, 4.6vw, 2.5rem); line-height: 1.32; font-weight: 900; letter-spacing: -.02em; margin: 0 0 1rem; }
+.article h1 { font-size: clamp(1.5rem, 4.2vw, 2.25rem); line-height: 1.36; font-weight: 900; letter-spacing: -.02em; margin: 0 0 1rem; }
 .deck { font-family: var(--sans); font-size: 1.0625rem; font-weight: 600; line-height: 1.6; margin: 0 0 .9rem; }
-.standfirst { font-size: 1.1875rem; line-height: 1.7; color: var(--muted); margin: 0; }
+.standfirst { font-size: 1.0625rem; line-height: 1.7; color: var(--muted); margin: 0; }
 .article-body { max-width: var(--measure); border-top: 1px solid var(--rule); padding-top: .5rem; }
 .article-body h2 { font-size: 1.3rem; line-height: 1.45; font-weight: 700; margin: 2.4rem 0 .6rem; }
 .article-body p { margin: 0 0 1.15em; }
