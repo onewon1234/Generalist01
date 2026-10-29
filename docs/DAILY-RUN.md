@@ -19,8 +19,13 @@ every check; subscription session (no paid API); recipient set in secrets.
   (no article text); the publish workflow then alerts the publisher at once.
   Never reuse or re-date an earlier edition.
 - A message added when the task is fired by hand does not reach the session
-  (run log 2026-10-29), so a manual run cannot extend the deadline: rehearse
-  only with the regular 05:52 run.
+  (run log 2026-10-29), so a manual firing cannot change the deadline.
+- **Test mode** (no publication): run these steps by hand in an interactive
+  session, give the edition a test provenance, validate with `src/build.ts`,
+  seal it to a file outside `sealed-editions/` (for example the session's
+  scratch folder) and check it with `scripts/prepare.ts` where the private key
+  is available. Nothing is pushed to `sealed-editions/`, so nothing is
+  published or emailed. Verified 2026-10-29 (report in the conversation).
 - GitHub's scheduled workflows can start hours late (observed 2026-10-29), so
   never wait for one: request the research pack yourself (step 3).
 - Facts only from (a) the morning research pack (`research-packs/<date>.json`,
@@ -49,7 +54,10 @@ every check; subscription session (no paid API); recipient set in secrets.
    candidates (`stories`: title, desk, sources with url, outlet, time, access
    status, figures and a short lede), heuristic scores (not editorial
    judgment), brief candidates (`briefs`), discovery leads and format
-   exclusions (schema: `pipeline/src/preview/pack.ts`). If today's pack is not
+   exclusions (schema: `pipeline/src/preview/pack.ts`). Check each lede against
+   its title: some Korean aggregator entries carry the lede of a different
+   article, and a cluster can still mix two events; never use a lede that does
+   not match its title. If today's pack is not
    there, request one immediately: `echo <date> > research-packs/request-<date>` then
    commit and push that file only (it starts `.github/workflows/research.yml`,
    about 4 minutes), and `git pull` every 2 minutes. If no pack exists 30
@@ -64,8 +72,8 @@ every check; subscription session (no paid API); recipient set in secrets.
    check that the articles you combine describe the same event. Do not pad:
    five excellent stories beat seven.
 5. **Research** each chosen story beyond the pack: run WebSearch with the
-   story's distinctive names and terms (mode standard, extended only when
-   needed), then WebFetch the relevant results to read more of the reporting
+   story's distinctive names and terms (mode extended for same-day news:
+   standard searches returned only older pages in the 2026-10-29 test), then WebFetch the relevant results to read more of the reporting
    and the primary source (paper, official release, data) for scientific,
    numeric, record ("처음", "n년 만에") and causal claims. Prefer at least two
    independent sources per story. If a story cannot be supported well, drop it.
