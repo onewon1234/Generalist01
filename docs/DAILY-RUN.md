@@ -18,6 +18,9 @@ every check; subscription session (no paid API); recipient set in secrets.
   `delivery/<date>.skip.json` with `{"date":"<date>","reason":"<one Korean sentence: why>"}`
   (no article text); the publish workflow then alerts the publisher at once.
   Never reuse or re-date an earlier edition.
+- A message added when the task is fired by hand does not reach the session
+  (run log 2026-10-29), so a manual run cannot extend the deadline: rehearse
+  only with the regular 05:52 run.
 - GitHub's scheduled workflows can start hours late (observed 2026-10-29), so
   never wait for one: request the research pack yourself (step 3).
 - Facts only from (a) the morning research pack (`research-packs/<date>.json`,
