@@ -13,8 +13,12 @@ every check; subscription session (no paid API); recipient set in secrets.
 - No paid API calls, no database writes, no other repository writes, no new
   scheduled tasks, no changes to workflows, keys or settings.
 - If a good edition (at least 5 main stories that pass the checks) cannot be
-  finished by **07:45 KST**, push nothing. The publish workflow then sends the
-  publisher a failure alert. Never reuse or re-date an earlier edition.
+  finished by **07:45 KST**, push no edition. Instead push one file,
+  `delivery/<date>.skip.json` with `{"date":"<date>","reason":"<one Korean sentence: why>"}`
+  (no article text); the publish workflow then alerts the publisher at once.
+  Never reuse or re-date an earlier edition.
+- GitHub's scheduled workflows can start hours late (observed 2026-10-29), so
+  never wait for one: request the research pack yourself (step 3).
 - Facts only from (a) the morning research pack, whose pages the rule-based
   pipeline read under robots.txt, opt-out and paywall rules, and (b) pages you
   fetch in this run. In an unattended session WebFetch works only for URLs that
@@ -42,10 +46,10 @@ every check; subscription session (no paid API); recipient set in secrets.
    dates, access status, evidence sentences and an excerpt of up to 1,000
    characters), heuristic scores (not editorial judgment), brief candidates
    (`briefs`), discovery leads and format exclusions. If today's pack is not
-   there, request one: `echo <date> > research-packs/request-<date>` then
+   there, request one immediately: `echo <date> > research-packs/request-<date>` then
    commit and push that file only (it starts `.github/workflows/research.yml`,
    about 4 minutes), and `git pull` every 2 minutes. If no pack exists 30
-   minutes after the run started, push nothing.
+   minutes after the run started, push the skip file (see the hard rules).
 4. **Select** following CLAUDE.md §2 and the default composition: about one
    Korea story (a domestic social, cultural or economic phenomenon worth
    understanding, not routine news), one or two world stories with history and

@@ -8,7 +8,7 @@ name: publish
 on:
   push:
     branches: [main]
-    paths: ['sealed-editions/*.sealed.json']
+    paths: ['sealed-editions/*.sealed.json', 'delivery/*.skip.json']
   schedule:
     - cron: '12 23 * * *'   # 08:12 KST: fallback / missing-edition alert
     - cron: '47 23 * * *'   # 08:47 KST: second fallback
@@ -70,7 +70,7 @@ jobs:
         run: npx tsx scripts/prepare.ts --date ${{ steps.decide.outputs.date }} --sealed ../sealed-editions --work "$RUNNER_TEMP/editions" --site "$RUNNER_TEMP/site" | tee -a "$GITHUB_OUTPUT"
 
       - name: Alert when there is no valid edition
-        if: steps.decide.outputs.already != 'true' && steps.prep.outputs.ready != 'true' && (github.event_name != 'push')
+        if: steps.decide.outputs.already != 'true' && steps.prep.outputs.ready != 'true' && (github.event_name != 'push' || hashFiles(format('delivery/{0}.skip.json', steps.decide.outputs.date)) != '')
         working-directory: web
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
@@ -78,9 +78,11 @@ jobs:
           NEWSLETTER_TO: ${{ secrets.GMAIL_USER }}
         run: |
           D=${{ steps.decide.outputs.date }}
-          if [ -f "../delivery/$D.alert.json" ] && [ "${{ github.event_name }}" = "schedule" ]; then echo "alert already sent"; exit 1; fi
-          npx tsx scripts/send-mail.ts alert "[Generalist Daily] $D 판 발행 실패" "오늘($D) 판을 발행하지 않았습니다. 이전 판은 다시 보내지 않습니다. 사유: ${{ steps.prep.outputs.reason }}. 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          if [ "${{ github.event_name }}" = "schedule" ]; then
+          if [ -f "../delivery/$D.alert.json" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then echo "alert already sent"; exit 1; fi
+          WHY="${{ steps.prep.outputs.reason }}"
+          if [ -f "../delivery/$D.skip.json" ]; then WHY="편집 세션이 발행을 포기함: $(node -e "console.log(JSON.parse(require('fs').readFileSync('../delivery/$D.skip.json','utf8')).reason ?? '')")"; fi
+          npx tsx scripts/send-mail.ts alert "[Generalist Daily] $D 판 발행 실패" "오늘($D) 판을 발행하지 않았습니다. 이전 판은 다시 보내지 않습니다. 사유: $WHY. 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
             echo "{\"date\":\"$D\",\"reason\":\"${{ steps.prep.outputs.reason }}\",\"at\":\"$(date -u +%FT%TZ)\"}" > "../delivery/$D.alert.json"
             git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
             git add "../delivery/$D.alert.json" && git commit -m "delivery: $D alert [skip ci]" && (git push || (git pull --rebase && git push))
