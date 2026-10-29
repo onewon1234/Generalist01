@@ -8,8 +8,9 @@ every check; subscription session (no paid API); recipient set in secrets.
 
 ## Hard rules
 
-- Never commit an unencrypted edition, draft, note or source text. The only file
-  the run adds is `sealed-editions/<date>.sealed.json`.
+- Never commit an unencrypted edition, draft, note or source text. The run adds
+  only `sealed-editions/<date>.sealed.json`, or a `research-packs/request-<date>`
+  or `delivery/<date>.skip.json` file as described below.
 - No paid API calls, no database writes, no other repository writes, no new
   scheduled tasks, no changes to workflows, keys or settings.
 - If a good edition (at least 5 main stories that pass the checks) cannot be
@@ -19,16 +20,17 @@ every check; subscription session (no paid API); recipient set in secrets.
   Never reuse or re-date an earlier edition.
 - GitHub's scheduled workflows can start hours late (observed 2026-10-29), so
   never wait for one: request the research pack yourself (step 3).
-- Facts only from (a) the morning research pack, whose pages the rule-based
-  pipeline read under robots.txt, opt-out and paywall rules, and (b) pages you
-  fetch in this run. In an unattended session WebFetch works only for URLs that
-  a WebSearch in the same session returned (checked 2026-10-28); direct URLs
-  are refused. Do not use Firecrawl (it is billed) or any other way around a
-  block. Background facts need a source too. Record the access level
-  honestly: `원문 확인` for pages the pipeline or you read, `발췌 확인` when only
-  the pack's excerpt was available.
-- The research key is given in the task prompt. Write it to `/tmp/research.pem`
-  only; never print, commit or copy it anywhere else.
+- Facts only from (a) the morning research pack (`research-packs/<date>.json`,
+  public, minimal: titles, URLs, outlets, times, access status, figures and one
+  short opening sentence per read source) and (b) pages you fetch in this run.
+  In an unattended session WebFetch works only for URLs that a WebSearch in the
+  same session returned (checked 2026-10-28); direct URLs are refused. Do not
+  use Firecrawl (it is billed) or any other way around a block. Background
+  facts need a source too. Record the access level honestly: `원문 확인` for
+  pages you read in full, `요지 확인(자동 수집)` when only the pack's lede and
+  figures were available; claims from such a source must not go beyond them.
+- No keys or secrets are needed. The only key involved is the public key that
+  seals the edition (`keys/edition-public.pem`, used by `src/seal.ts seal`).
 
 ## Steps
 
@@ -39,13 +41,12 @@ every check; subscription session (no paid API); recipient set in secrets.
 2. Edition date: today in Asia/Seoul (`TZ=Asia/Seoul date +%F`). Look at the
    last 7 days of `sealed-editions/` file names to know which dates exist; you
    cannot read them, so avoid repeating an event only if you know it was covered.
-3. **Open the research pack** (the shell has no internet access):
-   `cd web && npx tsx src/seal.ts unseal ../research-packs/<date>.sealed.json /tmp/research.json --key-file /tmp/research.pem`.
-   It is the pipeline preview (`pipeline/src/preview/preview.ts`): about 60
-   researched candidates (`stories`: title, desk, records with url, publisher,
-   dates, access status, evidence sentences and an excerpt of up to 1,000
-   characters), heuristic scores (not editorial judgment), brief candidates
-   (`briefs`), discovery leads and format exclusions. If today's pack is not
+3. **Read the research pack** `research-packs/<date>.json` (the shell reaches
+   GitHub and npm only, not news sites). It holds about 60 researched
+   candidates (`stories`: title, desk, sources with url, outlet, time, access
+   status, figures and a short lede), heuristic scores (not editorial
+   judgment), brief candidates (`briefs`), discovery leads and format
+   exclusions (schema: `pipeline/src/preview/pack.ts`). If today's pack is not
    there, request one immediately: `echo <date> > research-packs/request-<date>` then
    commit and push that file only (it starts `.github/workflows/research.yml`,
    about 4 minutes), and `git pull` every 2 minutes. If no pack exists 30
