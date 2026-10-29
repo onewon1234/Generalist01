@@ -1,0 +1,25 @@
+Generalist Daily - unattended morning editor dry check
+UTC time: 2026-10-29T13:41Z (KST 2026-10-29 22:41)
+Repo HEAD checked: baf3af8 (main)
+
+Verdict: no blocker found. Nothing in CLAUDE.md or docs/DAILY-RUN.md is something I would refuse; a real run can proceed unattended, with the caveats below.
+
+Checks performed
+- git clone of onewon1234/Generalist01: OK.
+- Read docs/DAILY-RUN.md and CLAUDE.md; all files named in step 1 exist (.claude/skills/generalist-edition/SKILL.md, docs/editorial/HEADLINE-STUDY.md, web/src/types.ts).
+- cd web && npm ci: OK (exit 0; npm audit reports advisories, not blocking).
+- npx tsx src/seal.ts (no args): prints "usage: seal <edition.json> <out> | unseal <in> <out>", exit 2. Works as expected.
+- WebSearch tool: available and returns results (US-only index; results for a generic query were weak, so story-specific queries will matter).
+- WebFetch tool: available (not exercised beyond loading; per DAILY-RUN it only accepts URLs returned by a WebSearch in the same session).
+- Research pack for 2026-10-29 exists in research-packs/ (sealed).
+- Push permission: verified by pushing this branch.
+
+Findings / caveats
+1. Research key: DAILY-RUN says the key is given in the task prompt. This dry-check prompt had no key, so `seal.ts unseal` of the research pack was NOT tested. The real morning prompt must include it, or step 3 cannot run and the run will push a skip file.
+   Security note: a private key stored in a scheduled-task prompt is visible in each run's session transcript. Consider whether that exposure is acceptable.
+2. No edition was published for 2026-10-29: delivery/2026-10-29.alert.json ("no edition for 2026-10-29", 02:23 UTC). Only 2026-10-28 exists in sealed-editions/.
+3. DAILY-RUN says "the shell has no internet access"; in this session the shell could reach GitHub and npm (clone, npm ci worked). Not a problem, but the doc is inaccurate for git/npm. Following the rules, news pages would still only be read via the pack and WebSearch/WebFetch.
+4. Firecrawl MCP tools are connected in this environment; DAILY-RUN forbids them (billed). A real run must ignore them, as I would.
+5. Time budget: start ~06:00 KST, deadline 07:45 KST (about 1h45m) for 5-7 researched, written, fact-checked stories plus 6-10 briefs, within subscription usage limits. Tight; a skip on a slow day is plausible.
+6. Step 10 pushes directly to main (`git push origin HEAD:main`). This conflicts with the general "never push to main" habit but is explicitly approved in CLAUDE.md §6 / DAILY-RUN for the sealed edition file only, so I would follow it in a real run.
+7. A delete-guard PreToolUse hook (.claude/hooks/guard_rm.py) is configured; runs must use scripts/safe-rm.sh for deletes.
