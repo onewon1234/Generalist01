@@ -1,0 +1,3440 @@
+{
+ "date": "2026-10-29",
+ "generatedAt": "2026-10-29T13:46:56.685Z",
+ "note": "Rule-based research (no AI). Ledes are short pointers, not article text; read the sources before writing. heuristicPick/heuristicSuitability are not editorial judgment.",
+ "counts": {
+  "sources": 44,
+  "sourcesOk": 44,
+  "candidates": 60,
+  "articleRequests": 130
+ },
+ "stories": [
+  {
+   "title": "현대차그룹, 새만금 9조 원 투입 'AI 밸리' 구축 속도낸다",
+   "desk": "korea",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.2,
+   "heuristicSuitability": 67.34,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [
+    "9조",
+    "112만",
+    "34만"
+   ],
+   "sources": [
+    {
+     "publisher": "job-post.co.kr",
+     "url": "https://www.job-post.co.kr/news/articleView.html?idxno=235449",
+     "publishedAt": "2026-10-29T13:35:42.000Z",
+     "access": "read",
+     "textChars": 896,
+     "lede": "[잡포스트] 손성창 기자 = 현대자동차그룹이 전북 새만금에 약 9조 원을 투입해 조성하는 ‘새만금 AI 밸리’ 구축 사업에 속도를 내고 있다.",
+     "figures": [
+      "9조",
+      "29일",
+      "112만",
+      "34만",
+      "5조",
+      "8000억",
+      "1조",
+      "3000억",
+      "4000억"
+     ]
+    },
+    {
+     "publisher": "ksilbo.co.kr",
+     "url": "https://www.ksilbo.co.kr/news/articleView.html?idxno=1071123",
+     "publishedAt": "2026-10-29T12:48:05.000Z",
+     "access": "read",
+     "textChars": 1461,
+     "lede": "현대자동차그룹이 ‘월드 하이드로젠 엑스포 2026(World Hydrogen Expo 2026, 이하 WHE 2026)’에서 수소 상용 모빌리티 기술을 선보인다.",
+     "figures": [
+      "4일",
+      "6일",
+      "11개",
+      "24시간"
+     ]
+    },
+    {
+     "publisher": "ttlnews.com",
+     "url": "http://www.ttlnews.com/news/articleView.html?idxno=3156862",
+     "publishedAt": "2026-10-29T12:41:41.000Z",
+     "access": "read",
+     "textChars": 1486,
+     "lede": "현대자동차그룹이 서해안 간척지 새만금 일대를 재생에너지와 차세대 피지컬 AI, 수소 생태계가 결합한 첨단 테크 거점으로 전환하는 프로젝트에 본격 착수했다.",
+     "figures": [
+      "29일",
+      "9조",
+      "112만",
+      "34만"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Dead Star Offers a Glimpse Into Our Solar System’s Future",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 15.8,
+   "heuristicSuitability": 66.9,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Nautilus",
+     "url": "https://nautil.us/dead-star-offers-a-glimpse-into-our-solar-systems-future-1286164",
+     "publishedAt": "2026-10-28T22:00:00.000Z",
+     "access": "read",
+     "textChars": 2817,
+     "lede": "A team of astronomers using the European Southern Observatory’s Very Large Telescope recently spotted something curious.",
+     "figures": []
+    },
+    {
+     "publisher": "ScienceDaily – Top",
+     "url": "https://www.sciencedaily.com/releases/2026/10/261023023736.htm",
+     "publishedAt": "2026-10-25T03:13:05.000Z",
+     "access": "read",
+     "textChars": 7542,
+     "lede": "Astronomers may have found the first moon beyond our Solar System, but the mysterious object is unlike any moon we know.",
+     "figures": [
+      "30t",
+      "15years"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "South Park turns to America’s beef shortage – and explodes in diarrhea",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 9,
+   "heuristicSuitability": 65.72,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Guardian – Culture",
+     "url": "https://www.theguardian.com/tv-and-radio/2026/oct/29/south-park-turns-to-americas-beef-shortage-and-explodes-in-diarrhea",
+     "publishedAt": "2026-10-29T04:48:32.000Z",
+     "access": "read",
+     "textChars": 5550,
+     "lede": "The 29th season has begun to slightly spin its wheels, but this poo-splattered episode suggests an imminent story arc: the release of Grand Theft Auto VI",
+     "figures": [
+      "29t"
+     ]
+    },
+    {
+     "publisher": "JSTOR Daily",
+     "url": "https://daily.jstor.org/how-big-oil-shaped-americas-parks/",
+     "publishedAt": "2026-10-26T13:34:49.000Z",
+     "access": "read",
+     "textChars": 4854,
+     "lede": "Oil is the foundation of American life, with the consumption of gasoline written into the very landscape of the nation itself.",
+     "figures": [
+      "900m",
+      "22.5t",
+      "6.5m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "라가르드 ECB 총재, 내년 2월 7일 조기 사임…마크롱, 후임 인선 주도권...",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 7,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 64.84,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [
+    "8개"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029201951082",
+     "publishedAt": "2026-10-29T13:13:45.000Z",
+     "access": "read",
+     "textChars": 1672,
+     "lede": "그동안 조기퇴진설이 끊이지 않은 크리스틴 라가르드(70) 유럽중앙은행(ECB) 총재가 내년 2월 임기를 8개월여 남기고 사임하기로 했다.",
+     "figures": [
+      "8개",
+      "29일",
+      "7일",
+      "2019년",
+      "8년",
+      "21개"
+     ]
+    },
+    {
+     "publisher": "imaeil.com",
+     "url": "https://www.imaeil.com/page/view/2026102922395079575",
+     "publishedAt": "2026-10-29T13:41:00.000Z",
+     "access": "read",
+     "textChars": 1394,
+     "lede": "크리스틴 라가르드 유럽중앙은행(ECB) 총재가 내년 2월 7일 임기를 8개월여 남기고 사임한다.",
+     "figures": [
+      "7일",
+      "8개",
+      "29일",
+      "2027년",
+      "283조"
+     ]
+    },
+    {
+     "publisher": "hankyung.com",
+     "url": "https://www.hankyung.com/article/2026102947121",
+     "publishedAt": "2026-10-29T13:34:05.000Z",
+     "access": "read",
+     "textChars": 741,
+     "lede": "크리스틴 라가르드 유럽중앙은행(ECB) 총재(사진)가 조기 사임한다.",
+     "figures": [
+      "29일",
+      "7일",
+      "2019년",
+      "8년"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "이스라엘 중앙선관위, 아랍계 정당 라암 '카타르 자금' 의혹 신베트에 ...",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 64.84,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [
+    "93%"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029201051079",
+     "publishedAt": "2026-10-29T13:03:04.000Z",
+     "access": "read",
+     "textChars": 1751,
+     "lede": "이스라엘 총선 개표가 막바지에 접어든 가운데, 베냐민 네타냐후 총리가 이끄는 우파 진영이 선거에서 약진한 아랍계 정당을 겨냥해 미확인 불법 자금 수수 의혹 등을 제기하며 전방위 압박에 나섰다.",
+     "figures": [
+      "29일",
+      "93%",
+      "2026년",
+      "03분"
+     ]
+    },
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292125005/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:25:00.000Z",
+     "access": "read",
+     "textChars": 2930,
+     "lede": "‘정권 연장·대연정·재선거’ 어떤 결과든 현 총리 영향력 이어져 이스라엘 탄압, PA 무능, 정착민의 폭력에도 주민 저항 없을 듯 변화 단초, 미 중간선거·대선…국제사회 관심만이 유일한 희망",
+     "figures": [
+      "28일",
+      "1시간",
+      "30년",
+      "2023년",
+      "7일"
+     ]
+    },
+    {
+     "publisher": "imaeil.com",
+     "url": "https://www.imaeil.com/page/view/2026102922391168848",
+     "publishedAt": "2026-10-29T13:40:00.000Z",
+     "access": "read",
+     "textChars": 1617,
+     "lede": "이스라엘 중앙선거관리위원회가 아랍계 핵심 정당 라암의 카타르 자금 수수 의혹과 관련해 국내 정보기관 신베트에 수사를 의뢰했다. 93% 개표 시점에서 아랍계 정당들이 도합 19석을 확보하며 연정 구성의 캐스팅보트로 부상한 직후 나온 조치다.",
+     "figures": [
+      "93%",
+      "2명",
+      "30일",
+      "4일"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "John Healey faces questions over budget leak that moved bank share prices",
+   "desk": "economy",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 0.9,
+   "heuristicSuitability": 64.44,
+   "heuristicPick": true,
+   "excluded": null,
+   "figures": [
+    "3%",
+    "6%"
+   ],
+   "sources": [
+    {
+     "publisher": "The Guardian – World",
+     "url": "https://www.theguardian.com/uk-news/2026/oct/29/john-healey-faces-questions-over-budget-leak-that-moved-bank-share-prices",
+     "publishedAt": "2026-10-29T12:52:04.000Z",
+     "access": "read",
+     "textChars": 3100,
+     "lede": "Treasury select committee asks FCA to investigate whether tax surcharge leak led to ‘improper release of inside information’",
+     "figures": [
+      "8%",
+      "3%",
+      "6%",
+      "15m"
+     ]
+    },
+    {
+     "publisher": "BBC News – Business",
+     "url": "https://www.bbc.co.uk/news/articles/cqpvgxz3y49go?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-28T18:11:20.765Z",
+     "access": "read",
+     "textChars": 6377,
+     "lede": "Millions of households will get £100 to help with soaring energy bills to be paid for by a tax on bank profits, John Healey has announced in his first Budget.",
+     "figures": [
+      "100t",
+      "3.9%",
+      "3%",
+      "6%",
+      "14bn"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Exactly how Apple Music used sound to build its new brand identity",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 28.8,
+   "heuristicSuitability": 68.02,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 68.02 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "It's Nice That",
+     "url": "https://www.itsnicethat.com/features/apple-music-rebrand-graphic-design-spotlight-281026",
+     "publishedAt": "2026-10-28T09:00:00.000Z",
+     "access": "read",
+     "textChars": 12071,
+     "lede": "For its rebrand of Apple Music, TBWA\\Media Arts Lab set out to visualise sound. The result involved months of experimentation, a surprising amount of oil, and …",
+     "figures": []
+    },
+    {
+     "publisher": "Dezeen",
+     "url": "https://www.dezeen.com/2026/10/26/apple-music-logo-physically-made-by-sound/",
+     "publishedAt": "2026-10-26T09:00:00.000Z",
+     "access": "read",
+     "textChars": 2167,
+     "lede": "Technology brand Apple has revealed the first rebrand for its Apple Music service, which was made in collaboration with musician Fred Again by passing sound wa…",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "대웅제약 엔블로, 렙틴 감소 폭 2배…인슐린 저항성 개선 효과 확인",
+   "desk": "korea",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 1,
+   "heuristicSuitability": 67.34,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "2억",
+    "2건",
+    "427명",
+    "2배"
+   ],
+   "sources": [
+    {
+     "publisher": "thefirstmedia.net",
+     "url": "https://www.thefirstmedia.net/news/articleView.html?idxno=212220",
+     "publishedAt": "2026-10-29T12:41:13.000Z",
+     "access": "read",
+     "textChars": 1822,
+     "lede": "대웅제약의 당뇨병 치료제 ‘엔블로’가 같은 SGLT-2 억제제 계열 약물인 다파글리플로진보다 혈중 렙틴 수치를 더 크게 낮추고 인슐린 저항성 지표를 개선했다는 연구 결과가 나왔다.",
+     "figures": [
+      "2억",
+      "29일",
+      "2022년",
+      "2건",
+      "427명",
+      "2배"
+     ]
+    },
+    {
+     "publisher": "megaeconomy.co.kr",
+     "url": "https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065614989406774",
+     "publishedAt": "2026-10-29T12:09:04.000Z",
+     "access": "read",
+     "textChars": 1645,
+     "lede": "[메가경제=김민준 기자] 대웅제약의 당뇨병 치료제 ‘엔블로’가 같은 SGLT-2 억제제 계열 약물인 다파글리플로진과 비교해 혈중 렙틴 감소 폭에서 차이를 보였다.",
+     "figures": [
+      "2억",
+      "29일",
+      "2022년",
+      "2건",
+      "427명",
+      "2배"
+     ]
+    },
+    {
+     "publisher": "medigatenews.com",
+     "url": "https://m.medigatenews.com/news/2449943182",
+     "publishedAt": "2026-10-29T10:52:00.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "캐나다 온타리오, 독감·코로나19 백신 일반인 대상 무료 접종 시작",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 0.4,
+   "heuristicSuitability": 64.94,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "50개",
+    "13개"
+   ],
+   "sources": [
+    {
+     "publisher": "koreadaily.com",
+     "url": "https://www.koreadaily.com/article/20261029062057678",
+     "publishedAt": "2026-10-29T13:20:56.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "inews24.com",
+     "url": "http://www.inews24.com/view/2020618",
+     "publishedAt": "2026-10-29T11:22:19.000Z",
+     "access": "read",
+     "textChars": 1465,
+     "lede": "[아이뉴스24 김다운 기자] 코로나19 백신을 맞은 뒤 암 등의 질환에 걸렸다는 의혹이 제기됐지만, 국내 약 3600만명의 건강보험 자료를 분석한 결과 백신 접종 이후에도 암 발생 추세에 유의미한 변화가 없었다는 연구 결과가 나왔다.",
+     "figures": [
+      "3600만",
+      "29일",
+      "2004년",
+      "3천",
+      "602만",
+      "4천",
+      "394명",
+      "50%",
+      "2021년",
+      "50개",
+      "13개",
+      "1년"
+     ]
+    },
+    {
+     "publisher": "munhwa.com",
+     "url": "https://www.munhwa.com/article/11627409?ref=naver",
+     "publishedAt": "2026-10-29T11:06:44.000Z",
+     "access": "read",
+     "textChars": 912,
+     "lede": "코로나19 백신 접종 후 주요 암 발생 위험이 증가했단 논문을 반박하는 새 연구 결과가 제시돼 주목된다. 연구진은 국민건강보험공단 자료와 코로나19 예방접종 기록을 연결해 1955~2004년생 3602만4394명의 암 발생 추이를 분석했다.",
+     "figures": [
+      "2004년",
+      "3602만",
+      "4394명",
+      "13개",
+      "29일",
+      "50개",
+      "1년"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "경찰, 아주대 소아응급 전문의 집단사태 부른 압수수색 논란 사과",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 3.9,
+   "heuristicSuitability": 64.84,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "40분"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029194900061",
+     "publishedAt": "2026-10-29T09:31:22.000Z",
+     "access": "read",
+     "textChars": 1249,
+     "lede": "환아 사망 사건 관련 압수수색에 반발해 아주대병원 소아전문응급의료센터 전문의들이 집단 사직 의사를 밝히는 등 파장이 커지자 경찰 지휘부가 직접 병원을 찾아 의료진에게 유감을 표명한 것으로 전해졌다.",
+     "figures": [
+      "29일",
+      "40분",
+      "30일",
+      "27일",
+      "9명",
+      "7명"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102945507",
+     "publishedAt": "2026-10-29T09:55:20.000Z",
+     "access": "read",
+     "textChars": 1146,
+     "lede": "아주대병원 소아응급 전문의들의 집단 사의로 번진 압수수색 논란과 관련해 경찰 지휘부가 병원을 방문해 의료진에게 유감을 전한 것으로 알려졌다.",
+     "figures": [
+      "29일",
+      "40분",
+      "30일"
+     ]
+    },
+    {
+     "publisher": "매일경제",
+     "url": "https://www.mk.co.kr/news/society/12190258",
+     "publishedAt": "2026-10-29T09:31:37.000Z",
+     "access": "read",
+     "textChars": 1539,
+     "lede": "경찰이 불법 리베이트 제공 의혹을 받는 대웅제약에 대한 강제수사에 나선 것으로 확인됐다.",
+     "figures": [
+      "19일",
+      "2022년",
+      "2023년",
+      "2년",
+      "17일",
+      "30일",
+      "7곳"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "원당역 역무실서 동료에 흉기 휘두른 역무원···살인미수 구속영장 신청",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 1.7,
+   "heuristicSuitability": 64.84,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "30분"
+   ],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292102001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:02:00.000Z",
+     "access": "read",
+     "textChars": 825,
+     "lede": "경기 고양시 지하철 3호선 원당역에서 동료 여성 역무원에게 흉기를 휘둘러 중상을 입힌 남성 역무원에 대해 경찰이 구속영장을 신청했다.",
+     "figures": [
+      "29일",
+      "30일",
+      "28일",
+      "30분"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029204300060",
+     "publishedAt": "2026-10-29T11:42:35.000Z",
+     "access": "read",
+     "textChars": 927,
+     "lede": "경기 고양시 지하철 3호선 원당역에서 동료 여성 역무원에게 흉기를 휘둘러 중상을 입힌 남성 역무원에 대해 경찰이 구속영장을 신청했다.",
+     "figures": [
+      "29일",
+      "30일",
+      "28일",
+      "30분"
+     ]
+    },
+    {
+     "publisher": "매일경제",
+     "url": "https://www.mk.co.kr/news/society/12190363",
+     "publishedAt": "2026-10-29T10:24:46.000Z",
+     "access": "read",
+     "textChars": 1625,
+     "lede": "경기 고양시 지하철 3호선 원당역 역무실에서 같은 부서 여성 동료에게 흉기를 휘두른 30대 역무원이 붙잡힌 가운데, 경찰 조사에서 “담배 냄새 지적에 화가 나서 약을 과다 복용했다”는 취지로 진술한 것으로 알려졌다.",
+     "figures": [
+      "29일",
+      "31분"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Spain begins mourning period after train crash as search continues for victims in wreckage",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 3,
+   "newestAgeHours": 2.6,
+   "heuristicSuitability": 64.7,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "69people"
+   ],
+   "sources": [
+    {
+     "publisher": "The Guardian – World",
+     "url": "https://www.theguardian.com/world/2026/oct/29/spain-mourning-period-deadly-train-crash",
+     "publishedAt": "2026-10-29T11:11:52.000Z",
+     "access": "read",
+     "textChars": 5915,
+     "lede": "Emergency services, drones and dog unit continue to comb carriages as Civil Guard sets up clinics for relatives to provide DNA samples",
+     "figures": [
+      "69people",
+      "107people",
+      "10m",
+      "46people"
+     ]
+    },
+    {
+     "publisher": "BBC News – World",
+     "url": "https://www.bbc.co.uk/news/articles/cmqxnl312v34o?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-29T03:51:05.720Z",
+     "access": "read",
+     "textChars": 6553,
+     "lede": "Audio recordings published in Spanish media reveal conversations between train drivers and a railway control centre in the minutes leading up to a deadly train…",
+     "figures": [
+      "69people",
+      "25km",
+      "15m"
+     ]
+    },
+    {
+     "publisher": "Al Jazeera",
+     "url": "https://www.aljazeera.com/news/2026/10/29/rescue-teams-search-wreckage-for-survivors-after-train-crash-in-spain?traffic_source=rss",
+     "publishedAt": "2026-10-29T10:39:03.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "[패트롤] 전남광주시의회-교육청-북구-남구-광산구",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 0.3,
+   "heuristicSuitability": 64.4,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292112035/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:12:00.000Z",
+     "access": "read",
+     "textChars": 881,
+     "lede": "전남광주시교육청이 교육감 지지를 선언하며 선거에 불출마했던 인사를 연봉 1억원가량 받는 산하 장학재단 원장 후보로 선정했다. 교육청 출연금으로 운영되는 이 재단 이사장은 교육감으로, 원장을 제외한 정규 직원들도 모두 교육청 파견 공무원이다.",
+     "figures": [
+      "1억",
+      "29일",
+      "28일",
+      "158억"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029194600054",
+     "publishedAt": "2026-10-29T09:21:18.000Z",
+     "access": "read",
+     "textChars": 402,
+     "lede": "연간 8조원 규모의 전남광주통합특별시교육청 금고 운영기관에 NH농협은행이 선정됐다.",
+     "figures": [
+      "8조",
+      "29일",
+      "2027년",
+      "2030년",
+      "3조",
+      "5조"
+     ]
+    },
+    {
+     "publisher": "ekn.kr",
+     "url": "https://www.ekn.kr/web/view.php?key=20261029029502995",
+     "publishedAt": "2026-10-29T13:27:53.000Z",
+     "access": "read",
+     "textChars": 5217,
+     "lede": "▲송형곤 전남광주통합특별시의회 의장은 지난 29일 통합특별시 광주청사 중회의실에서 열린 '5·18정신계승위원회 워크숍 및 시민토론회'에 참석해 1980년 오월 시민들이 보여준 연대정신을 통합특별시의 미래로 이어가야 한다고 강조했다.",
+     "figures": [
+      "29일",
+      "1980년",
+      "31일",
+      "1일",
+      "35곳",
+      "71개"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Discover Marcel Duchamp at the Philadelphia Museum of Art",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 22.8,
+   "heuristicSuitability": 64.36,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 64.36 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Hyperallergic",
+     "url": "https://hyperallergic.com/discover-marcel-duchamp-at-the-philadelphia-museum-of-art/",
+     "publishedAt": "2026-10-28T15:00:00.000Z",
+     "access": "read",
+     "textChars": 1489,
+     "lede": "Duchamp's practice was one of continuous self-reinvention, impossible to categorize under any label.",
+     "figures": [
+      "50years"
+     ]
+    },
+    {
+     "publisher": "It's Nice That",
+     "url": "https://www.itsnicethat.com/articles/a2-type-louisiana-museum-of-modern-art-graphic-design-project-281026",
+     "publishedAt": "2026-10-28T09:00:00.000Z",
+     "access": "read",
+     "textChars": 4167,
+     "lede": "Rigour and research underpin A2 Type’s typographic system, drawing directly from the museum’s architecture and extensive print archive.",
+     "figures": [
+      "2t",
+      "25years"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "서울 주택가 버려진 시신은 중국인 불법체류자…쓰레기 더미서 발견",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 2,
+   "newestAgeHours": 3.1,
+   "heuristicSuitability": 64.22,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "매일경제",
+     "url": "https://www.mk.co.kr/news/society/12190388",
+     "publishedAt": "2026-10-29T10:40:16.000Z",
+     "access": "read",
+     "textChars": 1871,
+     "lede": "서울 구로구 주택가에서 미라 상태로 발견된 시신의 신원은 중국 국적 불법체류자로 알려졌다. 타살 정황은 현재까지 드러난 게 없으며 시신의 부패와 건조로 인해 사망 원인과 자연사 및 질병 여부 등도 확인되지 않았다.",
+     "figures": [
+      "29일",
+      "27일",
+      "22일",
+      "30분"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102945767",
+     "publishedAt": "2026-10-29T10:19:34.000Z",
+     "access": "read",
+     "textChars": 895,
+     "lede": "서울 구로구 주택가에서 '미라화' 상태로 발견된 시신의 신원이 확인됐다.",
+     "figures": [
+      "29일",
+      "27일",
+      "22일"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "다시 ‘바이 코리아’ 시동 건 외국인…“AI 성장성·주주환원에 컴백 달려” [매플 인터뷰]",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 4.1,
+   "heuristicSuitability": 63.84,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029047353003",
+     "publishedAt": "2026-10-29T09:04:24.000Z",
+     "access": "read",
+     "textChars": 2680,
+     "lede": "한국수력원자력과 대우건설-두산에너빌리티 컨소시엄의 체코 두코바니 원전 사업 시공 계약 협상이 난항 끝에 29일 결렬됐다.",
+     "figures": [
+      "29일",
+      "2018년",
+      "15개",
+      "7일"
+     ]
+    },
+    {
+     "publisher": "매일경제",
+     "url": "https://www.mk.co.kr/news/business/12190268",
+     "publishedAt": "2026-10-29T09:38:28.000Z",
+     "access": "read",
+     "textChars": 2370,
+     "lede": "지난 9월 8일 이후 한국 시장에서 매도 규모를 키워왔던 외국인 투자자들이 최근 매수 우위로 돌아서고 있다.",
+     "figures": [
+      "8일",
+      "200조",
+      "20조",
+      "2026년",
+      "7460억",
+      "1000조",
+      "1660억",
+      "222조"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102943891",
+     "publishedAt": "2026-10-29T09:12:14.000Z",
+     "access": "read",
+     "textChars": 1172,
+     "lede": "체코 두코바니 원전 수주를 이끈 ‘팀 코리아’의 협업 체제에 균열이 생겼다. 총괄 사업자인 한국수력원자력과 시공 주간사인 대우건설·두산에너빌리티 컨소시엄이 공사비와 계약 방식을 둘러싼 이견을 좁히지 못해 시공계약을 종료하기로 결정했다.",
+     "figures": [
+      "29일",
+      "2025년",
+      "27조",
+      "2개",
+      "2.62배",
+      "2.4배",
+      "2027년",
+      "2029년"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "해파리 출현 1.5개월 빨라졌다…남해 멸치 어획량 25% 감소",
+   "desk": "korea",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 1.5,
+   "heuristicSuitability": 63.74,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029185400051",
+     "publishedAt": "2026-10-29T08:37:36.000Z",
+     "access": "read",
+     "textChars": 1182,
+     "lede": "남해안에서 해파리가 출현하는 시기는 빨라지고 멸치의 먹이가 되는 플랑크톤의 증식 시기가 늦어지는 현상이 멸치 어획량 감소와 관련이 있을 수 있다는 연구 결과가 나왔다.",
+     "figures": [
+      "2010년",
+      "2020년",
+      "29일",
+      "2013년",
+      "2016년",
+      "1.5개"
+     ]
+    },
+    {
+     "publisher": "kmib.co.kr",
+     "url": "https://www.kmib.co.kr/article/20261029502477",
+     "publishedAt": "2026-10-29T12:16:51.000Z",
+     "access": "read",
+     "textChars": 938,
+     "lede": "남해 연안에 해파리가 대량 출현하는 시기가 약 한 달 반 빨라진 반면, 멸치 먹이사슬의 기초가 되는 식물플랑크톤은 줄고 증식 시기도 늦어진 것으로 나타났다. 이 같은 해양환경 변화 속에 멸치 어획량도 10년사이 약 25% 감소한 것으로 조사됐다.",
+     "figures": [
+      "10년",
+      "25%",
+      "2010년",
+      "2020년",
+      "29일",
+      "43일",
+      "2014년"
+     ]
+    },
+    {
+     "publisher": "kookje.co.kr",
+     "url": "http://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0200&key=20261030.22012008600",
+     "publishedAt": "2026-10-29T09:59:00.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "파주 접경지 주민 \"아침부터 北확성기 소리\"…국정원·합참 \"가동 미확...",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 63.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "30분",
+    "5시간"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029146452060",
+     "publishedAt": "2026-10-29T10:41:21.000Z",
+     "access": "read",
+     "textChars": 1482,
+     "lede": "노승혁 김철선 전명훈 기자 = 경기 파주시 접경지역 주민들 사이에서 북한의 대남 확성기 방송을 들었다는 증언이 나왔다.",
+     "figures": [
+      "29일",
+      "30분",
+      "5시간",
+      "2018년",
+      "6년",
+      "2024년"
+     ]
+    },
+    {
+     "publisher": "imaeil.com",
+     "url": "https://www.imaeil.com/page/view/2026102922371690117",
+     "publishedAt": "2026-10-29T13:39:00.000Z",
+     "access": "read",
+     "textChars": 1461,
+     "lede": "경기 파주시 접경지역 주민들이 29일 오전 북한 방향에서 대남 확성기 방송 소리가 들렸다고 주장했다. 국가정보원과 합동참모본부는 북한 확성기 가동이 확인되지 않았다고 밝혔다.",
+     "figures": [
+      "29일",
+      "30분",
+      "5시간",
+      "26일",
+      "21일"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102946867",
+     "publishedAt": "2026-10-29T13:04:20.000Z",
+     "access": "read",
+     "textChars": 729,
+     "lede": "북한이 대남 확성기 방송을 재개했다는 접경지역 주민들의 증언이 나온 가운데 국가정보원이 이를 부인했다. 군 당국도 북한의 확성기 가동 징후가 확인되지 않았다는 입장이다.",
+     "figures": [
+      "29일"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "강원도, 주한외교사절단 초청…우수 행정정책 공유·국제협력 확대",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 0.2,
+   "heuristicSuitability": 63.04,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "ekn.kr",
+     "url": "https://www.ekn.kr/web/view.php?key=20261029024563126",
+     "publishedAt": "2026-10-29T13:30:06.000Z",
+     "access": "read",
+     "textChars": 1966,
+     "lede": "▲주한외교사절단 26개국이 29일과 30일 이틀간 강원도 일원에서 '2026년 주한외교사절 대상 행정안전부 정책설명회'를 개최했다.",
+     "figures": [
+      "26개",
+      "29일",
+      "30일",
+      "2026년"
+     ]
+    },
+    {
+     "publisher": "gw.newdaily.co.kr",
+     "url": "https://gw.newdaily.co.kr/site/data/html/2026/10/29/2026102900435.html",
+     "publishedAt": "2026-10-29T22:17:28.000Z",
+     "access": "read",
+     "textChars": 1006,
+     "lede": "행정안전부는 29일부터 30일까지 이틀간 주한외교사절과 함께 강원특별자치도를 방문해 '2026년 주한외교사절 대상 행정안전부 정책설명회'를 개최했다. 강원특별자치도는 현장 운영과 다양한 지역 프로그램을 지원했다.",
+     "figures": [
+      "29일",
+      "30일",
+      "2026년"
+     ]
+    },
+    {
+     "publisher": "gukjenews.com",
+     "url": "https://www.gukjenews.com/news/articleView.html?idxno=3736985",
+     "publishedAt": "2026-10-29T13:02:23.000Z",
+     "access": "read",
+     "textChars": 812,
+     "lede": "강원특별자치도가 국제도시훈련센터(IUTC)를 통해 유엔 해비타트(UN-Habitat)와 코이카(KOICA) 등과 연계한 국제 연수 과정을 소개하며, 개발도상국 공무원과 전문가들에게 지역의 우수 정책과 사례를 전파하는 기반을 넓히고 있다.",
+     "figures": [
+      "29일",
+      "30일",
+      "2026년"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "진에어, 해킹공격으로 회원 1454명 개인정보 유출",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.9,
+   "heuristicSuitability": 62.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "40분"
+   ],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292053001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T11:53:00.000Z",
+     "access": "read",
+     "textChars": 555,
+     "lede": "SK플래닛의 기프티콘 서비스에서 일부 이용자의 개인정보가 유출된 정황이 확인됐다.",
+     "figures": [
+      "29일",
+      "40분"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029203900017",
+     "publishedAt": "2026-10-29T11:39:07.000Z",
+     "access": "read",
+     "textChars": 586,
+     "lede": "SK플래닛의 기프티콘 서비스에서 일부 이용자의 개인정보가 유출된 정황이 확인됐다.",
+     "figures": [
+      "29일",
+      "40분",
+      "2026년",
+      "39분"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102946367",
+     "publishedAt": "2026-10-29T12:53:12.000Z",
+     "access": "read",
+     "textChars": 979,
+     "lede": "외부 해킹 공격으로 진에어의 회원 1454명의 개인정보가 유출됐다. 대한항공과 아시아나항공에 이어 한진그룹 계열 항공사의 개인정보 유출 사고가 또 한 번 발생한 것이다.",
+     "figures": [
+      "1454명",
+      "29일",
+      "28일"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "이기형 시장 \"김포아라 공공주택지구 유감, 교통대책 요구\"",
+   "desk": "korea",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 0.3,
+   "heuristicSuitability": 61.54,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "6곳"
+   ],
+   "sources": [
+    {
+     "publisher": "edaily.co.kr",
+     "url": "https://www.edaily.co.kr/News/Read?newsId=08206566645617840&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+     "publishedAt": "2026-10-29T13:23:37.000Z",
+     "access": "read",
+     "textChars": 1016,
+     "lede": "[김포=이데일리 이종일 기자] 정부의 공공주택지구 계획 발표에 대해 경기 김포시가 문제점을 지적하며 요구사항을 제기하고 나섰다.",
+     "figures": [
+      "29일",
+      "6곳"
+     ]
+    },
+    {
+     "publisher": "kmaeil.com",
+     "url": "https://www.kmaeil.com/news/articleView.html?idxno=656367",
+     "publishedAt": "2026-10-29T12:39:38.000Z",
+     "access": "read",
+     "textChars": 2436,
+     "lede": "정부가 김포 고촌읍과 사우동 일원에 3만7천호 규모의 신규 공공주택 공급계획을 발표하자 김포시가 광역교통망 확충과 재정 손실 보전 등 선행 대책을 요구하며 강하게 반발했다.",
+     "figures": [
+      "3만",
+      "7천",
+      "29일",
+      "365만",
+      "6곳",
+      "48.2%",
+      "2027년",
+      "2035년"
+     ]
+    },
+    {
+     "publisher": "joseilbo.com",
+     "url": "http://www.joseilbo.com/news/news_read.php?uid=578494&class=32&grp=",
+     "publishedAt": "2026-10-29T12:34:00.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "[올댓차이나] 홍콩, 기준금리 4.25% 동결…“美 금리 불확실성 크다\" 주...",
+   "desk": "economy",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 9,
+   "newestAgeHours": 0,
+   "heuristicSuitability": 61.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029208500082",
+     "publishedAt": "2026-10-29T13:17:21.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "newsis.com",
+     "url": "https://www.newsis.com/view/NISX20261029_0003847430",
+     "publishedAt": "2026-10-29T13:44:36.000Z",
+     "access": "read",
+     "textChars": 1312,
+     "lede": "[올댓차이나] 홍콩, 기준금리 4.25% 동결…“美 금리 불확실성 크다\" 주의",
+     "figures": [
+      "4.25%",
+      "29일",
+      "28일",
+      "4.00%"
+     ]
+    },
+    {
+     "publisher": "edaily.co.kr",
+     "url": "https://www.edaily.co.kr/News/Read?newsId=08478806645617840&mediaCodeNo=257&utm_source=naver&utm_medium=referral&utm_campaign=news_syndication&utm_content=original_article",
+     "publishedAt": "2026-10-29T13:42:02.000Z",
+     "access": "read",
+     "textChars": 1708,
+     "lede": "[뉴욕=이데일리 성주원 특파원] 유럽중앙은행(ECB)이 중동 전쟁에 따른 에너지 가격 급등과 물가 상승 압력에도 기준금리를 동결했다. 유로존 물가 상승률이 3.8%로 ECB 목표치인 2%의 두 배에 육박했지만, 에너지 가격 상승이 임금 등으로 본격 확산하지 않은 데다 프랑스 국채시장 …",
+     "figures": [
+      "3.8%",
+      "2%",
+      "29일",
+      "2.5%"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "이재명 대통령 \"독일 정교함·한국 역동성 합치면 무궁한 시너지\"",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 10,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 61.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029208200001",
+     "publishedAt": "2026-10-29T13:20:34.000Z",
+     "access": "read",
+     "textChars": 532,
+     "lede": "이재명 대통령은 29일 저녁 무함마드 빈 살만 사우디아라비아 왕세자 겸 총리와 통화했다고 강유정 수석대변인이 서면 브리핑에서 밝혔다.",
+     "figures": [
+      "29일",
+      "2026년",
+      "20분"
+     ]
+    },
+    {
+     "publisher": "imaeil.com",
+     "url": "https://www.imaeil.com/page/view/2026102922400187001",
+     "publishedAt": "2026-10-29T13:41:00.000Z",
+     "access": "read",
+     "textChars": 1505,
+     "lede": "이재명 대통령이 29일 청와대 영빈관에서 열린 공식 만찬에서 \"독일의 정교함과 한국의 역동성이 힘을 합치면 함께 무궁무진한 협력의 시너지를 낼 수 있을 것\"이라고 밝혔다.",
+     "figures": [
+      "29일",
+      "3년",
+      "20개",
+      "7개",
+      "850개"
+     ]
+    },
+    {
+     "publisher": "imnews.imbc.com",
+     "url": "https://imnews.imbc.com/news/2026/politics/article/6861792_36911.html",
+     "publishedAt": "2026-10-29T13:36:00.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "[마켓인사이드] 비만치료제 마운자로 폭발적 성장, 일라이 릴리 사상 최...",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 0.4,
+   "heuristicSuitability": 61.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261028159851017",
+     "publishedAt": "2026-10-29T10:02:32.000Z",
+     "access": "read",
+     "textChars": 1912,
+     "lede": "한미약품[128940]이 개발한 국산 첫 글루카곤 유사 펩타이드-1(GLP-1) 계열 비만치료제 '에페'(성분명 에페글레나타이드)의 병원 처방이 29일 시작됐다.",
+     "figures": [
+      "29일",
+      "13만",
+      "9.75%",
+      "22일",
+      "2조"
+     ]
+    },
+    {
+     "publisher": "news2day.co.kr",
+     "url": "https://www.news2day.co.kr/article/20261029500448",
+     "publishedAt": "2026-10-29T13:24:00.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/202610294648i",
+     "publishedAt": "2026-10-29T12:11:59.000Z",
+     "access": "read",
+     "textChars": 1175,
+     "lede": "일라이 릴리는 체중 감량제 젭바운드와 당뇨병 치료제인 마운자로 수요에 힘입어 올해 연간 매출 전망치를 상향 조정했다. 29일(현지시간) 미국 증시 개장전 프리마켓에서 일라이 릴리의 주가는 개장전 거래에서 약 4% 상승했다.",
+     "figures": [
+      "29일",
+      "4%",
+      "2026년",
+      "850억",
+      "870억",
+      "910억",
+      "920억",
+      "123조",
+      "35.50달러",
+      "36.50달러",
+      "35달러",
+      "36달러"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "韓·獨, 전략적 동반자관계 격상…첨단산업·방산 협력 확대",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 5,
+   "newestAgeHours": 0.4,
+   "heuristicSuitability": 61.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292130015/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:30:00.000Z",
+     "access": "read",
+     "textChars": 1262,
+     "lede": "이재명 대통령이 29일 청와대에서 프리드리히 메르츠 독일 총리와 정상회담에 앞서 악수하고 있다.",
+     "figures": [
+      "29일",
+      "20개",
+      "7개",
+      "3건"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029179800001",
+     "publishedAt": "2026-10-29T09:43:36.000Z",
+     "access": "read",
+     "textChars": 1492,
+     "lede": "고동욱 황윤기 기자 = 이재명 대통령과 프리드리히 메르츠 독일 총리는 29일 세계적인 경제·안보 환경의 변화에 공동 대응하기 위한 협력을 강화하기로 했다.",
+     "figures": [
+      "29일",
+      "2026년",
+      "43분"
+     ]
+    },
+    {
+     "publisher": "ziksir.com",
+     "url": "https://www.ziksir.com/news/articleView.html?idxno=151326",
+     "publishedAt": "2026-10-29T13:20:41.000Z",
+     "access": "read",
+     "textChars": 1261,
+     "lede": "[직썰 / 성유창 기자] 한국과 독일이 핵심광물·에너지 공급망과 첨단산업, 방산 분야의 협력을 확대하기 위해 양국 관계를 ‘강화된 전략적 동반자관계’로 격상했다.",
+     "figures": [
+      "29일"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "국정원 “김정은 방중 때 북·미 대화 의중 전달”",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 1.2,
+   "heuristicSuitability": 61.44,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292135005/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:35:00.000Z",
+     "access": "read",
+     "textChars": 1607,
+     "lede": "국감 출석하는 국정원장 이종석 국가정보원장(왼쪽)이 29일 국정원 청사에서 열린 국회 정보위원회 국정감사에 앞서 이양수 정보위원장과 인사를 나누고 있다.",
+     "figures": [
+      "29일"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029148552001",
+     "publishedAt": "2026-10-29T09:54:31.000Z",
+     "access": "read",
+     "textChars": 2219,
+     "lede": "이정현 박수윤 조다운 기자 = 국가정보원은 29일 김정은 북한 국무위원장의 최근 방중 목적과 관련, \"북미대화 관련한 북한 의중을 중국 지도부에 전달했을 가능성이 있다\"고 분석했다.",
+     "figures": [
+      "29일",
+      "24일",
+      "2026년",
+      "54분"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102945187",
+     "publishedAt": "2026-10-29T09:16:24.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "불가리아 앞 흑해서 컨테이너선 무인정에 피격 침몰",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 61.04,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "421개",
+    "18명",
+    "24명"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029208100108",
+     "publishedAt": "2026-10-29T13:15:31.000Z",
+     "access": "read",
+     "textChars": 627,
+     "lede": "불가리아 인근 흑해상에서 그리스 선사가 운용하는 컨테이너 화물선이 무인정(드론)의 공격을 받아 침몰했다고 로이터 통신이 29일(현지시간) 보도했다.",
+     "figures": [
+      "29일",
+      "421개",
+      "18명",
+      "24명"
+     ]
+    },
+    {
+     "publisher": "kbs.co.kr",
+     "url": "https://news.kbs.co.kr/news/pc/view/view.do?ncd=8699286&ref=A",
+     "publishedAt": "2026-10-29T13:41:00.000Z",
+     "access": "http-error",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "imaeil.com",
+     "url": "https://www.imaeil.com/page/view/2026102922392334809",
+     "publishedAt": "2026-10-29T13:41:00.000Z",
+     "access": "read",
+     "textChars": 995,
+     "lede": "불가리아 인근 흑해에서 그리스 선사 콘트십스 매니지먼트가 운용하는 라이베리아 선적 컨테이너선 콘트십제트호가 해상 드론 3대의 공격을 받아 침몰했다. 필리핀인과 우크라이나인 등 승조원 18명은 모두 구조돼 불가리아 바르나항으로 옮겨졌다.",
+     "figures": [
+      "18명",
+      "421개",
+      "28일",
+      "24명"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "247만장 밤샘 공개 검증 끝 투표함 반출에도…부정선거론 여전",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 1.3,
+   "heuristicSuitability": 61.04,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "247만",
+    "420개",
+    "13개"
+   ],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292129005/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:29:00.000Z",
+     "access": "read",
+     "textChars": 1538,
+     "lede": "농성장 철거 서울 송파구 올림픽공원 핸드볼경기장을 봉쇄해온 시위 참가자들이 29일 투표함이 반출되자 천막 등을 철거하고 있다.",
+     "figures": [
+      "29일",
+      "146일",
+      "50분",
+      "38분",
+      "247만"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029017953004",
+     "publishedAt": "2026-10-29T10:50:34.000Z",
+     "access": "read",
+     "textChars": 1598,
+     "lede": "정윤주 김정진 기자 = 이태한 선거관리위원회 특별검사팀의 공개검증을 마친 6·3 지방선거 송파지역 투표지 247만장이 29일 올림픽공원 핸드볼경기장에서 전부 반출됐다.",
+     "figures": [
+      "247만",
+      "29일",
+      "420개",
+      "13개",
+      "15분"
+     ]
+    },
+    {
+     "publisher": "inews24.com",
+     "url": "http://www.inews24.com/view/2020628",
+     "publishedAt": "2026-10-29T11:54:45.000Z",
+     "access": "read",
+     "textChars": 432,
+     "lede": "[아이뉴스24 김다운 기자] 이태한 선거관리위원회 특별검사팀의 공개검증을 마친 6·3 지방선거 송파지역 투표지 247만장이 29일 올림픽공원 핸드볼경기장에서 전부 반출됐다.",
+     "figures": [
+      "247만",
+      "29일",
+      "420개",
+      "13개"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Alaska governor orders investigation into Democrat Mary Peltola’s Senate campaign",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 0.5,
+   "heuristicSuitability": 60.74,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Guardian – World",
+     "url": "https://www.theguardian.com/us-news/2026/oct/29/alaska-investigation-mary-peltola-dan-sullivan",
+     "publishedAt": "2026-10-29T13:10:39.000Z",
+     "access": "read",
+     "textChars": 2191,
+     "lede": "Republican Mike Dunleavy plans search after Peltola accused of recruiting Dan Sullivan to confuse voters",
+     "figures": []
+    },
+    {
+     "publisher": "BBC News – World",
+     "url": "https://www.bbc.co.uk/news/articles/c8vgx0zrpk6no?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-29T10:14:55.192Z",
+     "access": "read",
+     "textChars": 4824,
+     "lede": "The Republican governor of Alaska has ordered an investigation into an alleged \"scheme\" which led to two Dan Sullivans standing in the state's US Senate race.",
+     "figures": [
+      "12people"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Hello Kitty company cuts ties with Japanese spy show after China outcry",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 5.7,
+   "heuristicSuitability": 60.32,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Guardian – World",
+     "url": "https://www.theguardian.com/world/2026/oct/29/hello-kitty-japanese-spy-show-vivant-china-outcry",
+     "publishedAt": "2026-10-29T08:03:00.000Z",
+     "access": "read",
+     "textChars": 3316,
+     "lede": "Sanrio ends association with TV drama Vivant after China says portrayal of ruthless Chinese agents is ‘deliberate smear’",
+     "figures": []
+    },
+    {
+     "publisher": "BBC News – World",
+     "url": "https://www.bbc.co.uk/news/articles/cry4x177jlnyo?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-29T03:16:19.357Z",
+     "access": "read",
+     "textChars": 3296,
+     "lede": "Sanrio, the company behind Hello Kitty, has apologised and ended its merchandise partnership with a controversial Japanese TV show after drawing backlash in Ch…",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "[ 속보 ] 구로 주택가 '미라화 시신' 유기 지시 혐의 80대 영장 기각",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 9,
+   "newestAgeHours": 2.3,
+   "heuristicSuitability": 60.04,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "30분"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029203300004",
+     "publishedAt": "2026-10-29T11:21:51.000Z",
+     "access": "read",
+     "textChars": 1278,
+     "lede": "서울 구로구 주택가에 시신을 유기한 혐의를 받는 80대 다세대주택 주인 등이 구속을 면했다.",
+     "figures": [
+      "29일",
+      "30분",
+      "50년",
+      "27일"
+     ]
+    },
+    {
+     "publisher": "kado.net",
+     "url": "https://www.kado.net/news/articleView.html?idxno=2081599",
+     "publishedAt": "2026-10-29T11:30:17.000Z",
+     "access": "read",
+     "textChars": 1490,
+     "lede": "-0.5x -0.75x 1.0x 1.25x 1.5x 1.75x 2.0x",
+     "figures": [
+      "29일",
+      "30분",
+      "50년",
+      "27일"
+     ]
+    },
+    {
+     "publisher": "fnnews.com",
+     "url": "https://www.fnnews.com/news/202610292008557533",
+     "publishedAt": "2026-10-29T11:09:24.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "Possessed nuns and sexual deviance: the history behind Ken Russell’s highly-censored film The Devils",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 26.8,
+   "heuristicSuitability": 59.54,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Conversation",
+     "url": "https://theconversation.com/possessed-nuns-and-sexual-deviance-the-history-behind-ken-russells-highly-censored-film-the-devils-294049",
+     "publishedAt": "2026-10-12T22:32:44.000Z",
+     "access": "read",
+     "textChars": 6368,
+     "lede": "The long-awaited director’s cut of the late Ken Russell’s 1971 film The Devils will be released this month, featuring previously unseen censored material such …",
+     "figures": [
+      "17t",
+      "22years"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "When giving up teaches you more than persevering ever could",
+   "desk": "explore",
+   "subject": "psychology-behavior-everyday",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.8,
+   "heuristicSuitability": 59.3,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 59.3 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Psyche",
+     "url": "https://psyche.co/ideas/when-giving-up-teaches-you-more-than-persevering-ever-could",
+     "publishedAt": "2026-10-29T10:00:00.000Z",
+     "access": "read",
+     "textChars": 10105,
+     "lede": "is assistant professor in the Department of Philosophy and a core faculty member of the Center for Ethics in the Murphy Institute at Tulane University in Louis…",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "How Spiders Spin ‘Silk Dope’ Into Nature’s Toughest Material",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 21.7,
+   "heuristicSuitability": 59.3,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 59.3 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Quanta Magazine",
+     "url": "https://www.quantamagazine.org/how-spiders-spin-silk-dope-into-natures-toughest-material-20261028/",
+     "publishedAt": "2026-10-28T16:04:18.000Z",
+     "access": "read",
+     "textChars": 12807,
+     "lede": "Click to tell Google to prioritize Quanta and see more of the best coverage of science and math in your search and AI results.",
+     "figures": [
+      "4000years",
+      "1m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "시진핑 4연임 앞두고 고위직 33명 축출…장유샤 당적 박탈 확정",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 4,
+   "newestAgeHours": 0.4,
+   "heuristicSuitability": 59.04,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029204400083",
+     "publishedAt": "2026-10-29T12:09:40.000Z",
+     "access": "read",
+     "textChars": 2178,
+     "lede": "29일 막을 내린 중국공산당 제20기 중앙위원회 제5차 전체회의(20기 5중전회)는 내년 당 대회를 앞두고 '시진핑 4기' 개막을 위한 정치적·사상적 초석을 닦은 행사로 평가된다.",
+     "figures": [
+      "29일",
+      "4천",
+      "5년",
+      "1981년",
+      "1990년"
+     ]
+    },
+    {
+     "publisher": "hankyung.com",
+     "url": "https://www.hankyung.com/article/2026102946837",
+     "publishedAt": "2026-10-29T13:22:48.000Z",
+     "access": "read",
+     "textChars": 1864,
+     "lede": "중국 공산당이 장유샤 전 중앙군사위원회 부주석 등 고위 인사 33명의 당적 박탈을 확정하며 시진핑 국가주석의 당 총서기 4연임 여부가 결정될 내년 당대회를 앞두고 내부 통제 강화에 나섰다.",
+     "figures": [
+      "33명",
+      "29일",
+      "7명",
+      "5년"
+     ]
+    },
+    {
+     "publisher": "biz.heraldcorp.com",
+     "url": "https://biz.heraldcorp.com/article/10919792?ref=naver",
+     "publishedAt": "2026-10-29T12:42:12.000Z",
+     "access": "read",
+     "textChars": 1441,
+     "lede": "한은 “4분기부터 소비 회복 전망”…올 4% 성장도 열려있다",
+     "figures": [
+      "4분",
+      "4%",
+      "27일",
+      "3분",
+      "0.3%",
+      "3배",
+      "1%",
+      "0%",
+      "3.6%",
+      "1일",
+      "190억"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "임광현, '황제골프' 의혹에 \"허위주장…사과 우선돼야\" 반박",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 2,
+   "newestAgeHours": 0.6,
+   "heuristicSuitability": 58.92,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [
+    "10분"
+   ],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029207900001",
+     "publishedAt": "2026-10-29T13:10:20.000Z",
+     "access": "read",
+     "textChars": 807,
+     "lede": "임광현 대통령 비서실장은 29일 야권에서 제기한 김혜경 여사의 '황제 골프' 의혹과 관련, \"이 사안의 본질은 영부인이 하지도 않은 세계적인 골프선수 리디아 고와의 황제 골프를 쳤다는 허위주장을 한 것\"이라고 반박했다.",
+     "figures": [
+      "29일",
+      "2026년",
+      "10분"
+     ]
+    },
+    {
+     "publisher": "주간경향",
+     "url": "https://weekly.khan.co.kr/article/202610292135001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:35:00.000Z",
+     "access": "read",
+     "textChars": 770,
+     "lede": "주진우 국민의힘 의원이 10월 26일 공개한 김혜경 여사의 ‘황제 골프 레슨’ 의혹 영상 비교. 최초 공개 영상(위)에는 골프장 촬영 화면 옆에 리디아 고의 경기 사진이 삽입돼 있다.",
+     "figures": [
+      "26일",
+      "29일",
+      "20일",
+      "16일",
+      "10분"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Israel has voted, but what comes next? Dissecting a messy ballot and coalition-building process",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 12.1,
+   "heuristicSuitability": 58.6,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 58.6 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Conversation",
+     "url": "https://theconversation.com/israel-has-voted-but-what-comes-next-dissecting-a-messy-ballot-and-coalition-building-process-295404",
+     "publishedAt": "2026-10-29T01:39:44.000Z",
+     "access": "read",
+     "textChars": 8427,
+     "lede": "The Israeli election of Oct. 27, 2026, was among the most highly anticipated votes in the country’s history.",
+     "figures": [
+      "77.7%",
+      "50%",
+      "68seats"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "We urgently need to monitor AI agents’ actions in real time",
+   "desk": "tech",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.6,
+   "heuristicSuitability": 58.32,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "MIT Technology Review",
+     "url": "https://www.technologyreview.com/2026/10/29/1147824/monitor-ai-agents-actions-real-time/",
+     "publishedAt": "2026-10-29T10:11:12.000Z",
+     "access": "read",
+     "textChars": 7758,
+     "lede": "This summer, hundreds of OpenAI agents tried to cheat on a cybersecurity test. They broke out of their test environment and successfully hacked Hugging Face, a…",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "러시아 중앙은행, 자가수탁 지갑 제한 국제 결제엔 미적용",
+   "desk": "economy",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 2,
+   "newestAgeHours": 0,
+   "heuristicSuitability": 57.92,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029182800504",
+     "publishedAt": "2026-10-29T08:42:15.000Z",
+     "access": "read",
+     "textChars": 353,
+     "lede": "▲ 중앙은행창립 80주년 기념보고회가 28일 진행됐다고 조선중앙통신이 29일 보도했다. 백민광 중앙은행 총재가 기념보고를 했다.",
+     "figures": [
+      "28일",
+      "29일",
+      "2천",
+      "1천",
+      "7t",
+      "13t"
+     ]
+    },
+    {
+     "publisher": "tokenpost.kr",
+     "url": "https://www.tokenpost.kr/news/breaking/429359",
+     "publishedAt": "2026-10-29T13:45:06.000Z",
+     "access": "read",
+     "textChars": 701,
+     "lede": "러시아 중앙은행은 자가수탁 지갑 제한이 국제 결제에는 적용되지 않는다고 확인했다. 러시아는 제재 속에서도 국제 무역 결제의 유연성을 유지하면서 국내 디지털 거래 통제를 강화하고 있다.",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "Why Africa needs its own AI off switch",
+   "desk": "tech",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.8,
+   "heuristicSuitability": 57.9,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 57.9 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Rest of World",
+     "url": "https://restofworld.org/2026/africa-sovereign-ai-off-switch/?utm_source=rss&utm_medium=rss&utm_campaign=feeds",
+     "publishedAt": "2026-10-29T10:00:00.000Z",
+     "access": "read",
+     "textChars": 6993,
+     "lede": "Imagine that it is 6 a.m. in the wholesale markets of Nairobi. Merchants are delivering vegetables from up-country farms to the retailers who sell to the city’…",
+     "figures": [
+      "2t",
+      "1.4t",
+      "806billion",
+      "498billion"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Tropical Parasites in the Cornish Mine",
+   "desk": "explore",
+   "subject": "history-civilization-geography",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 4.8,
+   "heuristicSuitability": 57.9,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 57.9 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "History Today",
+     "url": "https://www.historytoday.com/archive/history-matters/tropical-parasites-cornish-mine",
+     "publishedAt": "2026-10-29T08:59:15.000Z",
+     "access": "read",
+     "textChars": 7032,
+     "lede": "In the late 19th century Cornish miners began falling ill with a mysterious disease. What caused ‘Dolcoath Anaemia’, and how had it come to Cornwall?",
+     "figures": [
+      "19t",
+      "1902t",
+      "0.15m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The AI bubble could expose your deepest secrets",
+   "desk": "tech",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.8,
+   "heuristicSuitability": 57.62,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 57.62 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "BBC Future",
+     "url": "https://www.bbc.com/future/article/20261029-the-ai-bubble-could-expose-your-deepest-secrets?ocid=global_future_rss",
+     "publishedAt": "2026-10-29T10:00:00.000Z",
+     "access": "read",
+     "textChars": 6512,
+     "lede": "Character.AI's collapse uncovers a little-discussed risk of AI: the companies holding your secrets may not be around forever.",
+     "figures": [
+      "10m",
+      "20m",
+      "14.95m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Israel’s election rhetoric: What candidates said, and how they performed",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 3,
+   "newestAgeHours": 0.6,
+   "heuristicSuitability": 56.94,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Al Jazeera",
+     "url": "https://www.aljazeera.com/news/2026/10/29/israels-election-what-the-candidates-said-and-how-they-did?traffic_source=rss",
+     "publishedAt": "2026-10-29T11:27:22.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "BBC News – World",
+     "url": "https://www.bbc.co.uk/news/articles/cmdx3knq1xexo?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-28T16:59:47.157Z",
+     "access": "read",
+     "textChars": 8588,
+     "lede": "Partial results from Israel's general election show veteran Prime Minister Benjamin Netanyahu marginally ahead of his rival, former military chief Gadi Eisenko…",
+     "figures": [
+      "93%",
+      "53seats",
+      "19seats",
+      "77.7%"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "중국 공산당, 장유샤 등 33명 숙청…5중전회 ‘엄격한 당 관리’ 채택",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 1.6,
+   "heuristicSuitability": 56.64,
+   "heuristicPick": false,
+   "excluded": "not selected (lower adjusted score)",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "경향신문",
+     "url": "https://www.khan.co.kr/article/202610292108035/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+     "publishedAt": "2026-10-29T12:08:00.000Z",
+     "access": "read",
+     "textChars": 1595,
+     "lede": "중국 공산당이 29일 중앙위원회(당 중앙위) 제20기 제5차 전체회의(5중전회)를 폐막하면서 ‘엄격한 당 관리 결정’을 채택하고 반부패 수사를 받아온 인사들의 처분 결과를 발표했다.",
+     "figures": [
+      "29일",
+      "2012년",
+      "10명",
+      "1970년"
+     ]
+    },
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029200600083",
+     "publishedAt": "2026-10-29T10:27:45.000Z",
+     "access": "read",
+     "textChars": 1098,
+     "lede": "중국 공산당이 제20기 중앙위원회 제5차 전체회의(5중전회)에서 장유샤 전 중앙군사위원회 부주석을 비롯한 고위직 33명에 대한 당적 박탈 처분을 확정했다.",
+     "figures": [
+      "33명",
+      "29일",
+      "5년",
+      "2026년",
+      "27분"
+     ]
+    },
+    {
+     "publisher": "한국경제",
+     "url": "https://www.hankyung.com/article/2026102945667",
+     "publishedAt": "2026-10-29T10:01:09.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "London’s Railway for the Dead",
+   "desk": "explore",
+   "subject": "history-civilization-geography",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 0.1,
+   "heuristicSuitability": 55.92,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 55.92 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "JSTOR Daily",
+     "url": "https://daily.jstor.org/londons-railway-for-the-dead/",
+     "publishedAt": "2026-10-29T13:43:00.000Z",
+     "access": "read",
+     "textChars": 4892,
+     "lede": "The final journey for London’s dead, circa 1860, was a trip on the London Necropolis Railway.",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "A Cult Grew Around the First Emperor of Rome in 27 B.C. A New Book Argues His Followers Might Have Created the Template for Christianity",
+   "desk": "explore",
+   "subject": "history-civilization-geography",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 0.8,
+   "heuristicSuitability": 55.5,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 55.5 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Smithsonian Magazine",
+     "url": "https://www.smithsonianmag.com/arts-culture/cult-grew-around-first-emperor-rome-27-bce-new-book-argues-followers-created-template-christ-180989647/",
+     "publishedAt": "2026-10-29T13:00:00.000Z",
+     "access": "read",
+     "textChars": 3873,
+     "lede": "How did the scattered followers of an itinerant preacher come to form the most populous religion in the world?",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "See all 14 winning interiors selected in the Dezeen Awards public vote",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 26.8,
+   "heuristicSuitability": 54.7,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 54.7 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Dezeen",
+     "url": "https://www.dezeen.com/2026/10/27/dezeen-awards-public-vote-winner-interiors-2026/",
+     "publishedAt": "2026-10-27T11:00:00.000Z",
+     "access": "read",
+     "textChars": 3417,
+     "lede": "The results of the interiors public vote for Dezeen Awards 2026 have been announced, with 14 projects selected as winners by Dezeen’s readers.",
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "An Epstein Survivor’s Message for MoMA",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.8,
+   "heuristicSuitability": 54.7,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 54.7 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Hyperallergic",
+     "url": "https://hyperallergic.com/an-epstein-survivors-message-for-moma/",
+     "publishedAt": "2026-10-29T10:00:00.000Z",
+     "access": "read",
+     "textChars": 2938,
+     "lede": "Over two decades ago, Dani Bensky was abused by Jeffrey Epstein. Now, as one of more than 1,200 survivors, the former dancer and arts educator continues to spe…",
+     "figures": [
+      "96t"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Behold a Prehistoric Lizard Tail Trapped in Amber",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 1.8,
+   "heuristicSuitability": 54.7,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 54.7 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Nautilus",
+     "url": "https://nautil.us/behold-a-prehistoric-lizard-tail-trapped-in-amber-1286168",
+     "publishedAt": "2026-10-29T12:00:00.000Z",
+     "access": "read",
+     "textChars": 2728,
+     "lede": "If you’ve got an escape trick that works, stick with it: A lizard tail trapped in amber reveals that these reptiles were using the same evasion tactic—lose the…",
+     "figures": [
+      "100m",
+      "99m",
+      "98.8m",
+      "18m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "New book makes fiery claims about Jared Kushner’s finances in Trump’s first term",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 1.3,
+   "heuristicSuitability": 54.46,
+   "heuristicPick": false,
+   "excluded": "suitability 54.46 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "The Guardian – World",
+     "url": "https://www.theguardian.com/us-news/2026/oct/28/jared-kushner-book-claims",
+     "publishedAt": "2026-10-28T21:56:39.000Z",
+     "access": "read",
+     "textChars": 9606,
+     "lede": "Kushner threatens to sue, denying allegations that two slush funds were set up to influence his Middle East role",
+     "figures": [
+      "10years",
+      "2017t"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "AI models cost more when you don’t use English",
+   "desk": "tech",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 75.8,
+   "heuristicSuitability": 54.18,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 54.18 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Rest of World",
+     "url": "https://restofworld.org/2026/ai-tokenizer-tax-non-english-languages-cost-inequity/?utm_source=rss&utm_medium=rss&utm_campaign=feeds",
+     "publishedAt": "2026-10-26T10:00:22.000Z",
+     "access": "read",
+     "textChars": 4525,
+     "lede": "People who use less widely spoken languages could end up paying more to use artificial intelligence than those who speak English or other dominant languages.",
+     "figures": [
+      "20m",
+      "5t",
+      "17t"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Your pay, energy bills and savings: How the Budget affects you",
+   "desk": "economy",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 19.2,
+   "heuristicSuitability": 53.48,
+   "heuristicPick": false,
+   "excluded": "suitability 53.48 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "BBC News – Business",
+     "url": "https://www.bbc.co.uk/news/articles/cr0j05vxlwjzo?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-28T13:45:04.935Z",
+     "access": "read",
+     "textChars": 7723,
+     "lede": "Families facing cost-of-living pressures are being offered some help, or \"breathing space\" as Chancellor John Healey is calling it.",
+     "figures": [
+      "60%",
+      "23m",
+      "24%",
+      "44%"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Why is Russia sending fighter jets and air defences to Ethiopia?",
+   "desk": "world",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "en",
+   "publishers": 2,
+   "newestAgeHours": 1.2,
+   "heuristicSuitability": 52.72,
+   "heuristicPick": false,
+   "excluded": "suitability 52.72 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Al Jazeera",
+     "url": "https://www.aljazeera.com/news/2026/10/29/why-is-russia-sending-fighter-jets-and-air-defences-to-ethiopia?traffic_source=rss",
+     "publishedAt": "2026-10-29T12:32:49.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "BBC News – World",
+     "url": "https://www.bbc.co.uk/news/articles/cw78prj801pvo?at_medium=RSS&at_campaign=rss",
+     "publishedAt": "2026-10-29T08:23:31.909Z",
+     "access": "read",
+     "textChars": 3621,
+     "lede": "Ethiopia has received 12 Su-35 fighter jets from Russia, as fighting intensified in the northern Tigray region neighbouring Eritrea.",
+     "figures": [
+      "2021t",
+      "200km",
+      "124m"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Why brand relevance is driven by novel ideas: The New Company on getting out your creative comfort zone",
+   "desk": "explore",
+   "subject": "philosophy-literature-arts-culture",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 3.8,
+   "heuristicSuitability": 52.3,
+   "heuristicPick": false,
+   "excluded": "evergreen suitability 52.3 below 70",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "It's Nice That",
+     "url": "https://www.itsnicethat.com/articles/the-new-company-nicer-tuesdays-la-291026",
+     "publishedAt": "2026-10-29T10:00:00.000Z",
+     "access": "read",
+     "textChars": 1061,
+     "lede": "Design director Will Geddes and executive producer Helena Corzan from design and marketing agency The New Company spoke all about how to keep things new.",
+     "figures": [
+      "1t"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "[ 속보 ] 미 9월 PCE 물가 전년대비 3.6%↑…예상치 소폭 하회",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 10,
+   "newestAgeHours": 0.7,
+   "heuristicSuitability": 51.44,
+   "heuristicPick": false,
+   "excluded": "suitability 51.44 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029206951072",
+     "publishedAt": "2026-10-29T12:46:38.000Z",
+     "access": "read",
+     "textChars": 309,
+     "lede": "미국 상무부는 9월 개인소비지출(PCE) 가격지수가 전년 동월 대비 3.6% 상승했다고 29일(현지시간) 밝혔다.",
+     "figures": [
+      "3.6%",
+      "29일",
+      "3.7%",
+      "0.5%",
+      "3.1%",
+      "0.3%"
+     ]
+    },
+    {
+     "publisher": "viva100.com",
+     "url": "https://www.viva100.com/article/20261029501503",
+     "publishedAt": "2026-10-29T13:04:00.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "mk.co.kr",
+     "url": "https://www.mk.co.kr/news/world/12190662",
+     "publishedAt": "2026-10-29T12:54:25.000Z",
+     "access": "partial",
+     "textChars": 268,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "미 3분기 GDP 3.4% 성장...시장 예상치 3.1% 웃돌아",
+   "desk": "korea",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 9,
+   "newestAgeHours": 0,
+   "heuristicSuitability": 51.44,
+   "heuristicPick": false,
+   "excluded": "suitability 51.44 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "연합뉴스",
+     "url": "https://www.yna.co.kr/view/AKR20261029207300072",
+     "publishedAt": "2026-10-29T12:56:37.000Z",
+     "access": "partial",
+     "textChars": 241,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "ebn.co.kr",
+     "url": "https://www.ebn.co.kr/news/articleView.html?idxno=1729762",
+     "publishedAt": "2026-10-29T13:43:20.000Z",
+     "access": "read",
+     "textChars": 543,
+     "lede": "[단독]해킹 피해 프라뱅·빗썸, ‘보안 미흡’ 알고도 뚫렸다",
+     "figures": [
+      "6명"
+     ]
+    },
+    {
+     "publisher": "sedaily.com",
+     "url": "https://www.sedaily.com/article/20108078?ref=naver",
+     "publishedAt": "2026-10-29T13:34:55.000Z",
+     "access": "partial",
+     "textChars": 204,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "[그래픽] 미국 경제 성장률 추이",
+   "desk": "economy",
+   "subject": "economics-finance-business",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 7,
+   "newestAgeHours": 0.2,
+   "heuristicSuitability": 50.64,
+   "heuristicPick": false,
+   "excluded": "suitability 50.64 below 55",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "yna.co.kr",
+     "url": "https://www.yna.co.kr/view/GYH20261029001600044?input=1363m",
+     "publishedAt": "2026-10-29T13:37:24.000Z",
+     "access": "partial",
+     "textChars": 200,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "mt.co.kr",
+     "url": "https://www.mt.co.kr/world/2026/10/29/2026102922142482052",
+     "publishedAt": "2026-10-29T13:33:41.000Z",
+     "access": "read",
+     "textChars": 584,
+     "lede": "미국의 3분기 경제 성장률이 3.4%를 기록하며 예상을 웃돌았다.",
+     "figures": [
+      "3분",
+      "3.4%",
+      "29일",
+      "3.1%",
+      "2분",
+      "2.2%",
+      "3.6%"
+     ]
+    },
+    {
+     "publisher": "wowtv.co.kr",
+     "url": "http://www.wowtv.co.kr/NewsCenter/News/Read?articleId=A202610290202&t=NN",
+     "publishedAt": "2026-10-29T13:22:00.000Z",
+     "access": "network-error",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "When scammers target seniors",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "evergreen",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 37.8,
+   "heuristicSuitability": 48.7,
+   "heuristicPick": false,
+   "excluded": "sources judged insufficient or unreliable",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Knowable Magazine",
+     "url": "https://knowablemagazine.org/content/article/mind/2026/when-scammers-target-seniors",
+     "publishedAt": "2026-10-28T00:00:28.000Z",
+     "access": "http-error",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "Daily briefing: The big push to personalize psychiatry",
+   "desk": "explore",
+   "subject": "science-technology-ai",
+   "form": "timely",
+   "language": "en",
+   "publishers": 1,
+   "newestAgeHours": 37.8,
+   "heuristicSuitability": 48.7,
+   "heuristicPick": false,
+   "excluded": "sources judged insufficient or unreliable",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "Nature",
+     "url": "https://idp.nature.com/transit?redirect_uri=https%3A%2F%2Fwww.nature.com%2Farticles%2Fd41586-026-03531-z&code=1f907fe3-7c3c-4816-8aa2-25c4e249d32f",
+     "publishedAt": "2026-10-28T00:00:00.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  },
+  {
+   "title": "대도시 면적 기준 ‘500㎢ 완화’…원주 등 전국 4개 도시 ‘특례 적용...",
+   "desk": "korea",
+   "subject": "world-politics-society",
+   "form": "timely",
+   "language": "ko",
+   "publishers": 3,
+   "newestAgeHours": 1,
+   "heuristicSuitability": 46.24,
+   "heuristicPick": false,
+   "excluded": "sources judged insufficient or unreliable",
+   "figures": [],
+   "sources": [
+    {
+     "publisher": "kukinews.com",
+     "url": "https://www.kukinews.com/article/view/kuk202610290244",
+     "publishedAt": "2026-10-29T12:46:00.000Z",
+     "access": "http-error",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "chmbc.co.kr",
+     "url": "https://chmbc.co.kr/article/14117613",
+     "publishedAt": "2026-10-29T11:36:00.000Z",
+     "access": "partial",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    },
+    {
+     "publisher": "mbceg.co.kr",
+     "url": "https://www.mbceg.co.kr/post/141476",
+     "publishedAt": "2026-10-29T11:32:00.000Z",
+     "access": "blocked-robots",
+     "textChars": 0,
+     "lede": null,
+     "figures": []
+    }
+   ]
+  }
+ ],
+ "briefs": [
+  {
+   "title": "경찰, 아주대 소아응급 전문의 집단사태 부른 압수수색 논란 사과",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029194900061",
+   "publishedAt": "2026-10-29T09:31:22.000Z",
+   "lede": "환아 사망 사건 관련 압수수색에 반발해 아주대병원 소아전문응급의료센터 전문의들이 집단 사직 의사를 밝히는 등 파장이 커지자 경찰 지휘부가 직접 병원을 찾아 의료진에게 유감을 표명한 것으로 전해졌다."
+  },
+  {
+   "title": "원당역 역무실서 동료에 흉기 휘두른 역무원···살인미수 구속영장 신청",
+   "tag": "한국",
+   "publisher": "경향신문",
+   "url": "https://www.khan.co.kr/article/202610292102001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "publishedAt": "2026-10-29T12:02:00.000Z",
+   "lede": "경기 고양시 지하철 3호선 원당역에서 동료 여성 역무원에게 흉기를 휘둘러 중상을 입힌 남성 역무원에 대해 경찰이 구속영장을 신청했다."
+  },
+  {
+   "title": "[패트롤] 전남광주시의회-교육청-북구-남구-광산구",
+   "tag": "한국",
+   "publisher": "경향신문",
+   "url": "https://www.khan.co.kr/article/202610292112035/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "publishedAt": "2026-10-29T12:12:00.000Z",
+   "lede": "전남광주시교육청이 교육감 지지를 선언하며 선거에 불출마했던 인사를 연봉 1억원가량 받는 산하 장학재단 원장 후보로 선정했다. 교육청 출연금으로 운영되는 이 재단 이사장은 교육감으로, 원장을 제외한 정규 직원들도 모두 교육청 파견 공무원이다."
+  },
+  {
+   "title": "다시 ‘바이 코리아’ 시동 건 외국인…“AI 성장성·주주환원에 컴백 달려” [매플 인터뷰]",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029047353003",
+   "publishedAt": "2026-10-29T09:04:24.000Z",
+   "lede": "한국수력원자력과 대우건설-두산에너빌리티 컨소시엄의 체코 두코바니 원전 사업 시공 계약 협상이 난항 끝에 29일 결렬됐다."
+  },
+  {
+   "title": "파주 접경지 주민 \"아침부터 北확성기 소리\"…국정원·합참 \"가동 미확...",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029146452060",
+   "publishedAt": "2026-10-29T10:41:21.000Z",
+   "lede": "노승혁 김철선 전명훈 기자 = 경기 파주시 접경지역 주민들 사이에서 북한의 대남 확성기 방송을 들었다는 증언이 나왔다."
+  },
+  {
+   "title": "강원도, 주한외교사절단 초청…우수 행정정책 공유·국제협력 확대",
+   "tag": "한국",
+   "publisher": "ekn.kr",
+   "url": "https://www.ekn.kr/web/view.php?key=20261029024563126",
+   "publishedAt": "2026-10-29T13:30:06.000Z",
+   "lede": "▲주한외교사절단 26개국이 29일과 30일 이틀간 강원도 일원에서 '2026년 주한외교사절 대상 행정안전부 정책설명회'를 개최했다."
+  },
+  {
+   "title": "진에어, 해킹공격으로 회원 1454명 개인정보 유출",
+   "tag": "한국",
+   "publisher": "경향신문",
+   "url": "https://www.khan.co.kr/article/202610292053001/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "publishedAt": "2026-10-29T11:53:00.000Z",
+   "lede": "SK플래닛의 기프티콘 서비스에서 일부 이용자의 개인정보가 유출된 정황이 확인됐다."
+  },
+  {
+   "title": "韓·獨, 전략적 동반자관계 격상…첨단산업·방산 협력 확대",
+   "tag": "국제",
+   "publisher": "경향신문",
+   "url": "https://www.khan.co.kr/article/202610292130015/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "publishedAt": "2026-10-29T12:30:00.000Z",
+   "lede": "이재명 대통령이 29일 청와대에서 프리드리히 메르츠 독일 총리와 정상회담에 앞서 악수하고 있다."
+  },
+  {
+   "title": "Exactly how Apple Music used sound to build its new brand identity",
+   "tag": "문화",
+   "publisher": "It's Nice That",
+   "url": "https://www.itsnicethat.com/features/apple-music-rebrand-graphic-design-spotlight-281026",
+   "publishedAt": "2026-10-28T09:00:00.000Z",
+   "lede": "For its rebrand of Apple Music, TBWA\\Media Arts Lab set out to visualise sound. The result involved months of experimentation, a surprising amount of oil, and …"
+  },
+  {
+   "title": "대웅제약 엔블로, 렙틴 감소 폭 2배…인슐린 저항성 개선 효과 확인",
+   "tag": "한국",
+   "publisher": "thefirstmedia.net",
+   "url": "http://www.thefirstmedia.net/news/articleView.html?idxno=212220",
+   "publishedAt": "2026-10-29T12:41:13.000Z",
+   "lede": "대웅제약의 당뇨병 치료제 ‘엔블로’가 같은 SGLT-2 억제제 계열 약물인 다파글리플로진보다 혈중 렙틴 수치를 더 크게 낮추고 인슐린 저항성 지표를 개선했다는 연구 결과가 나왔다."
+  },
+  {
+   "title": "캐나다 온타리오, 독감·코로나19 백신 일반인 대상 무료 접종 시작",
+   "tag": "과학",
+   "publisher": "inews24.com",
+   "url": "http://www.inews24.com/view/2020618",
+   "publishedAt": "2026-10-29T11:22:19.000Z",
+   "lede": "[아이뉴스24 김다운 기자] 코로나19 백신을 맞은 뒤 암 등의 질환에 걸렸다는 의혹이 제기됐지만, 국내 약 3600만명의 건강보험 자료를 분석한 결과 백신 접종 이후에도 암 발생 추세에 유의미한 변화가 없었다는 연구 결과가 나왔다."
+  },
+  {
+   "title": "Spain begins mourning period after train crash as search continues for victims in wreckage",
+   "tag": "국제",
+   "publisher": "The Guardian – World",
+   "url": "https://www.theguardian.com/world/2026/oct/29/spain-mourning-period-deadly-train-crash",
+   "publishedAt": "2026-10-29T11:11:52.000Z",
+   "lede": "Emergency services, drones and dog unit continue to comb carriages as Civil Guard sets up clinics for relatives to provide DNA samples"
+  },
+  {
+   "title": "Discover Marcel Duchamp at the Philadelphia Museum of Art",
+   "tag": "문화",
+   "publisher": "Hyperallergic",
+   "url": "https://hyperallergic.com/discover-marcel-duchamp-at-the-philadelphia-museum-of-art/",
+   "publishedAt": "2026-10-28T15:00:00.000Z",
+   "lede": "Duchamp's practice was one of continuous self-reinvention, impossible to categorize under any label."
+  },
+  {
+   "title": "서울 주택가 버려진 시신은 중국인 불법체류자…쓰레기 더미서 발견",
+   "tag": "과학",
+   "publisher": "매일경제",
+   "url": "https://www.mk.co.kr/news/society/12190388",
+   "publishedAt": "2026-10-29T10:40:16.000Z",
+   "lede": "서울 구로구 주택가에서 미라 상태로 발견된 시신의 신원은 중국 국적 불법체류자로 알려졌다. 타살 정황은 현재까지 드러난 게 없으며 시신의 부패와 건조로 인해 사망 원인과 자연사 및 질병 여부 등도 확인되지 않았다."
+  },
+  {
+   "title": "해파리 출현 1.5개월 빨라졌다…남해 멸치 어획량 25% 감소",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029185400051",
+   "publishedAt": "2026-10-29T08:37:36.000Z",
+   "lede": "남해안에서 해파리가 출현하는 시기는 빨라지고 멸치의 먹이가 되는 플랑크톤의 증식 시기가 늦어지는 현상이 멸치 어획량 감소와 관련이 있을 수 있다는 연구 결과가 나왔다."
+  },
+  {
+   "title": "[올댓차이나] 홍콩, 기준금리 4.25% 동결…“美 금리 불확실성 크다\" 주...",
+   "tag": "경제",
+   "publisher": "newsis.com",
+   "url": "https://www.newsis.com/view/NISX20261029_0003847430",
+   "publishedAt": "2026-10-29T13:44:36.000Z",
+   "lede": "[올댓차이나] 홍콩, 기준금리 4.25% 동결…“美 금리 불확실성 크다\" 주의"
+  },
+  {
+   "title": "이재명 대통령 \"독일 정교함·한국 역동성 합치면 무궁한 시너지\"",
+   "tag": "국제",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029208200001",
+   "publishedAt": "2026-10-29T13:20:34.000Z",
+   "lede": "이재명 대통령은 29일 저녁 무함마드 빈 살만 사우디아라비아 왕세자 겸 총리와 통화했다고 강유정 수석대변인이 서면 브리핑에서 밝혔다."
+  },
+  {
+   "title": "[마켓인사이드] 비만치료제 마운자로 폭발적 성장, 일라이 릴리 사상 최...",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261028159851017",
+   "publishedAt": "2026-10-29T10:02:32.000Z",
+   "lede": "한미약품[128940]이 개발한 국산 첫 글루카곤 유사 펩타이드-1(GLP-1) 계열 비만치료제 '에페'(성분명 에페글레나타이드)의 병원 처방이 29일 시작됐다."
+  },
+  {
+   "title": "국정원 “김정은 방중 때 북·미 대화 의중 전달”",
+   "tag": "한국",
+   "publisher": "경향신문",
+   "url": "https://www.khan.co.kr/article/202610292135005/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "publishedAt": "2026-10-29T12:35:00.000Z",
+   "lede": "국감 출석하는 국정원장 이종석 국가정보원장(왼쪽)이 29일 국정원 청사에서 열린 국회 정보위원회 국정감사에 앞서 이양수 정보위원장과 인사를 나누고 있다."
+  },
+  {
+   "title": "불가리아 앞 흑해서 컨테이너선 무인정에 피격 침몰",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029208100108",
+   "publishedAt": "2026-10-29T13:15:31.000Z",
+   "lede": "불가리아 인근 흑해상에서 그리스 선사가 운용하는 컨테이너 화물선이 무인정(드론)의 공격을 받아 침몰했다고 로이터 통신이 29일(현지시간) 보도했다."
+  },
+  {
+   "title": "Alaska governor orders investigation into Democrat Mary Peltola’s Senate campaign",
+   "tag": "국제",
+   "publisher": "The Guardian – World",
+   "url": "https://www.theguardian.com/us-news/2026/oct/29/alaska-investigation-mary-peltola-dan-sullivan",
+   "publishedAt": "2026-10-29T13:10:39.000Z",
+   "lede": "Republican Mike Dunleavy plans search after Peltola accused of recruiting Dan Sullivan to confuse voters"
+  },
+  {
+   "title": "Hello Kitty company cuts ties with Japanese spy show after China outcry",
+   "tag": "국제",
+   "publisher": "The Guardian – World",
+   "url": "https://www.theguardian.com/world/2026/oct/29/hello-kitty-japanese-spy-show-vivant-china-outcry",
+   "publishedAt": "2026-10-29T08:03:00.000Z",
+   "lede": "Sanrio ends association with TV drama Vivant after China says portrayal of ruthless Chinese agents is ‘deliberate smear’"
+  },
+  {
+   "title": "[ 속보 ] 구로 주택가 '미라화 시신' 유기 지시 혐의 80대 영장 기각",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029203300004",
+   "publishedAt": "2026-10-29T11:21:51.000Z",
+   "lede": "서울 구로구 주택가에 시신을 유기한 혐의를 받는 80대 다세대주택 주인 등이 구속을 면했다."
+  },
+  {
+   "title": "임광현, '황제골프' 의혹에 \"허위주장…사과 우선돼야\" 반박",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029207900001",
+   "publishedAt": "2026-10-29T13:10:20.000Z",
+   "lede": "임광현 대통령 비서실장은 29일 야권에서 제기한 김혜경 여사의 '황제 골프' 의혹과 관련, \"이 사안의 본질은 영부인이 하지도 않은 세계적인 골프선수 리디아 고와의 황제 골프를 쳤다는 허위주장을 한 것\"이라고 반박했다."
+  },
+  {
+   "title": "러시아 중앙은행, 자가수탁 지갑 제한 국제 결제엔 미적용",
+   "tag": "경제",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029182800504",
+   "publishedAt": "2026-10-29T08:42:15.000Z",
+   "lede": "▲ 중앙은행창립 80주년 기념보고회가 28일 진행됐다고 조선중앙통신이 29일 보도했다. 백민광 중앙은행 총재가 기념보고를 했다."
+  },
+  {
+   "title": "Possessed nuns and sexual deviance: the history behind Ken Russell’s highly-censored film The Devils",
+   "tag": "문화",
+   "publisher": "The Conversation",
+   "url": "https://theconversation.com/possessed-nuns-and-sexual-deviance-the-history-behind-ken-russells-highly-censored-film-the-devils-294049",
+   "publishedAt": "2026-10-12T22:32:44.000Z",
+   "lede": "The long-awaited director’s cut of the late Ken Russell’s 1971 film The Devils will be released this month, featuring previously unseen censored material such …"
+  },
+  {
+   "title": "How Spiders Spin ‘Silk Dope’ Into Nature’s Toughest Material",
+   "tag": "과학",
+   "publisher": "Quanta Magazine",
+   "url": "https://www.quantamagazine.org/how-spiders-spin-silk-dope-into-natures-toughest-material-20261028/",
+   "publishedAt": "2026-10-28T16:04:18.000Z",
+   "lede": "Click to tell Google to prioritize Quanta and see more of the best coverage of science and math in your search and AI results."
+  },
+  {
+   "title": "Israel has voted, but what comes next? Dissecting a messy ballot and coalition-building process",
+   "tag": "국제",
+   "publisher": "The Conversation",
+   "url": "https://theconversation.com/israel-has-voted-but-what-comes-next-dissecting-a-messy-ballot-and-coalition-building-process-295404",
+   "publishedAt": "2026-10-29T01:39:44.000Z",
+   "lede": "The Israeli election of Oct. 27, 2026, was among the most highly anticipated votes in the country’s history."
+  },
+  {
+   "title": "We urgently need to monitor AI agents’ actions in real time",
+   "tag": "기술",
+   "publisher": "MIT Technology Review",
+   "url": "https://www.technologyreview.com/2026/10/29/1147824/monitor-ai-agents-actions-real-time/",
+   "publishedAt": "2026-10-29T10:11:12.000Z",
+   "lede": "This summer, hundreds of OpenAI agents tried to cheat on a cybersecurity test. They broke out of their test environment and successfully hacked Hugging Face, a…"
+  },
+  {
+   "title": "Why Africa needs its own AI off switch",
+   "tag": "기술",
+   "publisher": "Rest of World",
+   "url": "https://restofworld.org/2026/africa-sovereign-ai-off-switch/?utm_source=rss&utm_medium=rss&utm_campaign=feeds",
+   "publishedAt": "2026-10-29T10:00:00.000Z",
+   "lede": "Imagine that it is 6 a.m. in the wholesale markets of Nairobi. Merchants are delivering vegetables from up-country farms to the retailers who sell to the city’…"
+  },
+  {
+   "title": "The Tropical Parasites in the Cornish Mine",
+   "tag": "문화",
+   "publisher": "History Today",
+   "url": "https://www.historytoday.com/archive/history-matters/tropical-parasites-cornish-mine",
+   "publishedAt": "2026-10-29T08:59:15.000Z",
+   "lede": "In the late 19th century Cornish miners began falling ill with a mysterious disease. What caused ‘Dolcoath Anaemia’, and how had it come to Cornwall?"
+  },
+  {
+   "title": "The AI bubble could expose your deepest secrets",
+   "tag": "기술",
+   "publisher": "BBC Future",
+   "url": "https://www.bbc.com/future/article/20261029-the-ai-bubble-could-expose-your-deepest-secrets?ocid=global_future_rss",
+   "publishedAt": "2026-10-29T10:00:00.000Z",
+   "lede": "Character.AI's collapse uncovers a little-discussed risk of AI: the companies holding your secrets may not be around forever."
+  },
+  {
+   "title": "Israel’s election rhetoric: What candidates said, and how they performed",
+   "tag": "국제",
+   "publisher": "BBC News – World",
+   "url": "https://www.bbc.co.uk/news/articles/cmdx3knq1xexo?at_medium=RSS&at_campaign=rss",
+   "publishedAt": "2026-10-28T16:59:47.157Z",
+   "lede": "Partial results from Israel's general election show veteran Prime Minister Benjamin Netanyahu marginally ahead of his rival, former military chief Gadi Eisenko…"
+  },
+  {
+   "title": "London’s Railway for the Dead",
+   "tag": "문화",
+   "publisher": "JSTOR Daily",
+   "url": "https://daily.jstor.org/londons-railway-for-the-dead/",
+   "publishedAt": "2026-10-29T13:43:00.000Z",
+   "lede": "The final journey for London’s dead, circa 1860, was a trip on the London Necropolis Railway."
+  },
+  {
+   "title": "A Cult Grew Around the First Emperor of Rome in 27 B.C. A New Book Argues His Followers Might Have Created the Template for Christianity",
+   "tag": "문화",
+   "publisher": "Smithsonian Magazine",
+   "url": "https://www.smithsonianmag.com/arts-culture/cult-grew-around-first-emperor-rome-27-bce-new-book-argues-followers-created-template-christ-180989647/",
+   "publishedAt": "2026-10-29T13:00:00.000Z",
+   "lede": "How did the scattered followers of an itinerant preacher come to form the most populous religion in the world?"
+  },
+  {
+   "title": "See all 14 winning interiors selected in the Dezeen Awards public vote",
+   "tag": "국제",
+   "publisher": "Dezeen",
+   "url": "https://www.dezeen.com/2026/10/27/dezeen-awards-public-vote-winner-interiors-2026/",
+   "publishedAt": "2026-10-27T11:00:00.000Z",
+   "lede": "The results of the interiors public vote for Dezeen Awards 2026 have been announced, with 14 projects selected as winners by Dezeen’s readers."
+  },
+  {
+   "title": "An Epstein Survivor’s Message for MoMA",
+   "tag": "문화",
+   "publisher": "Hyperallergic",
+   "url": "https://hyperallergic.com/an-epstein-survivors-message-for-moma/",
+   "publishedAt": "2026-10-29T10:00:00.000Z",
+   "lede": "Over two decades ago, Dani Bensky was abused by Jeffrey Epstein. Now, as one of more than 1,200 survivors, the former dancer and arts educator continues to spe…"
+  },
+  {
+   "title": "Behold a Prehistoric Lizard Tail Trapped in Amber",
+   "tag": "과학",
+   "publisher": "Nautilus",
+   "url": "https://nautil.us/behold-a-prehistoric-lizard-tail-trapped-in-amber-1286168/",
+   "publishedAt": "2026-10-29T12:00:00.000Z",
+   "lede": "If you’ve got an escape trick that works, stick with it: A lizard tail trapped in amber reveals that these reptiles were using the same evasion tactic—lose the…"
+  },
+  {
+   "title": "New book makes fiery claims about Jared Kushner’s finances in Trump’s first term",
+   "tag": "국제",
+   "publisher": "The Guardian – World",
+   "url": "https://www.theguardian.com/us-news/2026/oct/28/jared-kushner-book-claims",
+   "publishedAt": "2026-10-28T21:56:39.000Z",
+   "lede": "Kushner threatens to sue, denying allegations that two slush funds were set up to influence his Middle East role"
+  },
+  {
+   "title": "AI models cost more when you don’t use English",
+   "tag": "기술",
+   "publisher": "Rest of World",
+   "url": "https://restofworld.org/2026/ai-tokenizer-tax-non-english-languages-cost-inequity/?utm_source=rss&utm_medium=rss&utm_campaign=feeds",
+   "publishedAt": "2026-10-26T10:00:22.000Z",
+   "lede": "People who use less widely spoken languages could end up paying more to use artificial intelligence than those who speak English or other dominant languages."
+  },
+  {
+   "title": "Your pay, energy bills and savings: How the Budget affects you",
+   "tag": "경제",
+   "publisher": "BBC News – Business",
+   "url": "https://www.bbc.co.uk/news/articles/cr0j05vxlwjzo?at_medium=RSS&at_campaign=rss",
+   "publishedAt": "2026-10-28T13:45:04.935Z",
+   "lede": "Families facing cost-of-living pressures are being offered some help, or \"breathing space\" as Chancellor John Healey is calling it."
+  },
+  {
+   "title": "Why is Russia sending fighter jets and air defences to Ethiopia?",
+   "tag": "국제",
+   "publisher": "BBC News – World",
+   "url": "https://www.bbc.co.uk/news/articles/cw78prj801pvo?at_medium=RSS&at_campaign=rss",
+   "publishedAt": "2026-10-29T08:23:31.909Z",
+   "lede": "Ethiopia has received 12 Su-35 fighter jets from Russia, as fighting intensified in the northern Tigray region neighbouring Eritrea."
+  },
+  {
+   "title": "Why brand relevance is driven by novel ideas: The New Company on getting out your creative comfort zone",
+   "tag": "문화",
+   "publisher": "It's Nice That",
+   "url": "https://www.itsnicethat.com/articles/the-new-company-nicer-tuesdays-la-291026",
+   "publishedAt": "2026-10-29T10:00:00.000Z",
+   "lede": "Design director Will Geddes and executive producer Helena Corzan from design and marketing agency The New Company spoke all about how to keep things new."
+  },
+  {
+   "title": "[ 속보 ] 미 9월 PCE 물가 전년대비 3.6%↑…예상치 소폭 하회",
+   "tag": "한국",
+   "publisher": "연합뉴스",
+   "url": "https://www.yna.co.kr/view/AKR20261029206951072",
+   "publishedAt": "2026-10-29T12:46:38.000Z",
+   "lede": "미국 상무부는 9월 개인소비지출(PCE) 가격지수가 전년 동월 대비 3.6% 상승했다고 29일(현지시간) 밝혔다."
+  },
+  {
+   "title": "미 3분기 GDP 3.4% 성장...시장 예상치 3.1% 웃돌아",
+   "tag": "한국",
+   "publisher": "ebn.co.kr",
+   "url": "https://www.ebn.co.kr/news/articleView.html?idxno=1729762",
+   "publishedAt": "2026-10-29T13:43:20.000Z",
+   "lede": "[단독]해킹 피해 프라뱅·빗썸, ‘보안 미흡’ 알고도 뚫렸다"
+  },
+  {
+   "title": "[그래픽] 미국 경제 성장률 추이",
+   "tag": "경제",
+   "publisher": "mt.co.kr",
+   "url": "https://www.mt.co.kr/world/2026/10/29/2026102922142482052",
+   "publishedAt": "2026-10-29T13:33:41.000Z",
+   "lede": "미국의 3분기 경제 성장률이 3.4%를 기록하며 예상을 웃돌았다."
+  }
+ ],
+ "leads": [
+  {
+   "title": "Join us at Building Abundance: How Britain can flourish in the age of AI",
+   "url": "https://www.worksinprogress.news/p/join-us-at-building-abundance-how",
+   "source": "Works in Progress",
+   "publishedAt": "2026-10-29T13:25:37.000Z"
+  },
+  {
+   "title": "‘A Man Must Eat Meat’",
+   "url": "https://www.theatlantic.com/culture/2026/10/james-talarico-vegan-insult/689202/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T13:00:00.000Z"
+  },
+  {
+   "title": "The fix for America’s terrible internet is hiding in Tennessee",
+   "url": "https://www.vox.com/future-perfect/508149/chattanooga-municipal-broadband-internet",
+   "source": "Vox",
+   "publishedAt": "2026-10-29T12:00:00.000Z"
+  },
+  {
+   "title": "Inhaling CO2 may rescue nerves’ ability to regrow",
+   "url": "https://www.newscientist.com/article/2596332-inhaling-co2-rescues-nerves-ability-to-regrow/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-29T12:00:00.000Z"
+  },
+  {
+   "title": "Can Democracy Survive the Next Financial Crash?",
+   "url": "https://www.theatlantic.com/ideas/2026/10/bubble-bailout-trump-authority/689190/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T12:00:00.000Z"
+  },
+  {
+   "title": "Scientists can now rewire living brains",
+   "url": "https://www.scientificamerican.com/article/scientists-can-now-rewire-living-brains/",
+   "source": "Scientific American",
+   "publishedAt": "2026-10-29T11:30:00.000Z"
+  },
+  {
+   "title": "Republicans are trying to make the Texas Senate race about “manliness”",
+   "url": "https://www.vox.com/politics/507005/texas-senate-race-talarico-paxton-masculinity",
+   "source": "Vox",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "Key oddity of quantum physics may run even deeper than anticipated",
+   "url": "https://www.newscientist.com/article/2596105-key-oddity-of-quantum-physics-may-run-even-deeper-than-anticipated/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "Five things you need to know about the Trump administration’s rollback of methane regulations",
+   "url": "https://www.scientificamerican.com/article/five-things-you-need-to-know-about-the-trump-administrations-rollback-of-methane-regulations/",
+   "source": "Scientific American",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "He Wanted to Save Children. Instead, He Unleashed Chaos.",
+   "url": "https://www.theatlantic.com/technology/2026/10/martry-of-pizzagate-edgar-maddison-welch/689188/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "The Epstein-Pizzagate Connection",
+   "url": "https://www.theatlantic.com/technology/2026/10/pizzagate-epstein-tucker-carlson-conspiracy/689152/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "The Long, Weird Tale of Comet Ping Pong",
+   "url": "https://www.theatlantic.com/technology/2026/10/pizzagate-comet-ping-pong-2026/689080/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T11:00:00.000Z"
+  },
+  {
+   "title": "Mathematicians find an infinite number of Ramanujan equations",
+   "url": "https://www.scientificamerican.com/article/mathematicians-find-an-infinite-number-of-ramanujan-equations/",
+   "source": "Scientific American",
+   "publishedAt": "2026-10-29T10:30:00.000Z"
+  },
+  {
+   "title": "Why Republicans might beat the polls",
+   "url": "https://www.vox.com/politics/508270/republican-beat-midterm-polls-blue-wave",
+   "source": "Vox",
+   "publishedAt": "2026-10-29T10:00:00.000Z"
+  },
+  {
+   "title": "Can the world’s religions survive the existence of aliens?",
+   "url": "https://www.scientificamerican.com/article/can-the-worlds-religions-survive-the-existence-of-aliens/",
+   "source": "Scientific American",
+   "publishedAt": "2026-10-29T10:00:00.000Z"
+  },
+  {
+   "title": "The Trump Aide Trying to Stop a Blue Wave",
+   "url": "https://www.theatlantic.com/politics/2026/10/james-blair-trump-midterm-elections/689175/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T10:00:00.000Z"
+  },
+  {
+   "title": "Hegseth Fires a Top General",
+   "url": "https://www.theatlantic.com/national-security/2026/10/brett-sylvia-hegseth-general-pentagon/689199/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T00:54:24.000Z"
+  },
+  {
+   "title": "Why Wouldn’t Google Tell Me Who Won the 2020 Election?",
+   "url": "https://www.theatlantic.com/technology/2026/10/google-search-ai-2020-election-trump/689197/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-29T00:44:00.000Z"
+  },
+  {
+   "title": "Trump Is Closing From Behind",
+   "url": "https://www.theatlantic.com/politics/2026/10/trump-midterms-closing-message/689191/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T23:50:00.000Z"
+  },
+  {
+   "title": "A Stress Test for Prediction Markets",
+   "url": "https://www.theatlantic.com/newsletters/2026/10/kalshi-polymarket-midterms-brazil/689196/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T23:19:00.000Z"
+  },
+  {
+   "title": "How Elon Musk Turned on Ukraine",
+   "url": "https://www.theatlantic.com/national-security/2026/10/elon-musk-ukraine-starlink-alternative/689192/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T22:28:52.000Z"
+  },
+  {
+   "title": "Corruption Catches Up to MAGA",
+   "url": "https://www.theatlantic.com/newsletters/2026/10/midtems-voters-corruption-inflation-gas-prices/689194/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T22:10:00.000Z"
+  },
+  {
+   "title": "Edison’s Half Mile Problem",
+   "url": "https://www.youtube.com/shorts/ub00LkAWPe4",
+   "source": "Asianometry (YouTube)",
+   "publishedAt": "2026-10-28T22:00:14.000Z"
+  },
+  {
+   "title": "Republicans have an Epstein problem",
+   "url": "https://www.vox.com/today-explained-newsletter/507993/2026-midterms-epstein",
+   "source": "Vox",
+   "publishedAt": "2026-10-28T20:15:00.000Z"
+  },
+  {
+   "title": "There Are Too Many Apps for That",
+   "url": "https://www.theatlantic.com/technology/2026/10/vibe-coders-are-clogging-app-store-slop/689150/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T20:03:50.000Z"
+  },
+  {
+   "title": "RFK, Jr., loosens restrictions for six popular peptides, bypassing the FDA",
+   "url": "https://www.scientificamerican.com/article/rfk-jr-loosens-restrictions-for-six-popular-peptides-bypassing-the-fda/",
+   "source": "Scientific American",
+   "publishedAt": "2026-10-28T18:45:00.000Z"
+  },
+  {
+   "title": "Twisteddoodles on scientists in horror movies",
+   "url": "https://www.newscientist.com/article/2596005-twisteddoodles-on-scientists-in-horror-movies/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "Tom Gauld on how to scare a scientist",
+   "url": "https://www.newscientist.com/article/2596003-tom-gauld-on-how-to-scare-a-scientist/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "Why the world’s first spinal cord transplant is so controversial",
+   "url": "https://www.newscientist.com/article/2595939-why-the-worlds-first-spinal-cord-transplant-is-so-controversial/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "Our verdict on Exit Party by Emily St. John Mandel: Not her best book",
+   "url": "https://www.newscientist.com/article/2595814-our-verdict-on-exit-party-by-emily-st-john-mandel-not-her-best-book/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "The King’s Observatory could be yours for the low, low price of £18 million",
+   "url": "https://www.newscientist.com/article/2595720-the-kings-observatory-could-be-yours-for-the-low-low-price-of-18-million/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "This week’s new questions",
+   "url": "https://www.newscientist.com/article/2595718-this-weeks-new-questions-369/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "Why can’t we cool water as quickly as we can heat it? part 3",
+   "url": "https://www.newscientist.com/article/2595717-why-cant-we-cool-water-as-quickly-as-we-can-heat-it-part-3/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "Why do dogs usually follow instructions, but cats largely ignore them?",
+   "url": "https://www.newscientist.com/article/2595716-why-do-dogs-usually-follow-instructions-but-cats-largely-ignore-them/?utm_campaign=RSS|NSNS&utm_content=home&utm_medium=RSS&utm_source=NSNS",
+   "source": "New Scientist",
+   "publishedAt": "2026-10-28T18:00:00.000Z"
+  },
+  {
+   "title": "What Should You Do With Your Money in the Age of AI?",
+   "url": "https://www.theatlantic.com/technology/2026/10/ai-hedge-financial-tips/689187/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T17:26:45.000Z"
+  },
+  {
+   "title": "KahlilExplains SeriesPromo FINAL",
+   "url": "https://www.youtube.com/shorts/8DlDAA1GI2o",
+   "source": "Vox (YouTube)",
+   "publishedAt": "2026-10-28T17:06:15.000Z"
+  },
+  {
+   "title": "The Man Who Risked Death Documenting ISIS",
+   "url": "https://www.theatlantic.com/podcasts/2026/10/david-frum-show-omar-mohammed-eye-of-mosul/689185/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T17:00:00.000Z"
+  },
+  {
+   "title": "Israeli Election Results Hazy, Try Again",
+   "url": "https://www.theatlantic.com/ideas/2026/10/israel-election-outcome-possibilities/689184/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T16:19:00.000Z"
+  },
+  {
+   "title": "Could universal pre-K unite Democrats and Republicans?",
+   "url": "https://www.youtube.com/shorts/g2xSH9zyj6s",
+   "source": "Vox (YouTube)",
+   "publishedAt": "2026-10-28T16:00:09.000Z"
+  },
+  {
+   "title": "Why India Is Erupting",
+   "url": "https://www.theatlantic.com/international/2026/10/india-modi-cockroach-janta-party/689183/?utm_source=feed",
+   "source": "The Atlantic",
+   "publishedAt": "2026-10-28T15:54:01.000Z"
+  }
+ ],
+ "formExcluded": [
+  {
+   "title": "Indonesians share impact of haze on their livelihoods",
+   "url": "https://www.aljazeera.com/video/newsfeed/2026/10/29/indonesians-share-impact-of-haze-on-their-livelihoods?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Night Plane review – join the jumbo jet to hell in this indie horror head trip",
+   "url": "https://www.theguardian.com/games/2026/oct/29/night-plane-review-join-the-jumbo-jet-to-hell-in-this-indie-horror-game",
+   "kind": "review"
+  },
+  {
+   "title": "Lit Hub Daily: October 29, 2026",
+   "url": "https://lithub.com/lit-hub-daily-october-29-2026/",
+   "kind": "digest"
+  },
+  {
+   "title": "Hills and mountains",
+   "url": "https://aeon.co/videos/an-afghan-woman-recalls-how-her-countrys-devastation-led-to-her-own",
+   "kind": "video"
+  },
+  {
+   "title": "Rising fuel costs force passengers off cruise ship",
+   "url": "https://www.aljazeera.com/video/newsfeed/2026/10/29/rising-fuel-costs-force-passengers-off-cruise-ship?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Healey accepts ‘hard decisions’ ahead as thinktank says 2020s set to be worst decade for living standards growth – UK politics live",
+   "url": "https://www.theguardian.com/politics/live/2026/oct/29/budget-john-healey-labour-uk-politics-latest-news",
+   "kind": "live"
+  },
+  {
+   "title": "The megadonors financing the US midterms to influence policy",
+   "url": "https://www.aljazeera.com/video/money-works/2026/10/29/the-megadonors-financing-the-us-midterms-to-influence-policy?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Wicker review – Olivia Colman finds the perfect lover in intriguing folk-horror romance",
+   "url": "https://www.theguardian.com/film/2026/oct/29/wicker-review-olivia-colman-finds-the-perfect-lover-in-intriguing-folk-horror-romance",
+   "kind": "review"
+  },
+  {
+   "title": "The Amarna letters",
+   "url": "https://aeon.co/videos/letters-from-bronze-age-rulers-reveal-how-little-diplomacy-has-changed",
+   "kind": "video"
+  },
+  {
+   "title": "A plane crossing the Moon",
+   "url": "https://psyche.co/videos/one-mans-10-year-mission-to-film-a-plane-engulfed-by-the-moon",
+   "kind": "video"
+  },
+  {
+   "title": "‘Anti-Zionism: A Jewish History’ by Benjamin Moser review",
+   "url": "https://www.historytoday.com/archive/review/anti-zionism-jewish-history-benjamin-moser-review",
+   "kind": "review"
+  },
+  {
+   "title": "Men pulled from vehicle stranded by floods in Syria",
+   "url": "https://www.aljazeera.com/video/newsfeed/2026/10/29/men-pulled-from-vehicle-stranded-by-floods-in-syria?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "‘The House of Cromwell’ by Miranda Malins review",
+   "url": "https://www.historytoday.com/archive/review/house-cromwell-miranda-malins-review",
+   "kind": "review"
+  },
+  {
+   "title": "Nocturne review – Stephen Graham is TV’s most evil serial killer … and it’s impossible to stop watching him",
+   "url": "https://www.theguardian.com/tv-and-radio/2026/oct/29/nocturne-review-stephen-graham-rory-culkin-apple-tv",
+   "kind": "review"
+  },
+  {
+   "title": "Great art explained: Tamara in the green Bugatti",
+   "url": "https://aeon.co/videos/the-bisexual-artist-who-reimagined-womanhood-for-the-jazz-age",
+   "kind": "video"
+  },
+  {
+   "title": "Afghan farmers pushed to opium farming to make a living",
+   "url": "https://www.aljazeera.com/video/newsfeed/2026/10/29/title-afghan-farmers-pushed-to-opium-farming-to-make-a-living?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "How to live a life of awe",
+   "url": "https://psyche.co/videos/encounters-with-awe-have-profound-benefits-heres-how-to-have-more",
+   "kind": "video"
+  },
+  {
+   "title": "Chancellor says government has 'moral duty' to help young people out of work",
+   "url": "https://www.bbc.co.uk/news/videos/c3j47008yl7vo?at_medium=RSS&at_campaign=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Bhutan: the last place",
+   "url": "https://aeon.co/videos/what-happened-when-the-only-country-to-ban-tv-lifted-the-ban",
+   "kind": "video"
+  },
+  {
+   "title": "When it started to burn",
+   "url": "https://aeon.co/videos/what-four-years-of-ceaseless-war-looks-like-to-ukrainian-civilians",
+   "kind": "video"
+  },
+  {
+   "title": "A vocabulary for the future: nature",
+   "url": "https://aeon.co/videos/theres-nothing-inherently-good-in-the-natural-argues-bruno-latour",
+   "kind": "video"
+  },
+  {
+   "title": "Portraits of another life: Nemo Gould",
+   "url": "https://psyche.co/videos/i-take-silly-very-seriously-a-kinetic-sculptors-credo-of-creation",
+   "kind": "video"
+  },
+  {
+   "title": "The social construction of emotions",
+   "url": "https://psyche.co/videos/dont-reduce-emotions-to-biology-theyre-contingent-and-emergent",
+   "kind": "video"
+  },
+  {
+   "title": "The secrets of Hohle Fels cave",
+   "url": "https://aeon.co/videos/hohle-fels-cave-illuminates-the-rich-symbolic-world-of-ice-age-humans",
+   "kind": "video"
+  },
+  {
+   "title": "Chancellor begins to deliver his first Budget",
+   "url": "https://www.bbc.co.uk/news/videos/cqn49vy2jlx0o?at_medium=RSS&at_campaign=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Watch: King dances in the streets of the Bahamas capital",
+   "url": "https://www.bbc.co.uk/news/videos/cm87zwe3ydp1o?at_medium=RSS&at_campaign=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Can the UK afford more help with the cost of living?",
+   "url": "https://www.aljazeera.com/video/counting-the-cost/2026/10/29/can-the-uk-afford-more-help-with-the-cost-of-living?traffic_source=rss",
+   "kind": "video"
+  },
+  {
+   "title": "John Healey pays homage to predecessor Rachel Reeves",
+   "url": "https://www.bbc.co.uk/news/videos/c95ynvr04vgdo?at_medium=RSS&at_campaign=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Is It Too Late to Make a Run for It? by Judi Dench review – whatever you do, don’t call her a ‘national treasure’",
+   "url": "https://www.theguardian.com/books/2026/oct/28/is-it-too-late-to-make-a-run-for-it-by-judi-dench-review-whatever-you-do-dont-call-her-a-national-treasure",
+   "kind": "review"
+  },
+  {
+   "title": "Into the fire",
+   "url": "https://aeon.co/videos/the-all-female-team-defusing-isiss-deadly-landmine-legacy",
+   "kind": "video"
+  },
+  {
+   "title": "Chu Prayad",
+   "url": "https://psyche.co/videos/a-bangkok-cabbie-finds-balance-in-a-thrilling-street-sport",
+   "kind": "video"
+  },
+  {
+   "title": "Myanmar diplomat breaks down as he urges world to 'end our suffering'",
+   "url": "https://www.bbc.co.uk/news/videos/cqz0ve10jxn2o?at_medium=RSS&at_campaign=rss",
+   "kind": "video"
+  },
+  {
+   "title": "Everest: The Other Side review – couple’s climb on the mountain’s toughest face comes with tricky moral questions",
+   "url": "https://www.theguardian.com/film/2026/oct/28/everest-other-side-documentary-movie-review-jim-morrison-hilaree-nelson",
+   "kind": "review"
+  },
+  {
+   "title": "Metropolis: more than four decades of street photography – in pictures",
+   "url": "https://www.theguardian.com/artanddesign/gallery/2026/oct/28/metropolis-more-than-four-decades-of-street-photography-in-pictures",
+   "kind": "video"
+  },
+  {
+   "title": "Africa’s cultural landmarks: tombs of Buganda kings",
+   "url": "https://aeon.co/videos/the-fragile-majesty-of-the-buganda-royal-tombs-in-uganda",
+   "kind": "video"
+  },
+  {
+   "title": "Elon Musk’s AI Odyssey review – the dullest, most pointless riposte possible to Christopher Nolan’s brilliant epic",
+   "url": "https://www.theguardian.com/film/2026/oct/27/elon-musk-ai-odyssey-movie-grok-christopher-nolan",
+   "kind": "review"
+  },
+  {
+   "title": "‘Approaching desire with curiosity’: the many facets of Black masculinity – in pictures",
+   "url": "https://www.theguardian.com/artanddesign/gallery/2026/oct/27/quil-lemons-quiladelphia-photo-book-black-masculinity",
+   "kind": "video"
+  },
+  {
+   "title": "[시네프리뷰] 클레이페이스-얼굴을 잃은 배우, 고담의 괴물이 되다",
+   "url": "https://weekly.khan.co.kr/article/202610280600031/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "kind": "review"
+  },
+  {
+   "title": "[신간] ‘여성’으로 뒤집은 하루키 월드",
+   "url": "https://weekly.khan.co.kr/article/202610280600021/?utm_source=khan_rss&utm_medium=rss&utm_campaign=total_news",
+   "kind": "review"
+  },
+  {
+   "title": "This week we launched the new Dezeen website",
+   "url": "https://www.dezeen.com/2026/10/24/dezeen-website-launch-this-week/",
+   "kind": "house"
+  },
+  {
+   "title": "[신간] 전쟁사에서 지워진 여성들…'여자들은 언제나 싸웠다'",
+   "url": "https://www.yna.co.kr/view/AKR20261029188900005",
+   "kind": "review"
+  }
+ ],
+ "warnings": [
+  "variety: all 6 stories are timely pieces; check the edition is more than a news digest (not enforced)",
+  "composition: no tech (AI·기술) story cleared the bar; not padded"
+ ]
+}
