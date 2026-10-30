@@ -1,0 +1,54 @@
+Generalist Daily run log: 2026-10-31 (unattended scheduled session)
+
+Start: 05:53 KST. Edition pushed: 06:18 KST (commit 699fe9e on main). Log written 06:20 KST.
+
+Steps
+- Pack: research-packs/2026-10-31.json was missing at start. Pushed research-packs/request-2026-10-31 at 05:53 (commit 8f19172). The pack arrived at 05:55 (fd98f5a, generated 2026-10-30T20:53Z): 60 candidates, 49 brief candidates. Pack read: yes.
+- Stories selected: yes, 6 main stories.
+- Written: yes. Headline Editor records are kept in the edition.
+- Checked: yes. Two independent fact-check passes re-read the cited sources. Corrections applied:
+  - headlines for Binance (20 minutes = "most of it"; "absent" rather than "empty seats")
+  - 금고 rather than 징역 for 이임재
+  - titles, attributions and citation numbers
+  - removed unattributed interpretations
+  - Burry's useful-life figure
+  - the deck's "next day" timing
+- Sealed: yes.
+- Pushed: yes, 699fe9e. The push succeeded without a rebase.
+
+Edition: 6 main stories, about 20 minutes of reading (5+3+3+4+3+2), plus 9 briefs.
+Build: `npx tsx src/build.ts` passed with no errors and no editor notes. I looked at the mobile homepage screenshot.
+
+Stories, with sources and access level
+1. world: Binance 63억 달러 해킹 and the North Korea attribution
+   - Sources (원문 확인): TRM Labs, Elliptic, Chainalysis, TechCrunch, Decrypt (×2), Cybersecurity Dive, Korea Times (on the UN panel report, 2024), Bloomingbit, Blockmedia.
+   - Corroboration: theft amount and timing confirmed independently by 3 analytics firms. Attribution to North Korea comes from analytics firms only; there is no government attribution, and the article says so. Binance's own claims are unverified, and the article says so.
+2. world: China fifth plenum, 33 expelled, 279 of 376 attended
+   - Sources: Xinhua communiqué (원문); BBC and The Independent via Yahoo reprints (원문); Reuters via Goldsea reprint (요지 확인); Wikipedia (일부, background only).
+   - Corroboration: key figures corroborated by Xinhua plus BBC and Reuters.
+3. economy: Taiwan Q3 14.36% vs Korea 3.4%, chip ecosystem (GDP vs GDI, volume vs price)
+   - Sources (원문): Focus Taiwan, CNA, udn, ING, 한국일보, 파이낸셜뉴스 (×2), 중앙이코노미뉴스, 중앙일보 via Daum (May 2026 국제금융센터 report).
+   - Corroboration: Taiwan and Korea figures each confirmed by 2 or more sources.
+   - Not read: JoongAng 25474559 (blocked); used the related May article instead. DGBAS and BoK primary releases were not found.
+4. tech: AI capex and free cash flow; Intel −29%, Nasdaq −2.86%
+   - Sources (원문): Amazon release (primary), Meta release (primary), TechCrunch, Proactive, Telegraph and Reuters via Yahoo, XTB, FactSet, Yardeni, Blockmedia; AP via Local10 (요지).
+   - Corroboration: company figures come from the primary releases; index moves are corroborated by AP and Blockmedia.
+   - Not read: BBC (blocked).
+5. korea: Itaewon footage in Call of Duty: Modern Warfare 4, removal scheduled for 11월 12일
+   - Sources (원문): Korea Times, 경향 (×2), 헤럴드경제, 위키트리, 오마이뉴스, VGC, 시사위크, 아주경제, 한국일보.
+   - Corroboration: multiple independent sources.
+   - Unknown: the original broadcaster and licensing of the footage.
+6. explore: the East Antarctic ice sheet stays stable even with 10°C of warming (IBS, Nature Climate Change, 30 Oct)
+   - Sources: EurekAlert! IBS release (원문; paper text not read); Asiae English edition (원문, AI-translated); Foster & Rahmstorf GRL PDF (원문); ScienceDaily (원문).
+   - Corroboration: the key result effectively rests on the institution's release (단일 출처: the IBS release plus a press rewrite).
+
+Considered and dropped
+- "Global warming accelerating" (ScienceDaily, 29 Oct): this is a re-post of a March 2026 study, so it was used only as background.
+- 국제유가 117달러: date window and source issues.
+- Spain high-speed train crash: candidate, but 2 world stories were already chosen; it appears as a brief.
+- Others not chosen: BOJ hold (brief), 계엄 무죄 ruling (brief), 9월 산업활동 (brief), child-eating birds, Sphinx crocodile, Troy flute (outside the 72h window for briefs).
+
+Sources that could not be read
+- bbc.co.uk direct, theguardian.com direct, CNBC, CNN, NPR, NBC, Bloomberg, joongang 25474559, imbc, SEC.
+
+AI verification is not human fact-checking.
