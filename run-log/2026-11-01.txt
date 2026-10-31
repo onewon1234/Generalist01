@@ -1,0 +1,39 @@
+Generalist Daily run log: 2026-11-01 (unattended scheduled session)
+
+Start: 05:53 KST. Edition pushed: 06:15 KST (commit 97c2c39 on main). Log written 06:16 KST.
+
+Steps
+- Pack: research-packs/2026-11-01.json was missing at start. Pushed research-packs/request-2026-11-01 at 05:53 (a1e9cad); pack arrived ~05:55 (f7152d1, generated 2026-10-31T20:53Z): 60 candidates, briefs list. Pack read: yes. (Note: the local clone's remote was the old lowercase URL; `git pull` showed nothing until the remote was set to .../Generalist01.git.)
+- Stories selected: yes, 6. Written: yes (research + draft per story by separate subagents, Headline Editor records kept). Checked: yes (three independent fact-check passes re-read the cited sources and corrected the drafts; final editor pass). Sealed: yes. Pushed: yes, 97c2c39, no rebase conflict.
+
+Edition: 6 main stories, about 30 minutes of reading (6+5+5+4+5+5), 8 briefs.
+Build: `npx tsx src/build.ts` passed with no errors and no editor notes. Mobile homepage screenshot checked.
+
+Stories, sources, access, corroboration
+1. world: Oleshky evacuees cross via Russia/Belarus under a local truce brokered via Melania Trump.
+   Sources (원문 확인): AP (Inquirer), CNN x2 (Yahoo reprints), dpa (Yahoo), SBS/AFP, White House statement (primary), Kyiv Independent x2, Kyiv Post, CBS/AP, HRW, Meduza, Euronews.
+   Corroborated: mediator, ~2,000 residents, route, truce start, Zelensky thanks. Single-source (attributed): 25 buses/750 seats (CNN), regular-missions claim (AP). Truce start date conflict (WH 29 Oct vs General Staffs 27 Oct) noted.
+2. economy: Hanwha Defense USA chosen by TOTE (Navy construction manager) for 1 LSM, $269M + 3 options, at Hanwha Philly Shipyard.
+   Sources: TOTE release (primary), Naval News, gCaptain, Philadelphia Inquirer, 한국경제, Seoul Economic Daily, Defense News, CSIS, 10 U.S.C. 8679 (govinfo), GAO, JoongAng Daily, ASPI, Wikipedia (원문 확인); CRS R45725 (일부 확인).
+   Corroborated: amount, options, "first Navy shipbuilding contract" (5 sources). Single-source: 0.1% share (CSIS), 4x tanker cost (CRS). Delivery 2029 vs 2030 conflict noted. USNI and navy.mil could not be read.
+3. tech: Sam Altman meets ~50 Samsung presidents and SK chairman Chey; why OpenAI needs Korean memory (HBM, Stargate 900k wafers/month LOI); OpenAI fundraising target cut reported.
+   Sources (원문 확인): 전자신문, 국민일보, 경기일보, EBN, 서울경제, OpenAI 2025 release (primary), The Register, KB Think, SK hynix newsroom (primary), 헤럴드경제, 파이낸셜뉴스, Investing.com/Yahoo, Tom's Hardware.
+   Visit facts from several outlets (likely same company briefing). Fundraising cut: two outlets citing one FT report (treated as report). No primary statement on the visit; no contract announced.
+4. world: US midterms 3 Nov, early vote ~51.3M (UF Election Lab via Denver7 and 아주경제), stakes and historical pattern.
+   Sources: 아주경제, Denver7/Scripps, Al Jazeera x2, No Labels, 데일리안 (원문 확인); CBS live blog, The Conversation reprint, UF Election Lab page (일부 확인).
+   Corroborated: early-vote count, 2022 total, Senate 53-47. Single-source: House composition, polls, forecasts (attributed).
+5. korea: actor 최불암 dies at 87 (29 Oct); how he became Korea's TV "father" (수사반장, 전원일기, 최불암 시리즈, 한국인의 밥상, 41 years of child sponsorship).
+   Sources (원문 확인): YTN x3, 한국일보, 경향 x4, 뉴시스, 국민일보, 경기일보, 스포츠경향, 주간경향; 머니투데이 (일부 확인, robots).
+   Corroborated: age, date, funeral, career spans. Single-source: 880/1088 episode counts. Funeral time 7:00 vs 7:40 discrepancy noted. Yonhap and 매경 pack items could not be read.
+6. explore: falling average body temperature since Wunderlich's 37°C (eLife 2020, Science Advances 2020 Tsimane), competing explanations.
+   Sources (원문 확인): BBC Future (Yahoo reprint), eLife paper (PMC), Stanford release, Science Advances paper (PDF), UCSB release; JAMA 1992 (일부 확인, abstract).
+   Key figures verified against the primary papers. Single-source: thermometer calibration claim (BBC).
+
+Briefs (8, all fetched): Rubio on Iran (The National), Quad ministers (IANS), Canada security strategy (BERNAMA), Itaewon station skipped (경북매일), COVID vaccine/cancer study (한국경제), Patriot sale to Ukraine (Kyiv Post), foreign-student rider rule (한국경제), India helicopter crash (ThePrint/Reuters). Pack framings corrected where the read source said less (Quad: no explicit China response; Halloween crowd figures dropped).
+
+Considered and dropped
+- Binance hack follow-up (covered 10-31), AI financing squeeze/Meta S&P (overlaps 10-31 AI capex piece; used as context in story 3), Halloween crowds as a main story (Itaewon covered 10-31), Quad and Canada (briefs), global warming acceleration (dropped 10-31 as re-post), Sphinx crocodile and Troy flute (sources unreadable or older than 72h).
+
+Could not read: Yonhap direct articles, CNN/NBC/CBC/CNBC direct, USNI News, navy.mil, The Conversation (robots), Smithsonian, Money Today (robots).
+
+AI verification is not human fact-checking.
