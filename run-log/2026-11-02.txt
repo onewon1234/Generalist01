@@ -1,0 +1,36 @@
+Generalist Daily run log: 2026-11-02 (unattended scheduled session)
+
+Start: 05:53 KST. Edition pushed: ~06:15 KST (commit 8dabf74 on main). Log written right after.
+(Note: the shell clock read 06:14 at push although research/write/fact-check subagents ran ~10 min each in parallel; times are from `TZ=Asia/Seoul date`.)
+
+Steps
+- Pack: research-packs/2026-11-02.json missing at start; pushed research-packs/request-2026-11-02 (01ecefe) at 05:53; pack arrived ~05:55 (generated 2026-11-01T20:53Z): 60 candidates, 50 brief candidates. Pack read: yes. (Local remote URL reset to .../Generalist01.git.)
+- Stories selected: yes, 6. Written: yes (one research+writing subagent per story, Headline Editor records kept). Checked: yes (three independent fact-check subagents re-read cited sources and corrected the drafts). Built: `npx tsx src/build.ts` passed, no errors. Sealed: yes. Pushed: yes, 8dabf74.
+
+Edition: 6 main stories, about 38 minutes of reading (7+7+6+5+7+6), 8 briefs.
+
+Stories, sources, access, corroboration
+1. world: Israel 27 Oct election — no bloc reaches 61 (Netanyahu bloc 53, Eisenkot bloc 48, Arab parties 19); electoral system, fraud claims and rebuttal, coalition timeline.
+   Sources (14, 원문 확인): Ynet x2, Basic Law text (JVL, 2001 version), Israel National News (CEC final results), Al Jazeera x3, Jerusalem Post x2, Times of Israel x3, AP/PBS.
+   Corroborated: seats, blocs, turnout 77.9% (early 77.7%), threshold, Nov 4 handover, deadlines. Single-source: Walla report Arab parties will recommend Eisenkot; Nov 10 swearing-in. Fact-check fixed an invented quote (Mansour Abbas), an unsourced Qatar claim, and noted AP vs Al Jazeera disagreement on Eisenkot and Arab parties. Not read: 주간조선, Yonhap (timeouts), Haaretz (robots).
+2. economy: EU safeguard investigation on hybrid cars from all origins (announced 30 Oct per Korea's trade ministry); safeguard vs anti-dumping principle; Korean exposure.
+   Sources (12): fnnews/Yonhap, 재경일보 KO/EN, 서울경제 EN x2 (citing Bloomberg), IELP blog, EC DG Trade page, trade.gov, CnEVPost, Euronews, 헤럴드경제 (원문 확인); 한국경제 (요지 확인(자동 수집)).
+   No primary EU notice found; initiation attributed to the Korean ministry. 350k/yr China cap is reported (Bloomberg/Borderlex), not officially confirmed — deck corrected from "합의한" to "보도된". Several Korea export figures single-source.
+3. tech: Intel shares -28.6% on 30 Oct, worst day since 1974 (not "since 1982" as the pack lede said); Fab 28 Kiryat Gat explosion, memory shortage hitting PCs, foundry.
+   Sources (10): Intel Q3 release (primary), Motley Fool transcript, Reuters/WHTC, Yahoo Finance, Tom's Hardware, Ynet, Stock Titan, 데일리안, Proactive (원문 확인); 블로터 (요지 확인(자동 수집)).
+   Corroborated: guidance, $300M/qtr fab hit, 2-week stop, 2 deaths, record. Single-source: blast mechanism (Ynet), $137B value lost (데일리안), HBM shift explanation.
+4. world: Spain high-speed collision at Urda (Toledo), 28 Oct, 69 dead; LZB outage 22 min before; controller vs ageing system dispute.
+   Sources (7, 원문 확인): elDiario.es (AITAT preliminary), AP/Korea Times, ABC News, Telegraph/Yahoo, Euronews, El Constitucional, ITV.
+   Corroborated: toll, times, speed, January Adamuz crash. Single-source: Adif four-failure report (Telegraph), sensor explanation (AP). Fact-check fixed collision direction and "ordered"->"allowed". AITAT/Adif reports themselves not read; BBC/Guardian timed out.
+5. korea: 미래대응기금 162.3조, NABO says extra tax revenue ends from 2029; 46.7% recurring spending; budget speech 2 Nov (described as scheduled).
+   Sources (12, 원문 확인): 한국경제, 아시아경제, Herald (EN), 아주경제, korea.kr (primary for fund), 파이낸셜뉴스 x2, 헤럴드경제, 허프포스트코리아, 연합/koreancenter, 한국일보 editorial, 뉴시스.
+   Corroborated: 2029 zero, 46.7%, 162.3조, 9.0%. Disagreement noted: 2028 extra revenue 57.3조/72조/60조. NABO report itself not read; party quotes single-source.
+6. explore: 3D thermal map of local interstellar gas: 41% thermally unstable (arXiv preprint under review at Nature Astronomy).
+   Sources (5, 원문 확인): Quanta, arXiv:2607.15352 (primary), ESA Gaia page, Universe Magazine, Astrobiology.com.
+   Figures checked against the paper (paper's temperatures used over Quanta's). History and expert comments single-source (Quanta). Preprint status stated in deck, standfirst and lead.
+
+Briefs (8, all fetched): Binance hack/FBI NK (YTN), China CSI300 (News1), bank delinquency (한국경제), Iran Hormuz consultations (Tribune/ANI), Michigan Stevens endorsement (Al Jazeera/AP), Erdogan/Timor summits (News1), Rubio on 진성준 visa (한국일보), warming acceleration PIK study (ANI). Dropped: Houthi airspace warning (balance), DST change (low value).
+
+Considered and dropped as main stories: Binance follow-up (covered 10-31; brief instead), 최불암 funeral (covered 11-01), Hanwha ship (covered 11-01), US midterms (covered 11-01), Iran-US talks and IISS Gulf defence (brief / not pursued), China stock slump (brief), serial fiction and zombie bacteria (weaker than chosen explore piece), multicultural-policy remarks (political sparring), Suez/Iran essay (The Conversation robots).
+
+Quality: build passed with no errors; Headline Editor records present for all stories. AI verification is not human fact-checking.
