@@ -171,12 +171,20 @@ conventional news report or a stitched summary.
 - For science, culture, history and philosophy, choose the structure that fits
   the subject: discovery, mystery, conflict, experiment, transformation,
   comparison or intellectual journey. Never force one template on every piece.
-- Open with a concrete event, scene, tension, discovery or question. Plain,
+- Every piece has a **hook**: the most surprising fact, contradiction, person
+  or question in the read sources, what a reader who does not follow the
+  subject would click for. It reaches the reader within the first three
+  sentences, not halfway down; background comes when the reader needs it.
+  Open with a concrete event, scene, tension, discovery or question. Plain,
   natural sentences; explain technical terms briefly in passing.
+- End with the payoff (what the reader now understands, or the one thing to
+  watch), not with a list of unknowns; open questions sit where they matter.
 - Keep apart: established fact, causal analysis (whose), expert opinion,
   stakeholder claim, unresolved question and uncertain forecast. Every
   interpretation is attributed to a named source; never add the model's own
-  opinion.
+  opinion. Name an outlet in the text only for a disputed figure, an estimate
+  or an opinion; source bookkeeping (which outlet counted what, method
+  differences that do not change the story) belongs in the numbered notes.
 - Never fabricate scenes, dialogue, causal links or emotional details for the
   sake of storytelling. Background facts need sources too (an institution page
   or a read article), not the model's memory.
@@ -203,7 +211,10 @@ never reuse another outlet's headline.
   reader want to read it. No abstract metaphors, unfamiliar technical terms or
   teasers that hide the subject.
 - It carries the body's most interesting concrete fact (a place, person,
-  number, record or change) when there is one. Follow Korean headline grammar:
+  number, record or change) when there is one. A number or record leads only
+  when it is itself the surprise; when the surprise is a contradiction or a
+  mechanism (strong results, collapsing shares), the headline says that.
+  Follow Korean headline grammar:
   news leads with the event and its result; explainers state the event and the
   question the piece answers (`~이유`, `무엇으로 ~나`).
 - Records, firsts, numbers, scientific and causal claims in a headline or deck
@@ -219,7 +230,8 @@ never reuse another outlet's headline.
 ### Homepage and article pages
 
 - The homepage preview shows the headline and a short deck that makes it
-  concrete; the article page delivers the depth the preview promises.
+  concrete; the article page delivers the depth the preview promises. The
+  edition intro says what is surprising today, not a list of topics.
 - Article layout: comfortable reading width, responsive mobile-first
   typography, accessible contrast; clear headline and concise standfirst;
   short coherent paragraphs with natural whitespace; meaningful section

@@ -71,6 +71,16 @@ every check; subscription session (no paid API); recipient set in secrets.
    digests and routine notices (`pipeline/src/kind.ts`). One story per event:
    check that the articles you combine describe the same event. Do not pad:
    five excellent stories beat seven.
+   The pack's `heuristicPick`, `excluded` and scores are pointers, not
+   decisions: evergreen and older pieces are often excluded by score or
+   freshness gates, and their ledes are often captions or site boilerplate
+   (2026-11-02: the Quanta lede was "Click to tell Google…"; the Troy flute,
+   Sphinx crocodile and serial-fiction pieces were never opened). Read every
+   title, and open the source of any that could surprise a reader before
+   rejecting it. For each pick write its **hook** in one line (CLAUDE.md §4)
+   from a read source. A candidate whose only hook is "X happened, here is the
+   background" loses to one with a real hook; weigh desks after hooks, not as
+   slots.
 5. **Research** each chosen story beyond the pack: run WebSearch with the
    story's distinctive names and terms (mode extended for same-day news:
    standard searches returned only older pages in the 2026-10-29 test), then WebFetch the relevant results to read more of the reporting
@@ -88,7 +98,9 @@ every check; subscription session (no paid API); recipient set in secrets.
    WebSearch. Several outlets repeating one wire report or one press release
    count as one source, not as independent corroboration; say "단일 출처"
    when that is all there is. A story that cannot be explained this way is
-   dropped, even if that leaves five. Then the
+   dropped, even if that leaves five. (a)–(e) are coverage checks, not the
+   section order: hook first, payoff last (CLAUDE.md §4). Writer briefs carry
+   the hook and set no section count or length target. Then the
    Headline Editor pass (CLAUDE.md "Headlines and subheadings"), recording
    `headlineReview` with the reason.
 7. **오늘의 한 줄**: 6–10 items not covered by the main stories, from fetched
@@ -96,7 +108,10 @@ every check; subscription session (no paid API); recipient set in secrets.
    label, `line` (≤ 48 characters), `text` (1–2 sentences), url, publisher,
    published (ISO).
 8. **Fact-check** every number, name, date, quote and hedge against the fetched
-   text, then the quality review checklist in the skill. Fix or drop.
+   text, then the quality review checklist in the skill. Fix or drop. The
+   reader pass in that checklist is done by someone other than the writer, on
+   the headline, deck and first three paragraphs only. Use the time until
+   07:45 for it: the 2026-11-02 edition was pushed at 06:15 without one.
 9. Save the edition as `/tmp/edition/<date>.json` (outside the repository) with
    `status: "published"`, `provenance: "매일 아침 자동 편집: 기사 선정·조사·집필·검증을 Claude가 수행하고, 규칙 기반 검사를 통과한 판만 발행합니다."`.
    Validate: `cd web && npx tsx src/build.ts /tmp/edition/<date>.json --out /tmp/site`

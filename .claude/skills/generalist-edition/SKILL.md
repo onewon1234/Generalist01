@@ -102,6 +102,11 @@ For each piece, answer yes/no and revise on any no:
 - Is there a memorable insight or intellectual payoff?
 - Is the prose accessible without being simplistic? Is it longer than it needs to be?
 - Does the preview's question get answered by the page?
+- Reader pass (not the writer): reading only the headline, deck and first
+  three paragraphs as someone who does not follow this subject, would you
+  click, and did something surprise you? If not, the hook is missing or
+  buried.
+- Does the ending give the payoff rather than a list of unknowns?
 
 For the edition: is there genuine variety beyond daily news (domains, regions,
 forms)?
