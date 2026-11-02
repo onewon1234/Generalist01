@@ -1,0 +1,25 @@
+Generalist Daily run log — edition 2026-11-03 (unattended scheduled session)
+Start 05:53 KST. Edition pushed 06:17 KST. Log written 06:17 KST.
+
+Steps
+- Pack: not present at start; requested (commit 0d2bc84, 05:53), arrived ~05:55. Read 60 candidates + 51 brief candidates. Ledes checked against titles (several aggregator ledes mismatched, e.g. wikitree, joongang, The Conversation in cluster 6; not used).
+- Selected 6 main stories, researched (WebSearch + WebFetch), written, headline-edited, fact-checked by a separate agent, reader pass by a separate agent (headline/deck/first 3 paragraphs), revised.
+- Build: npx tsx src/build.ts passed with no errors and no editor notes.
+- Sealed and pushed sealed-editions/2026-11-03.sealed.json to main: commit 70597c7 (push succeeded).
+- 6 stories, total reading time 22 min (5+3+4+4+3+3). 9 briefs.
+
+Stories (desk / sources & access / corroboration)
+1. tech — Binance 6.3bn hack (one signed delegation; 44% frozen). TechCrunch, Elliptic, Chainalysis, Yahoo Finance, CBS, Korea Times: 원문 확인; Yonhap, Guardian: 요지 확인(자동 수집). Corroborated by several independent analytics firms and outlets; figures differ by firm (noted).
+2. world — Iran "reopen Hormuz in two days", oil -7%. Daily Sabah (Reuters/AFP based), PBS, OilPrice, EIA: 원문 확인; Yonhap x2, Money Today: 요지. Conditions corroborated (Daily Sabah, OilPrice); mine incident single source (Iranian navy via Yonhap lede).
+3. economy — AI investors buying protection (CDS, puts, GPU-rental derivatives). Yahoo/Investing (WSJ summary), Herald, Investing.com (Morgan Stanley data; AI-assisted article, noted), IEEE Spectrum: 원문 확인; Maeil: 요지. Hedging trend rests largely on one WSJ report; CDS figures single source (Morgan Stanley via Investing); Intel -28.6% single source (Herald).
+4. korea — Rural basic income pilot: +5.1% population, 82.7% of gain before first payment; NABO warning on expansion. Weekly Kyunghyang, Asia Today, Herald, Chosun Biz (Daum), Namdo Ilbo: 원문 확인; Kyunghyang: 요지. Population rise corroborated by three datasets (different periods); 60% address-shift figure is a hypothetical estimate (stated).
+5. explore — 17th-c. Exeter prosecutions of "service magicians" (Stoyle). Southampton press release (EuropaWire), Express/AOL: 원문 확인. Single source (one researcher's work), labelled.
+6. explore — Cold fusion essay (Quanta, Musser) + Nature 2019 editorial: 원문 확인. Essay; claims attributed.
+
+Checks
+- Fact-check agent: no major errors; fixed ~15 wording/attribution issues (timings, hedges such as "검토", source attribution, 9월 말 기준 집계).
+- Reader pass: rewrote headlines of Korea and cold-fusion stories, moved hook earlier in Binance/AI/Iran pieces, cut a filler sentence (Exeter).
+- AI verification is not human fact-checking.
+
+Considered and dropped: Czech nuclear contract dispute (kept as brief), space data centres cluster (mixed events), Suez/Iran comparison (opinion), four-hour sleepers, Louisiana Creole recordings (pack lede mismatched; not opened in time), Europe supermarket fridge hacking (partial access), Anthropic IPO (brief candidate, left out).
+Sources not readable: CNBC, Quartz, gurufocus, businessdesk.co.nz (client error / robots), Nate (robots), inkl (error), investinglive (server error).
