@@ -72,7 +72,7 @@ jobs:
         working-directory: web
         env:
           EDITION_PRIVATE_KEY: ${{ secrets.EDITION_PRIVATE_KEY }}
-        run: npx tsx scripts/prepare.ts --date ${{ steps.decide.outputs.date }} --sealed ../sealed-editions --work "$RUNNER_TEMP/editions" --site "$RUNNER_TEMP/site" | tee -a "$GITHUB_OUTPUT"
+        run: npx tsx scripts/prepare.ts --date ${{ steps.decide.outputs.date }} --sealed ../sealed-editions --delivery ../delivery --work "$RUNNER_TEMP/editions" --site "$RUNNER_TEMP/site" | tee -a "$GITHUB_OUTPUT"
 
       - name: Alert when there is no valid edition
         if: steps.decide.outputs.already != 'true' && steps.prep.outputs.ready != 'true' && (github.event_name != 'push' || hashFiles(format('delivery/{0}.skip.json', steps.decide.outputs.date)) != '')
@@ -106,28 +106,53 @@ jobs:
           target=$(TZ=Asia/Seoul date -d "${{ steps.decide.outputs.date }} 08:00" +%s); now=$(date +%s)
           if [ "$now" -lt "$target" ]; then echo "waiting $((target-now)) s"; sleep $((target-now)); fi
 
+      - name: Re-check the latest main before publishing
+        id: final
+        if: steps.prep.outputs.ready == 'true'
+        working-directory: web
+        env:
+          EDITION_PRIVATE_KEY: ${{ secrets.EDITION_PRIVATE_KEY }}
+        run: |
+          D=${{ steps.decide.outputs.date }}
+          # While this run waited, the editor may have corrected the edition (new
+          # sealed file) or cancelled it (delivery/<date>.skip.json), and another
+          # run may have sent it: read the remote main now, not this run's commit.
+          git fetch -q origin main
+          git reset -q --hard FETCH_HEAD
+          echo "latest main: $(git rev-parse --short HEAD)"
+          if [ "${{ steps.decide.outputs.test }}" != "true" ] && [ -f "../delivery/$D.sent.json" ]; then
+            echo "already=true" >> "$GITHUB_OUTPUT"; echo "already sent by another run"; exit 0
+          fi
+          npx tsx scripts/prepare.ts --date "$D" --sealed ../sealed-editions --delivery ../delivery --work "$RUNNER_TEMP/final/editions" --site "$RUNNER_TEMP/final/site" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Stop when the latest edition is not publishable
+        if: steps.prep.outputs.ready == 'true' && steps.final.outputs.ready != 'true' && steps.final.outputs.already != 'true' && steps.final.outputs.skipped != 'true'
+        run: |
+          echo "::error::${{ steps.final.outputs.reason }}"
+          exit 1
+
       - uses: actions/configure-pages@v5
-        if: steps.prep.outputs.ready == 'true'
+        if: steps.final.outputs.ready == 'true'
       - uses: actions/upload-pages-artifact@v4
-        if: steps.prep.outputs.ready == 'true'
+        if: steps.final.outputs.ready == 'true'
         with:
-          path: ${{ runner.temp }}/site
+          path: ${{ runner.temp }}/final/site
       - id: deploy
-        if: steps.prep.outputs.ready == 'true'
+        if: steps.final.outputs.ready == 'true'
         uses: actions/deploy-pages@v4
 
       - name: Verify article URLs
-        if: steps.prep.outputs.ready == 'true'
+        if: steps.final.outputs.ready == 'true'
         run: |
           D=${{ steps.decide.outputs.date }}
-          for s in ${{ steps.prep.outputs.slugs }}; do
+          for s in ${{ steps.final.outputs.slugs }}; do
             u="${BASE_URL}$D/articles/$s.html"; ok=0
             for i in $(seq 1 20); do c=$(curl -s -o /dev/null -w '%{http_code}' "$u"); [ "$c" = 200 ] && { ok=1; break; }; sleep 15; done
             [ $ok = 1 ] && echo "200 $u" || { echo "not reachable: $u"; exit 1; }
           done
 
       - name: Send email
-        if: steps.prep.outputs.ready == 'true'
+        if: steps.final.outputs.ready == 'true'
         working-directory: web
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
@@ -136,12 +161,12 @@ jobs:
         run: |
           D=${{ steps.decide.outputs.date }}
           if [ "${{ steps.decide.outputs.test }}" = "true" ]; then
-            npx tsx scripts/send-mail.ts edition "${{ steps.prep.outputs.edition }}" --base "$BASE_URL" --test
+            npx tsx scripts/send-mail.ts edition "${{ steps.final.outputs.edition }}" --base "$BASE_URL" --test
             exit 0
           fi
           git pull --rebase -q
           if [ -f "../delivery/$D.sent.json" ]; then echo "already sent"; exit 0; fi
-          npx tsx scripts/send-mail.ts edition "${{ steps.prep.outputs.edition }}" --base "$BASE_URL"
+          npx tsx scripts/send-mail.ts edition "${{ steps.final.outputs.edition }}" --base "$BASE_URL"
           echo "{\"date\":\"$D\",\"sentAt\":\"$(date -u +%FT%TZ)\",\"run\":\"${{ github.run_id }}\"}" > "../delivery/$D.sent.json"
           git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
           git add "../delivery/$D.sent.json" && git commit -m "delivery: $D sent [skip ci]"

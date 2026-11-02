@@ -2,7 +2,8 @@
  * prepare: decrypt every sealed edition, mark them published, validate and
  * build the whole site. Used by .github/workflows/publish.yml.
  *   npx tsx scripts/prepare.ts --date YYYY-MM-DD --sealed ../sealed-editions --work <dir> --site <dir>
- * Prints key=value lines for $GITHUB_OUTPUT: ready=true|false, reason=…,
+ * Prints key=value lines for $GITHUB_OUTPUT: ready=true|false, reason=…, skipped=true
+ * (when --delivery holds <date>.skip.json),
  * edition=<path of the decrypted target edition>. A missing or invalid edition
  * for the target date is never replaced by an older one.
  */
@@ -14,9 +15,13 @@ import type { Edition } from '../src/types.ts';
 
 const flag = (n: string) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : undefined; };
 const date = flag('--date')!, sealedDir = flag('--sealed')!, work = flag('--work')!, site = flag('--site')!;
+/** Optional: the delivery log; a <date>.skip.json there cancels publication. */
+const deliveryDir = flag('--delivery');
 const out = (k: string, v: string) => console.log(`${k}=${v.replace(/\n/g, ' ')}`);
 
 function fail(reason: string): never { out('ready', 'false'); out('reason', reason); process.exit(0); }
+
+if (deliveryDir && existsSync(join(deliveryDir, `${date}.skip.json`))) { out('skipped', 'true'); fail(`publication cancelled by delivery/${date}.skip.json`); }
 
 const key = process.env.EDITION_PRIVATE_KEY;
 if (!key) fail('EDITION_PRIVATE_KEY secret is not set');
