@@ -44,6 +44,8 @@ def run_step(name, exprs, now, files=()):
     with tempfile.TemporaryDirectory() as d:
         bin_ = os.path.join(d, 'bin'); os.mkdir(bin_)
         real_date = subprocess.run(['sh', '-c', 'command -v date'], capture_output=True, text=True).stdout.strip()
+        # Fake clock: `date -d <time>` (an explicit target) passes through; any
+        # other call reads the fake "now". Enough for the Decide and Wait steps.
         with open(os.path.join(bin_, 'date'), 'w') as f:
             f.write(f'#!/bin/sh\nfor a in "$@"; do [ "$a" = -d ] && exec {real_date} "$@"; done\nexec {real_date} -d "@$FAKE_NOW" "$@"\n')
         with open(os.path.join(bin_, 'sleep'), 'w') as f:

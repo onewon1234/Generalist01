@@ -58,6 +58,10 @@ jobs:
         run: python3 -I scripts/test/test_guard_rm.py
       - name: safe-rm tests
         run: bash scripts/test/test_safe_rm.sh
+      - name: publish workflow tests (fake clock, no email)
+        run: |
+          python3 -c 'import yaml' 2>/dev/null || sudo apt-get install -y -qq python3-yaml
+          python3 -I scripts/test/test_publish_workflow.py
       - name: no secrets or dumps committed
         run: |
           if git ls-files | grep -E '(^|/)\.env($|\.)|\.pem$|\.key$|\.dump$|db-export/|recovery.*\.zip$' | grep -vE '^keys/[a-z]+-public\.pem$'; then
