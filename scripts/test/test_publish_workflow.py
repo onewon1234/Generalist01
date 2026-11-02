@@ -307,6 +307,17 @@ class LatestStateTest(unittest.TestCase):
         self.assertIn('already sent', r2.stdout)
         self.assertEqual(self.read('send').count('SENT'), 1)
 
+    def test_cancel_after_final_check_is_not_sent(self):
+        """Deploy and URL checks can take minutes after the re-check: the send step itself must honour a late cancel."""
+        w = self.remote.checkout()
+        r, o = self.final(w)
+        self.assertEqual(o.get('ready'), 'true', r.stderr)
+        self.remote.push(f'delivery/{D}.skip.json', '{"date":"%s","reason":"x"}' % D)   # 08:05
+        r2, _ = self.send(w)
+        self.assertEqual(r2.returncode, 0, r2.stderr)
+        self.assertNotIn('SENT', self.read('send'))
+        self.assertFalse(os.path.exists(os.path.join(w, 'delivery', f'{D}.sent.json')))
+
     def test_final_then_send_path(self):
         """Full post-wait path on one checkout: refresh, then send (stubbed) once."""
         w = self.remote.checkout()

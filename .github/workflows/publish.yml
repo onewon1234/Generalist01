@@ -33,8 +33,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     # A push in the morning window (from 05:00 KST) may wait up to 180 min for
-    # 08:00, then URL checks take up to 35 min (7 stories x 20 x 15 s); the
-    # scheduled fallbacks start about 3 h late, so the push run must survive.
+    # 08:00; after it: re-check ~2, pages upload ~2, deploy <=10, URL checks
+    # <=35 (7 stories x 20 x 15 s), email ~3 = 232 min. The scheduled
+    # fallbacks start about 3 h late, so the push run must survive.
     # 60 min killed the 10-31, 11-01 and 11-02 push runs.
     # Checked by scripts/test/test_publish_workflow.py.
     timeout-minutes: 240
@@ -166,6 +167,7 @@ jobs:
           fi
           git pull --rebase -q
           if [ -f "../delivery/$D.sent.json" ]; then echo "already sent"; exit 0; fi
+          if [ -f "../delivery/$D.skip.json" ]; then echo "cancelled by delivery/$D.skip.json; not sent"; exit 0; fi
           npx tsx scripts/send-mail.ts edition "${{ steps.final.outputs.edition }}" --base "$BASE_URL"
           echo "{\"date\":\"$D\",\"sentAt\":\"$(date -u +%FT%TZ)\",\"run\":\"${{ github.run_id }}\"}" > "../delivery/$D.sent.json"
           git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
@@ -180,4 +182,4 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           NEWSLETTER_TO: ${{ secrets.GMAIL_USER }}
         run: |
-          npx tsx scripts/send-mail.ts alert "[Generalist Daily] ${{ steps.decide.outputs.date }} 발행 중 오류" "배포 또는 발송 단계에서 실패했습니다. 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          npx tsx scripts/send-mail.ts alert "[Generalist Daily] ${{ steps.decide.outputs.date }} 발행 중 오류" "배포 또는 발송 단계에서 실패했습니다. ${{ steps.final.outputs.reason }} 실행 기록: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
