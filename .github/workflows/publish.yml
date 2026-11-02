@@ -32,7 +32,10 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # A push in the morning window (from 05:00 KST) may wait up to 180 min for
+    # 08:00; the scheduled fallbacks start hours late, so the push run must
+    # survive the wait. 60 min killed the 10-31, 11-01 and 11-02 push runs.
+    timeout-minutes: 210
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
