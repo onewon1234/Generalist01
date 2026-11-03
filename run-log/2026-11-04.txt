@@ -1,0 +1,18 @@
+Generalist Daily run log 2026-11-04 (unattended scheduled session)
+Start 05:52 KST, end ~06:18 KST. Edition pushed 06:16 KST, commit 88520f9 on main.
+
+Steps: research pack requested (request-2026-11-04, 05:53) and read (arrived 05:54, 60 candidates, 44 briefs) - selected - researched - written - headline edit - fact-checked (independent subagent, 16 issues fixed) - reader pass (separate subagent, headline/deck/first 3 paragraphs; fixes applied) - build passed (src/build.ts, no errors, no notes) - sealed - pushed.
+
+Main stories: 6, total reading time about 21 min (4+3+4+3+4+3).
+1 tech  binance-hack-fake-interview-ai-tool: The Block (원문), Security Affairs (원문), The National (원문), BBC (요지, pack), Guardian (요지, pack). Attack chain corroborated by 3 outlets, all relaying Binance's own report (single primary source: the company).
+2 economy australia-rate-hike-expectations: RBA statement (원문, primary), ABC News (원문), 한국경제 (요지). Corroborated.
+3 world uk-eu-food-checks-deal: FarmingUK (원문, relays BBC), Business Matters (원문), FoodManufacture (원문, May background), IoE&IT (원문, undated background), BBC (요지). Draft details largely trace to BBC reporting.
+4 korea ulsan-dinosaur-tail-trace: 경향신문, 파이낸셜뉴스, 세계일보 (원문, all from Ulsan city briefing = one announcement), National Geographic 2013 (원문, background).
+5 explore orcas-hunting-great-white-sharks: CBS 60 Minutes (원문), Wikipedia (원문), Live Science 2023 (원문), ESA release on Towner et al. 2022 Ecology (원문). Corroborated; cause of shark decline disputed and stated as such.
+6 explore hawaii-rapa-nui-ultravoyagers: Star-Advertiser/Reuters (원문), Medievalists.net (원문), Smithsonian (요지). Two reports of one Science paper; interpretation difference (direct voyage or not) stated.
+
+Briefs: 8 (국제2, 경제1, 한국3, 사회1, 기술1), from pack ledes (요지 수준), all within 72 h.
+
+Considered and dropped: US midterms (results not known before publication; moved to brief), 12·3 계엄군 1심 판결 (time and legal sourcing), 청소년 SNS 규제 (brief), European force rules of engagement (single Guardian report; brief), Google Search AI (brief), Suez/Iran essay (opinion), cold fusion Quanta, reverse game theory MIT TR, Aeon essay.
+Sources not readable: BBC article pages (WebFetch permission not granted unattended), NBC News (robots), Al Jazeera (robots), Live Science Hawaii page (empty).
+Limitations: AI verification only, not human fact-checking.
