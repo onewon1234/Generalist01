@@ -1,0 +1,18 @@
+Generalist Daily run log 2026-11-05 (unattended scheduled session)
+Start 05:53 KST, end ~06:23 KST. Edition pushed 06:21 KST, commit 0d190a5 on main.
+
+Steps: research pack requested (request-2026-11-05, 05:53) and read (arrived 05:54, 60 candidates, 50 briefs) - selected - researched (6 parallel research subagents, WebSearch+WebFetch only) - written - headline edit - fact-checked (3 independent subagents re-opened sources; ~35 corrections applied) - reader pass (separate subagent, headline/deck/first 3 paragraphs; headlines and openings of 4 stories changed) - build passed (src/build.ts, no errors, no notes) - screenshots checked - sealed - pushed.
+
+Main stories: 6, total reading time about 25 min (4+4+5+4+4+4).
+1 world us-midterms-iran-war-blue-wave: Middle East Eye, SBS Biz, fnnews, ABC News, CBS live, Newsweek x2, AP (The Wire, TT News, WBTV), Al Jazeera, Irish Times live, New Republic, BBC (Yahoo) - all 원문. Results corroborated by several outlets; counts provisional (counting ongoing). Trump quote corroborated (MEE, SBS, fnnews).
+2 economy oil-price-drop-war-risk-premium: Bloomberg (Business Standard), Oilprice, 아시아경제, The National, Private Banker, Rigzone, TheStreet, EIA, Euronews, 이투데이, Al Jazeera - 원문. Price moves corroborated; SEB scenarios and CTA positioning single-source; Hormuz flow estimates disputed (stated). "6주 만" from the pack not supported, replaced by "약 두 달 만의 최저".
+3 tech google-suncatcher-space-data-center: Google blog x2, Google Research, arXiv paper, TechCrunch, TNW x2, AI타임스, 뉴스스페이스, Yahoo Finance, WEF - 원문. Haiku/launch corroborated (Google + TechCrunch + TNW); "100배" is a Korean paraphrase of a conference remark (English original not found), attributed. CNBC Starcloud source dropped (was read via a reader proxy).
+4 korea suncheon-gyeongguk-new-medical-schools: 서울신문, 경향, 오마이뉴스, 한국일보, 아주경제, 국민일보, 세계일보, 메디컬포커스, 한겨레(서플), 의학신문, 서울경제, 매일일보 - 요지 확인 (WebFetch gave summaries). Core facts corroborated by many outlets (one government announcement); 한겨레 detail on regional-doctor share single-source and not reopened by fact checker. 동아일보 blocked.
+5 explore fluorescent-lamp-mercury-phaseout: Panasonic release, Newswitch, RP Photonics, EPA x2, Japan MOE, CLASP, Minamata Convention decision, NITE, Panasonic page, MOTIE, 강동구 - 원문; 한국경제, 인사이트, Japan Times - 요지. Panasonic decision is from 2024 (not presented as new); Osaka/LED share figures via Korean reports of Asahi (single chain).
+6 explore ai-introspection-injected-thoughts: Quanta, Anthropic blog, transformer-circuits paper, arXiv 2603.21396, arXiv 2605.26242 - 원문; arXiv 2603.05414 - 요지 (abstract). Quotes single-source (Quanta); results from papers.
+
+Briefs: 8 (국제1, 기술1, 한국1, 사회1, 경제1, 과학2, 문화1), from pack ledes matching titles (요지 수준), all within 72 h.
+
+Considered and dropped: 머스크/중간선거 타격 (overlap), 텍사스 데이터센터 MIT TR (folded into tech piece), 이란 걸프국 위협 (in oil piece), 세브란스 사건, 사랑제일교회, 조작기소 특검법, Parkinson's (Nature unreadable), Celtic/Germanic ancient DNA (Nature unreadable), phone book JSTOR, Mommy brain, Egyptian shrine, Suez essay (opinion). Pack ledes mismatched for several aggregator items (e.g. 쿠팡, 유로존 물가, 삼성바이오) - not used.
+Sources not readable: 동아일보 (permission timeout), NBC/CNBC/Axios/The Hill (robots/errors), Nikkei/Tokyo Shimbun (robots), mk.co.kr space article, supple.kr (for fact checker).
+Limitations: AI verification only, not human fact-checking.
