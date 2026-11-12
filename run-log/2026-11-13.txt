@@ -1,0 +1,20 @@
+Generalist Daily run log — edition 2026-11-13
+Start: 2026-11-13 05:52 KST. Edition pushed: ~06:12 KST. End: 2026-11-13 06:11 KST.
+
+Steps: pack requested (05:53, research-packs/request-2026-11-13; research.yml ran at once, pack 2026-11-13.json ready 05:54) -> pack read -> 6 stories selected -> researched & written (one writer agent per story, WebSearch+WebFetch) -> headline edit -> independent fact-check + quality review + reader pass per story (separate agents, sources reopened) -> 8 briefs -> web build passed (0 errors, 0 notes) -> sealed -> pushed to main (commit da07633).
+
+Main stories: 6, total reading time 34 min (readingMinutes).
+1 tech  | Jensen Huang leaves Nvidia; why it became an export-control / chip-tracking / AI-financing question. 9 sources, all read in full (TechCrunch, Yahoo Finance live, MIT Tech Review, Al Jazeera x2, TokenPost, ZDNet Korea, Herald Economy, Korea Daily). Resignation/Kress/dates corroborated; NYT-cited intelligence belief, Megaspeed probe halt, Foster account single-source and attributed.
+2 economy | Trump "no Iran deal needed", Brent +3.3%: Hormuz risk premium explained. 15 sources read in full (Asia Economy, FN News, Gulf News, CNBC Africa, RTE/Reuters, Korea Times/Reuters, Yonhap, EIA, Hankyoreh, The National, Riviera, A News, Israel Hayom, Euronews, eToday). Prices and weekly fall corroborated; Qatari interim plan, Sinokor ownership, insurance (July figures) single-source/attributed.
+3 world | Russian missile ship hit near Gogland, Gulf of Finland. 9 sources read in full (Yle x2, BBC via Yahoo, Kyiv Independent, UNITED24, Defense Express, Euromaidan Press, Reuters via Cyprus Mail, Moscow Times). Strike corroborated by Finnish and Estonian officials; ship identity and drone method only Ukraine's claim (attributed).
+4 world | Scott Colom, Mississippi's first Black US senator in 150+ years: history of Revels/Bruce and the 1890 constitution. 12 sources (11 read in full, ABA Journal summary only). Result corroborated (AP, CBS, TIME, MFP, BBC); 49.2/48.7 from TIME citing AP; "largest Black share" AP only (attributed).
+5 korea | 125 prosecutors left in 공소청's first month; 86 went to 중수청. 15 sources read (Segye, Hankyung, MT, 법률신문 law-firm explainer, Hankook, News1 x2, Asia Today, YTN, etc.). 125/86/32 figures all from one Justice Ministry release (single source); backlog figures corroborated.
+6 explore | Cambridge Scientific Reports study: comets unlikely to have delivered HCN for life. 10 sources read in full (ScienceDaily release, Astrobiology abstract, CNN via CP24, Sci.News, Universe Today, ScienceAlert, SMC Spain, arXiv 2025 paper, Quanta). Core numbers from the abstract (primary); independent critics quoted.
+
+Briefs (8): Chungcheong investment (Seoul Economic), Trump-Mexico tariff threat (Denver Gazette), Calais Eurostar alert (NL Times), Florida dengue (AP via CP24), blood-brain barrier mouse study (Gladstone), Samsung AI glasses (ZDNet Korea), 5 special-city mayors (Asia Economy), Pearl Abyss Q3 (Bloter). All read; all within the 72 h window.
+
+Quality checks: build.ts passed with no errors or notes; fact-check agents corrected unsupported wording (e.g. "most persistent lobbyist" softened, 42% export share deleted, Wikipedia source dropped, Teaching for Change source dropped, unsourced closing interpretations replaced). Editor changed 3 headlines to avoid five "~이유" headlines (recorded in headlineReview).
+
+Considered and dropped: Gaza hospital strike (no new angle), 최민희 controversy (domestic party politics), 세무사 'AI glasses' cheating suspicion (allegation about an individual, thin evidence), Alzheimer's BBB (moved to briefs), Fed 2027 schedule / Kim Jong Un summit (sources outside window), CHAPEA (event older than window).
+Unreadable: CNN (robots), BBC originals on bbc.co.uk not reachable via search (used Yahoo copies), Guardian briefing, The Conversation piece, Smithsonian comet article, Washington Times, Pravda.com.ua, Helsinki Times, Nate.
+Limits: AI verification only, not human fact-checking. Several WebFetch reads returned summarised page text.
