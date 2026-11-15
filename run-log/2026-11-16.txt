@@ -1,0 +1,23 @@
+Generalist Daily run log — 2026-11-16 (unattended scheduled session)
+
+Start: 05:53 KST. Edition pushed: 06:07 KST (commit b451ce0 on main). End: ~06:10 KST.
+
+Steps
+- Research pack: missing at start; requested (research-packs/request-2026-11-16, commit bf95f5a); pack 2026-11-16.json present by 05:55 (generated 05:53 KST). Read all 60 candidates and 47 brief candidates.
+- Selected: 6 main stories. Written: yes. Headline Editor pass: yes (headlineReview on every story). Fact-check against fetched text: yes (writer self-check; unsupported background removed). Independent reader pass (subagent, headline/deck/first 3 paragraphs only): yes; fixes applied.
+- Build (web/src/build.ts): passed, no errors, no editor notes. Sealed: yes. Pushed: yes (b451ce0).
+- Total reading time: 20 minutes (4+4+3+3+3+3). Briefs: 8.
+
+Stories, sources and access (WebFetch of WebSearch results = 원문 확인)
+1. world — Estonia closes road crossings with Russia after GRU-attributed arson attempt on Threod Systems. Sources: Kyiv Independent, Estonian World, Euromaidan Press, Guardian (finwire copy), Wikipedia (border background), Finnish Interior Ministry (2023 closure). All 원문 확인. Key claims corroborated by 3+ independent outlets; GRU attribution is Estonian authorities' claim, attributed as such.
+2. economy — US data-center referendums (40 of 41 restrictive) and electricity bills vs Korea's grid impact assessment (75-point bar for capital-area data centres, effective 16 Nov). Sources: 아시아경제, 머니투데이(서플 copy), 한국경제, 노컷뉴스. 원문 확인. US figures single-source (아시아경제 citing brokerage tallies), flagged in notes; Korean rule corroborated by two outlets.
+3. korea — Daejeon education office applies 27.9% vs 5.4% student-generation rate to same-size sold vs rented flats. Sources: 충청매일, 굿모닝충청 (both based on the council member's release: single underlying source, noted), 2021 KCI paper (background). 원문 확인. Education office response not reported; stated in text.
+4. tech — HD Hyundai/Anduril 600t unmanned surface vessel 'Alpha' built before any order. Sources: 데일리안, 이투데이, 파이낸셜뉴스. 원문 확인. Launch facts corroborated; development model, 50:50 cost split, US Navy 30-USV contract single-source (이투데이), noted.
+5. explore — White dwarf pulsar orbiting a Sun-like star (GPM J0715−1141, Nature Astronomy). Sources: Nautilus (co-author's Conversation piece), Eurasia Review (Curtin release), Gizmodo, Northwestern 2025 release (background). 원문 확인. Corroborated.
+6. explore — Milsington gilded bronze leg reattributed to an equestrian statue of Antoninus Pius. Sources: Live Science, Archaeology Magazine, STV/PA. 원문 확인; all rest on one National Museums Scotland statement (single underlying source, noted).
+
+Briefs (8): from research-pack ledes (요지 확인, pack access "read"): Iran drone attack on US base in Bahrain (BBC), Czech public-media funding protest (BBC), Zelensky on Starlink (BBC), 2027 budget review (연합뉴스), Seoul express buses (경향), oil price cap extension (연합뉴스), life sentence without parole discussion (경향), SS United States reef (Dezeen). All within 72 h; build checks passed.
+
+Considered and dropped: Jensen Huang/Nvidia resignation cluster (52 h+, likely covered in earlier editions); US–China–Russia summit (event on 19th, not yet happened); Israel Eisenkot mandate (from 7 Nov, likely covered); data-center stock slump/AI capex 2028 warning (folded out; thin); cave bear graveyard (BBC exclusive, less time); brain-implant volunteers; Houthi/Aden (only one readable source).
+Could not read: phys.org (fetch error), Helsinki Times (fetch error), nate.com government release (robots), Yahoo/AP Narva piece (fetch error), Al Jazeera (robots, per pack).
+Limitations: AI verification is not human fact-checking. No paid APIs, no Firecrawl, no database writes.
