@@ -1,0 +1,25 @@
+Generalist Daily run log 2026-11-24 (unattended scheduled session)
+
+Start 05:53 KST. Sealed edition pushed to main 06:10 KST (commit ff99a63). Log written ~06:12 KST.
+
+Steps
+- Research pack: not present at start; requested 05:54 (research-packs/request-2026-11-24), pack arrived ~05:56 and read (60 candidates, 49 brief candidates).
+- Stories selected: 6. Written: 6. Headline Editor pass: done (headlineReview on every story).
+- Fact-check: claims checked by the editor against fetched-page notes; unsupported wording removed or attributed (details below). Reader pass on headline/deck/first 3 paragraphs done by a separate agent; its notes applied (Libya headline attributed, Korea/Colorado headlines clarified, COP31 deck made consistent, an unattributed verdict removed).
+- Build: npx tsx src/build.ts passed with no errors and no editor notes.
+- Sealed with committed public key and pushed: yes (ff99a63).
+- Total reading time: 20 min (4+3+4+3+3+3).
+
+Stories (desk / sources with access level / corroboration)
+1. world - Ukrainian drones hit Russian corvette Merkury in Benghazi port. Defense News, Meduza, Middle East Eye: 원문 확인. BBC, Guardian, 연합뉴스: 요지 확인(자동 수집). Sinking, place, date: corroborated (3 outlets + satellite-image reports). Drone count, launch point, casualties: conflicting claims, attributed per source. NBC, CNBC not readable.
+2. tech - Nvidia board reinstates Jensen Huang 11 days after resignation. NVIDIA 8-K releases of Nov 12 and Nov 23 (primary), CBS, The Hill (via Yahoo), Bloomberg Government (possible paywall cut), Yahoo Finance: 원문 확인; 연합뉴스: 요지. Board wording: primary source. Allegations: reported only, stated as unconfirmed. Stock rise ~35%: single readable source (Yahoo Finance, citing CNBC); outlets differ 30-35%. CNBC, HuffPost, CNN not readable.
+3. world - COP31 Antalya collapses without deal. Independent (via Yahoo), Lynnwood Times, Latin Times, Wikipedia (background only): 원문 확인; The Conversation, BBC: 요지 only (direct fetch refused). Core facts corroborated by 3 outlets; "first failure since Copenhagen 2009" from the Independent; US absence single-source (Latin Times citing Bloomberg). CNN, NPR, CBC not readable.
+4. economy - DR Congo halts cobalt exports from Nov 30. Reuters (via CNBC Africa), Northern Miner, BigGo, INN/Nasdaq (2025 background): 원문 확인; 연합뉴스: 요지. Announcement corroborated (Reuters, Northern Miner, BigGo, Yonhap). CMOC/Glencore figures and price data single-source (Northern Miner citing company reports, Fastmarkets, Cobalt Institute). mining.com not readable.
+5. korea - 4th Basic Livelihood Security Plan (생계급여 32%->35% by 2030; 부양의무자 기준 폐지 for 중증장애인 households; 30만원 same-day emergency aid). 경향 x2, 국제뉴스, 오마이뉴스, 이투데이, 복지투데이: 원문 확인. All key figures corroborated across 2+ outlets reporting the same ministry briefing (one government source underneath). Budget not stated in any source; said so in the piece.
+6. explore (history) - Colorado's 1936 martial-law border closure toward New Mexico. CPR, KUNC/CU, Colorado Newsline (via Kiowa County Press), Law Week Colorado: 원문 확인; JSTOR Daily (news peg): 요지 only (fetch permission refused). Dates and core facts corroborated; end date differs (Apr 29 vs 30), stated both. Guardsman count and number turned back not used (unverified).
+
+Briefs (오늘의 한 줄): 8 items from pack ledes (요지 확인), all within 72 h: 코스피 하락, 강금실 국정원장 내정, 최태원 재산분할, 시카고 오헤어 착륙 중단, EU 대러 제재, 전 모사드 국장 발언, 선관위 직원 구속, 노무사 0점.
+
+Considered and dropped: Russian military suicides leak (Guardian; separate event, no time for second source), Myanmar ICJ genocide ruling (81 h old), Westminster Abbey Roman coffin (lede only, paywalled companion), Quanta DNA repair (no readable lede), Anthropic IPO (conflict of interest for this writer), Trump datacenter penalties (71 h old, thin), KOSPI-approval politics (kept as brief), Bahamas grid (time).
+
+Limitations: AI verification is not human fact-checking. Several outlets were unreadable (robots/client errors); WebFetch permission refused for some pack URLs, so those are cited at 요지 level only.
