@@ -7,12 +7,7 @@ name: research
 # figures and one short opening sentence per read source (pipeline/src/preview/pack.ts).
 # No article text or long excerpts reach the repository or the logs.
 on:
-  schedule:
-    - cron: '17 20 * * *'   # 05:17 KST
-    - cron: '41 20 * * *'   # 05:41 KST, in case the first is delayed or skipped
-  push:
-    branches: [main]
-    paths: ['research-packs/request-*']   # the editorial session can ask for a pack
+  # Automatic triggers disabled 2026-11-27 at the publisher's request; run by hand only.
   workflow_dispatch:
 
 permissions:

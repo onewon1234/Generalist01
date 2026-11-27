@@ -1,9 +1,8 @@
 name: ci
 
 on:
-  push:
-    branches: [main, 'claude/**']
-  pull_request:
+  # Automatic triggers disabled 2026-11-27 at the publisher's request; run by hand only.
+  workflow_dispatch:
 
 permissions:
   contents: read

@@ -4,9 +4,8 @@ name: ingest
 # Read-only: no AI calls, no database writes. Results go to the run summary,
 # annotations and a short-lived artifact.
 on:
+  # Automatic triggers disabled 2026-11-27 at the publisher's request; run by hand only.
   workflow_dispatch:
-  schedule:
-    - cron: '17 20 * * *'   # 05:17 Asia/Seoul
 
 permissions:
   contents: read

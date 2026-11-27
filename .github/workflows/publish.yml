@@ -6,12 +6,7 @@ name: publish
 # edition is never replaced by an older one: the reader gets nothing and the
 # publisher gets an alert.
 on:
-  push:
-    branches: [main]
-    paths: ['sealed-editions/*.sealed.json', 'delivery/*.skip.json']
-  schedule:
-    - cron: '12 23 * * *'   # 08:12 KST: fallback / missing-edition alert
-    - cron: '47 23 * * *'   # 08:47 KST: second fallback
+  # Automatic triggers disabled 2026-11-27 at the publisher's request; run by hand only.
   workflow_dispatch:
     inputs:
       date: { description: 'Edition date (YYYY-MM-DD, default today in KST)', required: false }

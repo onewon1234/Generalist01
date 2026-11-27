@@ -3,9 +3,8 @@ name: check-sources
 # Read-only: fetches every registry source live and reports health.
 # Writes nothing anywhere except the workflow summary and a report artifact.
 on:
+  # Automatic triggers disabled 2026-11-27 at the publisher's request; run by hand only.
   workflow_dispatch:
-  schedule:
-    - cron: '7 20 * * *'   # 05:07 Asia/Seoul
 
 permissions:
   contents: read
